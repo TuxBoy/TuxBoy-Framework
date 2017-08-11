@@ -22,7 +22,7 @@ class Builder
 	 * @param array  $arguments
 	 * @return object
 	 */
-	public function create(string $class_name, array $arguments = [])
+	public static function create(string $class_name, array $arguments = [])
 	{
 		return !empty($arguments)
 			? self::current()->newInstanceArgs($class_name, $arguments)
@@ -33,7 +33,7 @@ class Builder
 	 * @param string $class_name
 	 * @return mixed
 	 */
-	private function newInstance(string $class_name)
+	public function newInstance(string $class_name)
 	{
 		$class_name = $this->replacementClassName($class_name);
 		return new $class_name();
@@ -44,7 +44,7 @@ class Builder
 	 * @param array  $arguments
 	 * @return mixed
 	 */
-	private function newInstanceArgs(string $class_name, array $arguments = [])
+	public function newInstanceArgs(string $class_name, array $arguments = [])
 	{
 		$class_name = $this->replacementClassName($class_name);
 		return (new Reflection_class($class_name))->newInstanceArgs($arguments);
