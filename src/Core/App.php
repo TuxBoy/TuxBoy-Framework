@@ -30,11 +30,6 @@ class App
 	 */
 	private $container;
 
-	/**
-	 * @var \Psr\Http\Message\ServerRequestInterface
-	 */
-	private $request;
-
   /**
    * @var RouteCollector
    */
@@ -44,9 +39,8 @@ class App
    * @param ServerRequestInterface $request
    * @param array $config
    */
-	public function __construct(ServerRequestInterface $request, array $config)
+	public function __construct(array $config)
 	{
-	    $this->request = $request;
 		$this->config  = $config;
 
         Plugin::current()->addBuilder(Priority::CORE, $this->config[Priority::CORE]);
@@ -78,13 +72,15 @@ class App
 	}
 
   /**
+   * @param ServerRequestInterface $request
    * @return mixed|ResponseInterface
    */
-	public function run() : ResponseInterface
+	public function run(ServerRequestInterface $request) : ResponseInterface
 	{
-        $request_method = $this->request->getMethod();
-        $path_uri       = $this->request->getUri()->getPath();
+        $request_method = $request->getMethod();
+        $path_uri       = $request->getUri()->getPath();
         $route          = $this->getDispatcher()->dispatch($request_method, $path_uri);
+
 		switch ($route[0]) {
 			case Dispatcher::NOT_FOUND:
                 $response = new Response();
@@ -99,10 +95,8 @@ class App
 			case Dispatcher::FOUND:
 				$controller = $route[1];
 				$parameters = $route[2];
-                $parameters[] = [
-                  'request' => $this->request
-                ];
-                $response = $this->container->call($controller, $parameters);
+                $parameters = array_merge($parameters, ['request' => $request]);
+                $response   = $this->container->call($controller, $parameters);
                 if (is_string($response)) {
                   return new Response(200, [], $response);
                 }

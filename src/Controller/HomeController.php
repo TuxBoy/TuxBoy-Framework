@@ -5,17 +5,18 @@ use App\Concern\Has_Civility;
 use App\Model\Article;
 use Core\Builder\Builder;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\ServerRequest;
+use Psr\Http\Message\ServerRequestInterface;
 
 class HomeController
 {
 
-	public function index(ServerRequest $request)
+	public function index(ServerRequestInterface $request)
 	{
 		/** @var $article Article|Has_Civility */
 		$article = Builder::create(Article::class);
-        dump($request);
-		return new Response(200, [], 'Coucou');
+        $response = new Response();
+		$response->getBody()->write('Coucou');
+        return $response;
 	}
 
 }
