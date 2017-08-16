@@ -9,16 +9,19 @@ trait Current
 {
 
 	/**
-	 * @var self
+	 * @var static
 	 */
 	private static $current;
 
-	public static function current() : self
+    /**
+     * @return static
+     */
+	public static function current()
 	{
-		if (is_null(self::$current)) {
-			self::$current = new self();
+		if (is_null(static::$current)) {
+			static::$current = new static();
 		}
-		return self::$current;
+		return static::$current;
 	}
 
 }

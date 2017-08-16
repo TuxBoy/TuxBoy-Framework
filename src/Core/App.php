@@ -1,16 +1,22 @@
 <?php
 namespace Core;
 
-use function FastRoute\simpleDispatcher;
+use FastRoute\DataGenerator\GroupCountBased;
+use FastRoute\Dispatcher\GroupCountBased as FastDispatcher;
+use FastRoute\RouteParser\Std;
 use FastRoute\Dispatcher;
 use DI\ContainerBuilder;
-use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteCollector;
-use FastRoute\RouteParser\Std;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\ServerRequest;
+use PHPUnit\Framework\Exception;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * Class App
+ * @package Core
+ */
 class App
 {
 
@@ -29,54 +35,83 @@ class App
 	 */
 	private $request;
 
+  /**
+   * @var RouteCollector
+   */
 	private $route;
 
-	private $dispatcher;
-
-	public function __construct(array $config)
+  /**
+   * @param ServerRequestInterface $request
+   * @param array $config
+   */
+	public function __construct(ServerRequestInterface $request, array $config)
 	{
-		$this->request = ServerRequest::fromGlobals();
+	    $this->request = $request;
 		$this->config  = $config;
 
-		$this->dispatcher = simpleDispatcher([$this, 'getRoute']);
+        Plugin::current()->addBuilder(Priority::CORE, $this->config[Priority::CORE]);
+
+        /** @var RouteCollector $routeCollector */
+        $this->route = new RouteCollector(
+            new Std(), new GroupCountBased()
+        );
 		$container_builder = new ContainerBuilder;
 		$container_builder->addDefinitions($this->config[Priority::APP]);
 		$this->container = $container_builder->build();
 	}
 
+  /**
+   * @param string $route
+   * @param callable $handle
+   */
 	public function get(string $route, callable $handle)
 	{
 		$this->route->get($route, $handle);
 	}
 
-	public function getRoute(RouteCollector $route)
+    /**
+     * @return FastDispatcher
+     */
+	public function getDispatcher(): FastDispatcher
 	{
-		// $this->route = new RouteCollector(new Std(), new GroupCountBased());
-		$this->route = $route;
+        return new FastDispatcher($this->route->getData());
 	}
 
-	public function run()
+  /**
+   * @return mixed|ResponseInterface
+   */
+	public function run() : ResponseInterface
 	{
-		$route =
-			$this->dispatcher->dispatch($this->request->getMethod(), $this->request->getUri()->getPath());
-		dump($route);
+        $request_method = $this->request->getMethod();
+        $path_uri       = $this->request->getUri()->getPath();
+        $route          = $this->getDispatcher()->dispatch($request_method, $path_uri);
 		switch ($route[0]) {
 			case Dispatcher::NOT_FOUND:
-				// ... 404 Not Found
+                $response = new Response();
+                $response->getBody()->write('Page Not Found.');
+                return $response->withStatus(404);
 				break;
 			case Dispatcher::METHOD_NOT_ALLOWED:
-				$allowedMethods = $route[1];
-				// ... 405 Method Not Allowed
+                $response = new Response();
+                $response->getBody()->write('Page Not Allow.');
+                return $response->withStatus(405);
 				break;
 			case Dispatcher::FOUND:
-				$response = new Response();
 				$controller = $route[1];
 				$parameters = $route[2];
-				$parameters = [
-					'request'  => $this->request,
-					'response' => $response
-				];
-				return $this->container->call($controller, $parameters);
+                $parameters[] = [
+                  'request' => $this->request
+                ];
+                $response = $this->container->call($controller, $parameters);
+                if (is_string($response)) {
+                  return new Response(200, [], $response);
+                }
+                elseif ($response instanceof ResponseInterface) {
+                  return $response;
+                }
+                else {
+                  throw new Exception('The response is not a string or an instance of ResponseInterface');
+                }
 				break;
 		}
 	}
