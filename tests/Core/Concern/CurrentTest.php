@@ -27,7 +27,9 @@ class CurrentTest extends TestCase
     public function testReturnSameInstance()
     {
         $current = FakeTest::current();
+        $current2 = FakeTest::current();
         $this->assertInstanceOf(FakeTest::class, $current);
+        $this->assertInstanceOf(get_class($current), $current2);
     }
 
     public function testSingleton()
