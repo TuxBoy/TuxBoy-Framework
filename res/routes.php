@@ -1,3 +1,3 @@
 <?php
 
-$app->get('/', [\App\Controller\HomeController::class, 'index']);
+$app->get('/', [\TuxBoy\Application\Controller\HomeController::class, 'index']);
