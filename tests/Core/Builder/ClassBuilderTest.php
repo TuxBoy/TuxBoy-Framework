@@ -23,11 +23,4 @@ class ClassBuilderTest extends TestCase
 		$this->assertEquals('Article', Class_Builder::shortClassName($class_without_namespace));
 	}
 
-	public function testBuiltClass()
-	{
-		// Todo compléter le test
-		// $class_name = '\\App\\Model\\Article';
-
-	}
-
 }
