@@ -23,6 +23,12 @@ Démarrer le serveur de dev
 $ make server
 ```
 
+Lancer les tests unitaire
+
+```php
+$ phpunit
+```
+
 ## TODO
 
 - [X] Séparer l'ajout des routes dans une classe Router
