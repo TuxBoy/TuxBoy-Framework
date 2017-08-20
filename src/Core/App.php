@@ -34,15 +34,16 @@ class App
 	{
         $container_builder = new ContainerBuilder;
 
-		if (!empty($config)) {
+		if (!empty($config) && !empty($config[Priority::CORE])) {
             Plugin::current()->addBuilder(Priority::CORE, $config[Priority::CORE]);
+        }
+        elseif (!empty($config) && !empty($config[Priority::APP])) {
             $container_builder->addDefinitions($config[Priority::APP]);
         }
         $this->container = $container_builder->build();
 	}
 
     /**
-     * @todo Refactoring à faire, plutôt  séparer dans une classe Router
      *
      * @param ServerRequestInterface $request
      * @return mixed|ResponseInterface
