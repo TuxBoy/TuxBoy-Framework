@@ -11,3 +11,6 @@ matrix:
 
 before_install:
   - composer self-update
+
+script:
+  - vendor/bin/phpunit
