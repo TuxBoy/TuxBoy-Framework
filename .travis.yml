@@ -10,7 +10,7 @@ matrix:
     - php: 7.1
 
 before_install:
-  - composer self-update
+  - composer install -n
 
 script:
   - ./vendor/bin/phpunit
