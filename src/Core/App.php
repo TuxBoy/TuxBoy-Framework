@@ -1,14 +1,11 @@
 <?php
 namespace Core;
 
-use FastRoute\DataGenerator\GroupCountBased;
-use FastRoute\Dispatcher\GroupCountBased as FastDispatcher;
-use FastRoute\RouteParser\Std;
+use Core\Router\Router;
+use Exception;
 use FastRoute\Dispatcher;
 use DI\ContainerBuilder;
-use FastRoute\RouteCollector;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,65 +18,42 @@ class App
 {
 
 	/**
-	 * @var array
-	 */
-	private $config;
-
-	/**
 	 * @var ContainerInterface
 	 */
-	private $container;
+	public $container;
 
   /**
-   * @var RouteCollector
+   * @var Router
    */
-	private $route;
+	public $router;
 
   /**
-   * @param ServerRequestInterface $request
    * @param array $config
    */
-	public function __construct(array $config)
+	public function __construct(array $config = [])
 	{
-		$this->config  = $config;
+        $container_builder = new ContainerBuilder;
 
-        Plugin::current()->addBuilder(Priority::CORE, $this->config[Priority::CORE]);
-
-        /** @var RouteCollector $routeCollector */
-        $this->route = new RouteCollector(
-            new Std(), new GroupCountBased()
-        );
-		$container_builder = new ContainerBuilder;
-		$container_builder->addDefinitions($this->config[Priority::APP]);
-		$this->container = $container_builder->build();
-	}
-
-  /**
-   * @param string $route
-   * @param callable $handle
-   */
-	public function get(string $route, callable $handle)
-	{
-		$this->route->get($route, $handle);
+		if (!empty($config)) {
+            Plugin::current()->addBuilder(Priority::CORE, $config[Priority::CORE]);
+            $container_builder->addDefinitions($config[Priority::APP]);
+        }
+        $this->container = $container_builder->build();
 	}
 
     /**
-     * @return FastDispatcher
+     * @todo Refactoring à faire, plutôt  séparer dans une classe Router
+     *
+     * @param ServerRequestInterface $request
+     * @return mixed|ResponseInterface
+     * @throws Exception
      */
-	public function getDispatcher(): FastDispatcher
-	{
-        return new FastDispatcher($this->route->getData());
-	}
-
-  /**
-   * @param ServerRequestInterface $request
-   * @return mixed|ResponseInterface
-   */
 	public function run(ServerRequestInterface $request) : ResponseInterface
 	{
         $request_method = $request->getMethod();
         $path_uri       = $request->getUri()->getPath();
-        $route          = $this->getDispatcher()->dispatch($request_method, $path_uri);
+        $router         = $this->container->get(Router::class);
+        $route          = $router->getDispatcher()->dispatch($request_method, $path_uri);
 
 		switch ($route[0]) {
 			case Dispatcher::NOT_FOUND:

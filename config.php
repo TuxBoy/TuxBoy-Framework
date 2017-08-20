@@ -4,6 +4,8 @@ use function DI\env;
 use Core\Priority;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use FastRoute\DataGenerator\GroupCountBased;
+use FastRoute\RouteParser\Std;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -23,12 +25,24 @@ return [
                 'driver'   => $container->get('db.driver'),
             ]);
         },
-	    Twig_Environment::class => function () {
+        'app' => \DI\object(\Core\App::class),
+        'twig.extensions' => [
+            \DI\object(\Core\Twig\RouterTwigExtension::class)
+                ->constructor(\DI\get(\Core\Router\Router::class))
+        ],
+        \Core\Router\Router::class => \DI\object()->constructor(new Std(), new GroupCountBased()),
+	    Twig_Environment::class => function (ContainerInterface $container) {
             $loader = new Twig_Loader_Filesystem(__DIR__ . '/res/views');
-            return new Twig_Environment($loader);
+            $twig   = new Twig_Environment($loader);
+            foreach ($container->get('twig.extensions') as $extension) {
+                $twig->addExtension($extension);
+            }
+            return $twig;
         }
     ],
 
-	Priority::CORE => []
+	Priority::CORE => [],
+
+    Priority::PLUGIN => []
 
 ];

@@ -8,8 +8,10 @@ namespace Core;
 abstract class Priority
 {
 
-	const CORE = 'core';
+	const CORE   = 'core';
 
-	const APP = 'app';
+	const APP    = 'app';
+
+    const PLUGIN = 'plugin';
 
 }
