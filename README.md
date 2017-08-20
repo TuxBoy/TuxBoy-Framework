@@ -11,6 +11,8 @@ Pre-Requis :
  
 Copier le fichier `.env.dist` en `.env` and ajouter votre configuration
 
+Installer les dépendances
+
 ```bash
 $ composer install
 ```
