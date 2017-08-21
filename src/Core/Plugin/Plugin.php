@@ -70,6 +70,18 @@ class Plugin
 	}
 
 	/**
+	 * @return array
+	 * @throws Plugin_Exception
+	 */
+	public function getPlugins() : array
+	{
+		if (empty($this->plugins[Priority::PLUGIN])) {
+			throw new Plugin_Exception("Not plugin");
+		}
+		return $this->plugins[Priority::PLUGIN];
+	}
+
+	/**
 	 * @param $key  string
 	 * @return bool
 	 */
