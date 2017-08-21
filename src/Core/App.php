@@ -34,7 +34,8 @@ class App
     public function __construct(array $config = [])
     {
         $container_builder = new ContainerBuilder();
-
+		$default_config    = require __DIR__ . '/config.php';
+		$container_builder->addDefinitions($default_config[Priority::APP]);
         if (!empty($config) && !empty($config[Priority::PLUGIN])) {
             Plugin::current()->addPlugin($config[Priority::PLUGIN]);
         }
