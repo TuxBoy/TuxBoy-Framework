@@ -29,6 +29,9 @@ Lancer les tests unitaire
 $ phpunit
 ```
 
+## Documentation
+à finir : https://tuxboy-framework.readme.io
+
 ## TODO
 
 - [X] Séparer l'ajout des routes dans une classe Router
