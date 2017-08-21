@@ -1,5 +1,6 @@
 <?php
 
+use Core\Tools\Whoops;
 use function DI\env;
 use Core\Priority;
 use Doctrine\DBAL\Connection;
@@ -38,7 +39,8 @@ return [
                 $twig->addExtension($extension);
             }
             return $twig;
-        }
+        },
+		\Core\Handler\HandlerInterface::class => \DI\object(Whoops::class)
     ],
 
 	Priority::CORE => [],
