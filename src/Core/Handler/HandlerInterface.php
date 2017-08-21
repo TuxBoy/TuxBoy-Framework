@@ -1,13 +1,11 @@
 <?php
+
 namespace Core\Handler;
 
 /**
- * Interface HandlerInterface
- * @package Core\Handler
+ * Interface HandlerInterface.
  */
 interface HandlerInterface
 {
-
-	public function handle();
-
+    public function handle();
 }

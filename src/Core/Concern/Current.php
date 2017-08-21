@@ -1,27 +1,26 @@
 <?php
+
 namespace Core\Concern;
 
 /**
- * Trait Current
- * @package Core\Concern
+ * Trait Current.
  */
 trait Current
 {
-
-	/**
-	 * @var static
-	 */
-	private static $current;
+    /**
+     * @var static
+     */
+    private static $current;
 
     /**
      * @return static
      */
-	public static function current()
-	{
-		if (is_null(static::$current)) {
-			static::$current = new static();
-		}
-		return static::$current;
-	}
+    public static function current()
+    {
+        if (null === static::$current) {
+            static::$current = new static();
+        }
 
+        return static::$current;
+    }
 }

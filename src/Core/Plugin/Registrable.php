@@ -7,5 +7,4 @@ namespace Core\Plugin;
  */
 interface Registrable extends PluginInterface
 {
-
 }

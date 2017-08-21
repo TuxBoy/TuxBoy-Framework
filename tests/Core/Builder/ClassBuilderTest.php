@@ -1,7 +1,7 @@
 <?php
 namespace Test\Core\Builder;
 
-use Core\Builder\Class_Builder;
+use Core\Builder\ClassBuilder;
 use PHPUnit\Framework\TestCase;
 
 class ClassBuilderTest extends TestCase
@@ -10,17 +10,17 @@ class ClassBuilderTest extends TestCase
 	public function testGetNameSpace()
 	{
 		$fake_namespace = '\\App\\Model\\Article';
-		$this->assertEquals('\\App\\Model', Class_Builder::getNamespace($fake_namespace));
+		$this->assertEquals('\\App\\Model', ClassBuilder::getNamespace($fake_namespace));
 		$class_without_namespace = 'Article';
-		$this->assertEmpty(Class_Builder::getNamespace($class_without_namespace));
+		$this->assertEmpty(ClassBuilder::getNamespace($class_without_namespace));
 	}
 
 	public function testShortClassName()
 	{
 		$fake_namespace = '\\App\\Model\\Article';
-		$this->assertEquals('Article', Class_Builder::shortClassName($fake_namespace));
+		$this->assertEquals('Article', ClassBuilder::shortClassName($fake_namespace));
 		$class_without_namespace = 'Article';
-		$this->assertEquals('Article', Class_Builder::shortClassName($class_without_namespace));
+		$this->assertEquals('Article', ClassBuilder::shortClassName($class_without_namespace));
 	}
 
 }
