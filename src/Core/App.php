@@ -1,6 +1,8 @@
 <?php
 namespace Core;
 
+use Core\Handler\HandlerInterface;
+use Core\Plugin\Plugin;
 use Core\Router\Router;
 use Exception;
 use FastRoute\Dispatcher;
@@ -34,13 +36,19 @@ class App
 	{
         $container_builder = new ContainerBuilder;
 
+		if (!empty($config) && !empty($config[Priority::PLUGIN])) {
+			Plugin::current()->addPlugin($config[Priority::PLUGIN]);
+		}
+
 		if (!empty($config) && !empty($config[Priority::CORE])) {
-            Plugin::current()->addBuilder(Priority::CORE, $config[Priority::CORE]);
-        }
-        elseif (!empty($config) && !empty($config[Priority::APP])) {
-            $container_builder->addDefinitions($config[Priority::APP]);
-        }
-        $this->container = $container_builder->build();
+			Plugin::current()->addBuilder(Priority::CORE, $config[Priority::CORE]);
+		}
+		elseif (!empty($config) && !empty($config[Priority::APP])) {
+			$container_builder->addDefinitions($config[Priority::APP]);
+		}
+		$this->container = $container_builder->build();
+		// Active le handle pour afficher les erreurs
+		$this->container->get(HandlerInterface::class)->handle();
 	}
 
     /**
@@ -83,6 +91,7 @@ class App
                 }
 				break;
 		}
+		return null;
 	}
 
 }

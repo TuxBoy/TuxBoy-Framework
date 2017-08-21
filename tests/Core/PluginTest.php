@@ -1,8 +1,8 @@
 <?php
 namespace Test\Core;
 
-use Core\Plugin;
-use PHPUnit\Exception;
+use Core\Plugin\Plugin;
+use Core\Plugin\Registrable;
 use PHPUnit\Framework\TestCase;
 
 trait Content {
@@ -17,6 +17,14 @@ class Fake_Article {
 	public $name;
 }
 
+class Fake_Plugin implements Registrable {
+
+}
+
+class Fake_Plugin_Test implements Registrable {
+
+}
+
 /**
  * Class PluginTest
  * @package Test\Core
@@ -24,19 +32,45 @@ class Fake_Article {
 class PluginTest extends TestCase
 {
 
-	public function testAddBuilder()
+	/**
+	 * @var array
+	 */
+	private $core_builder;
+
+	public function setUp()
 	{
-		$core_builder = [
+
+		$this->core_builder = [
 			'core' => [
 				Fake_Article::class => [
 					Content::class
 				]
 			],
-			'app' => []
+			'app' => [],
+			'plugin' => [Fake_Plugin::class, Fake_Plugin_Test::class]
 		];
-		Plugin::current()->addBuilder('core', $core_builder['core']);
+	}
+
+	public function testAddBuilder()
+	{
+		Plugin::current()->addBuilder('core', $this->core_builder['core']);
 		$this->assertEquals(1, count(Plugin::current()->getBuilders('core')));
 		$this->assertTrue(Plugin::current()->hasBuilder('core'));
+	}
+
+	public function testAddPlugin()
+	{
+		$plugin = Plugin::current();
+		$plugin->addPlugin($this->core_builder['plugin']);
+		$this->assertEquals(2, count($plugin->getPlugins()));
+	}
+
+	public function testGetPlugin()
+	{
+		$plugin = Plugin::current();
+		$plugin->addPlugin($this->core_builder['plugin']);
+		$this->assertEquals(Fake_Plugin::class, $plugin->getPlugin(Fake_Plugin::class));
+		$this->assertEquals(Fake_Plugin_Test::class, $plugin->getPlugin(Fake_Plugin_Test::class));
 	}
 
 }

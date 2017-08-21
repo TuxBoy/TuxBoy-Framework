@@ -2,7 +2,7 @@
 namespace Core\Builder;
 
 use Core\Concern\Current;
-use Core\Plugin;
+use Core\Plugin\Plugin;
 use Core\Priority;
 use Core\Reflection_class;
 use ReflectionClass;
