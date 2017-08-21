@@ -65,4 +65,12 @@ class PluginTest extends TestCase
 		$this->assertEquals(2, count($plugin->getPlugins()));
 	}
 
+	public function testGetPlugin()
+	{
+		$plugin = Plugin::current();
+		$plugin->addPlugin($this->core_builder['plugin']);
+		$this->assertEquals(Fake_Plugin::class, $plugin->getPlugin(Fake_Plugin::class));
+		$this->assertEquals(Fake_Plugin_Test::class, $plugin->getPlugin(Fake_Plugin_Test::class));
+	}
+
 }

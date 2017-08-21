@@ -53,7 +53,7 @@ class Plugin
 
 	/**
 	 * @param string $class_name
-	 * @return array
+	 * @return string
 	 * @throws Plugin_Exception
 	 */
 	public function getPlugin(string $class_name)
@@ -61,12 +61,10 @@ class Plugin
 		if (empty($this->plugins[Priority::PLUGIN])) {
 			throw new Plugin_Exception("Not plugin");
 		}
-		foreach ($this->plugins[Priority::PLUGIN] as $plugin) {
-			if ($class_name === $plugin) {
-				return $plugin;
-			}
-		}
-		return null;
+		$plugin = array_filter($this->plugins[Priority::PLUGIN], function ($plugin) use ($class_name) {
+			return $plugin === $class_name;
+		});
+		return current($plugin);
 	}
 
 	/**
