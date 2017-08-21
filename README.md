@@ -34,6 +34,6 @@ $ phpunit
 - [X] Séparer l'ajout des routes dans une classe Router
 - [ ] Ajouter un système de middleware (ou un système de plugin).
 - [ ] Intégrer GoPhp framework pour utiliser l'AOP.
-- [ ] Ajouter Whoops pour afficher mieux les erreurs.
+- [X] Ajouter Whoops pour afficher mieux les erreurs.
 - [ ] Intégrer Phinx pour gérer les migrations.
 - [ ] Continuer l'intégration de Doctrine/Dbal 
