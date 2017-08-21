@@ -1,4 +1,5 @@
 <?php
+
 namespace Core\Twig;
 
 use Core\Router\Router;
@@ -18,14 +19,13 @@ class RouterTwigExtension extends \Twig_Extension
 
     public function getFunctions()
     {
-       return [
+        return [
            new Twig_SimpleFunction('path_for', [$this, 'pathFor'])
-       ];
+        ];
     }
 
-    public function pathFor(string $name) : string
+    public function pathFor(string $name): string
     {
         return $this->router->getUrl($name);
     }
-
 }

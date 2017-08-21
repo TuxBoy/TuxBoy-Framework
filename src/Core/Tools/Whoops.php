@@ -1,4 +1,5 @@
 <?php
+
 namespace Core\Tools;
 
 use Core\Handler\HandlerInterface;
@@ -7,17 +8,14 @@ use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
 /**
- * Class WhoopsPlugin
- * @package Core\Tools
+ * Class WhoopsPlugin.
  */
 class Whoops implements Registrable, HandlerInterface
 {
-
-	public function handle()
-	{
-		$whoops = new Run;
-		$whoops->pushHandler(new PrettyPageHandler);
-		$whoops->register();
-	}
-
+    public function handle()
+    {
+        $whoops = new Run();
+        $whoops->pushHandler(new PrettyPageHandler());
+        $whoops->register();
+    }
 }
