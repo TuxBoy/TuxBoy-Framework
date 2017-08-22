@@ -79,7 +79,7 @@ class Plugin
      *
      * @return array
      */
-    public function getPlugins(): array
+    public function getPlugins()
     {
         return (isset($this->plugins[Priority::PLUGIN]) && !empty($this->plugins[Priority::PLUGIN]))
             ? $this->plugins[Priority::PLUGIN]
