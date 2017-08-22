@@ -3,7 +3,6 @@
 namespace Core\Twig;
 
 use Core\Router\Router;
-use Twig_SimpleFunction;
 
 class RouterTwigExtension extends \Twig_Extension
 {
@@ -20,11 +19,11 @@ class RouterTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-           new Twig_SimpleFunction('path_for', [$this, 'pathFor'])
+           new \Twig_SimpleFunction('path', [$this, 'pathFor'])
         ];
     }
 
-    public function pathFor(string $name): string
+    public function pathFor(string $name)
     {
         return $this->router->getUrl($name);
     }
