@@ -15,6 +15,8 @@ return [
 
 	Priority::CORE => [],
 
-    Priority::PLUGIN => []
+    Priority::PLUGIN => [
+		\Core\Aspect\DemoAspect::class
+	]
 
 ];

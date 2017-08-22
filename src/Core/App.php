@@ -37,12 +37,18 @@ class App
         $default_config = require __DIR__ . '/config.php';
         $container_builder->addDefinitions($default_config[Priority::APP]);
 
-        if (!empty($default_config) && !empty($default_config[Priority::PLUGIN])) {
+        if (
+        	(!empty($default_config) && !empty($default_config[Priority::PLUGIN])) ||
+        	(!empty($config) && !empty($config[Priority::PLUGIN]))
+		) {
             $config = array_merge($default_config[Priority::PLUGIN], $config[Priority::PLUGIN]);
             Plugin::current()->addPlugin($config);
         }
 
-        if (!empty($default_config) && !empty($default_config[Priority::CORE])) {
+        if (
+        	(!empty($default_config) && !empty($default_config[Priority::CORE])) ||
+        	(!empty($config) && !empty($config[Priority::CORE]))
+		) {
             $config = array_merge($default_config[Priority::CORE], $config[Priority::CORE]);
             Plugin::current()->addBuilder(Priority::CORE, $config[Priority::CORE]);
         } elseif (!empty($config) && !empty($config[Priority::APP])) {
