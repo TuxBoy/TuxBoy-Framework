@@ -4,8 +4,9 @@ namespace Core\Plugin;
 
 use Core\Builder\Builder;
 use Core\Concern\Current;
-use Core\Exception\Plugin_Exception;
+use Core\Exception\PluginException;
 use Core\Priority;
+use Go\Aop\Aspect;
 
 class Plugin
 {
@@ -25,7 +26,7 @@ class Plugin
      * @param string $key
      * @param        $builders array
      */
-    public function addBuilder(string $key, array $builders): void
+    public function addBuilder(string $key, array $builders)
     {
         $this->builders[$key] = $builders;
     }
@@ -33,7 +34,7 @@ class Plugin
     /**
      * @param array $plugin
      */
-    public function addPlugin(array $plugin): void
+    public function addPlugin(array $plugin)
     {
         $this->plugins[Priority::PLUGIN] = $plugin;
     }
@@ -57,34 +58,52 @@ class Plugin
     /**
      * @param string $class_name
      *
-     * @throws Plugin_Exception
+     * @throws PluginException
      *
      * @return string
      */
     public function getPlugin(string $class_name)
     {
-        if (empty($this->plugins[Priority::PLUGIN])) {
-            throw new Plugin_Exception('Not plugin');
-        }
-        $plugin = array_filter($this->plugins[Priority::PLUGIN], function ($plugin) use ($class_name) {
-            return $plugin === $class_name;
-        });
-
-        return current($plugin);
+        return current(array_filter(
+            $this->plugins[Priority::PLUGIN],
+            function ($plugin) use ($class_name) {
+                return $plugin === $class_name;
+            }
+        ));
     }
 
     /**
-     * @throws Plugin_Exception
+     * Récupère tous les plugins, s'il n'y a pas de plugin, retourne un tableau vide.
+     *
+     * @throws PluginException
      *
      * @return array
      */
     public function getPlugins(): array
     {
-        if (empty($this->plugins[Priority::PLUGIN])) {
-            throw new Plugin_Exception('Not plugin');
+        return (isset($this->plugins[Priority::PLUGIN]) && !empty($this->plugins[Priority::PLUGIN]))
+            ? $this->plugins[Priority::PLUGIN]
+            : [];
+    }
+
+    /**
+     * Récupère les plugin qui implement Aspect définis dans Priority::PLUGIN et les instancies.
+	 *
+	 * @example Dans le fichier config.php => Priority::PLUGIN => [\App\TestAspect::class]
+	 *
+     * @return array Un tableau d'object des plugin pour gérer l'AOP
+     */
+    public function getAspectPlugins()
+    {
+        $aspect_plugins = [];
+        foreach ($this->getPlugins() as $plugin) {
+            $object = Builder::create($plugin);
+            if ($object instanceof Aspect) {
+                $aspect_plugins[] = $object;
+            }
         }
 
-        return $this->plugins[Priority::PLUGIN];
+        return $aspect_plugins;
     }
 
     /**
@@ -92,7 +111,7 @@ class Plugin
      *
      * @return bool
      */
-    public function hasBuilder(string $key): bool
+    public function hasBuilder(string $key)
     {
         return array_key_exists($key, $this->builders);
     }

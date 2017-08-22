@@ -34,13 +34,16 @@ class App
     public function __construct(array $config = [])
     {
         $container_builder = new ContainerBuilder();
-		$default_config    = require __DIR__ . '/config.php';
-		$container_builder->addDefinitions($default_config[Priority::APP]);
-        if (!empty($config) && !empty($config[Priority::PLUGIN])) {
-            Plugin::current()->addPlugin($config[Priority::PLUGIN]);
+        $default_config = require __DIR__ . '/config.php';
+        $container_builder->addDefinitions($default_config[Priority::APP]);
+
+        if (!empty($default_config) && !empty($default_config[Priority::PLUGIN])) {
+            $config = array_merge($default_config[Priority::PLUGIN], $config[Priority::PLUGIN]);
+            Plugin::current()->addPlugin($config);
         }
 
-        if (!empty($config) && !empty($config[Priority::CORE])) {
+        if (!empty($default_config) && !empty($default_config[Priority::CORE])) {
+            $config = array_merge($default_config[Priority::CORE], $config[Priority::CORE]);
             Plugin::current()->addBuilder(Priority::CORE, $config[Priority::CORE]);
         } elseif (!empty($config) && !empty($config[Priority::APP])) {
             $container_builder->addDefinitions($config[Priority::APP]);
@@ -51,6 +54,8 @@ class App
     }
 
     /**
+     * @todo Cette méthode a besoin d'un bon réfactoring
+     *
      * @param ServerRequestInterface $request
      *
      * @throws Exception
@@ -93,5 +98,13 @@ class App
         }
 
         return null;
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
     }
 }

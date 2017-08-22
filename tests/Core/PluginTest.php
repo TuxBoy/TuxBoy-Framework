@@ -3,6 +3,7 @@ namespace Test\Core;
 
 use Core\Plugin\Plugin;
 use Core\Plugin\Registrable;
+use Go\Aop\Aspect;
 use PHPUnit\Framework\TestCase;
 
 trait Content {
@@ -17,7 +18,7 @@ class Fake_Article {
 	public $name;
 }
 
-class Fake_Plugin implements Registrable {
+class Fake_Plugin implements Registrable, Aspect {
 
 }
 
@@ -71,6 +72,13 @@ class PluginTest extends TestCase
 		$plugin->addPlugin($this->core_builder['plugin']);
 		$this->assertEquals(Fake_Plugin::class, $plugin->getPlugin(Fake_Plugin::class));
 		$this->assertEquals(Fake_Plugin_Test::class, $plugin->getPlugin(Fake_Plugin_Test::class));
+	}
+
+	public function testGetAspectPlugin()
+	{
+		$plugin = Plugin::current();
+		$plugin->addPlugin($this->core_builder['plugin']);
+		$this->assertEquals(1, count($plugin->getAspectPlugins()));
 	}
 
 }

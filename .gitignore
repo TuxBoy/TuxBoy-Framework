@@ -5,3 +5,4 @@ vendor/
 public/assets
 .env
 .php_cs.cache
+cache

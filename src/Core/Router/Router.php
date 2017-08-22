@@ -20,7 +20,7 @@ class Router extends RouteCollector
      *
      * @return Router
      */
-    public function add($method, $route, $handle, ?string $name = null): self
+    public function add($method, $route, $handle, ?string $name = null)
     {
         $this->routes[$name] = $route;
         $this->addRoute($method, $route, $handle);
@@ -49,7 +49,7 @@ class Router extends RouteCollector
      *
      * @return Router
      */
-    public function post($route, $handler, ?string $name = null): Router
+    public function post($route, $handler, ?string $name = null)
     {
         $this->add('POST', $route, $handler, $name);
 
@@ -63,7 +63,7 @@ class Router extends RouteCollector
      *
      * @return string
      */
-    public function getUrl(string $name): string
+    public function getUrl(string $name)
     {
         if (!array_key_exists($name, $this->routes)) {
             throw new RouterException('Aucune route ne correspond au nom donnée');
@@ -75,7 +75,7 @@ class Router extends RouteCollector
     /**
      * @return FastDispatcher
      */
-    public function getDispatcher(): FastDispatcher
+    public function getDispatcher()
     {
         return new FastDispatcher($this->getData());
     }

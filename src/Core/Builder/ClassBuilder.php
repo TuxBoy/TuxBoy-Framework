@@ -13,7 +13,7 @@ class ClassBuilder
      *
      * @return string
      */
-    public static function build(string $class_name, array $traits): string
+    public static function build(string $class_name, array $traits)
     {
         $namespace = self::getNamespace($class_name) . '\\Built';
         $short_class = self::shortClassName($class_name);
@@ -34,7 +34,7 @@ class ClassBuilder
      *
      * @return string
      */
-    public static function getNamespace(string $class_name): string
+    public static function getNamespace(string $class_name)
     {
         // Calcul le nombre de caractère avant le dernier \
         if ($i = mb_strrpos($class_name, '\\')) {
@@ -51,7 +51,7 @@ class ClassBuilder
      *
      * @return string
      */
-    public static function shortClassName(string $class_name): string
+    public static function shortClassName(string $class_name)
     {
         $i = mb_strrpos($class_name, '\\');
         // On a un antislash du coup on prend ce qu'il y a après

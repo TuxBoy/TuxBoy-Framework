@@ -59,7 +59,7 @@ class Builder
      *
      * @return string
      */
-    private function replacementClassName(string $class_name): string
+    private function replacementClassName(string $class_name)
     {
         $dependencies = Plugin::current()->getBuilders(Priority::CORE);
         if (!isset($dependencies[$class_name])) {
