@@ -7,5 +7,5 @@ namespace Core\Handler;
  */
 interface HandlerInterface
 {
-    public function handle();
+    public function handle(): void;
 }

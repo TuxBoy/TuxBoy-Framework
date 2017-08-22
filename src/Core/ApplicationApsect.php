@@ -7,7 +7,7 @@ use Go\Core\AspectContainer;
 use Go\Core\AspectKernel;
 
 /**
- * ApplicationApsect
+ * ApplicationApsect.
  *
  * Register all aspect plugins defined in the config file.
  */

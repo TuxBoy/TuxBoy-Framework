@@ -10,7 +10,6 @@ use Psr\Container\ContainerInterface;
 use function DI\env;
 
 return [
-
     Priority::APP => [
         'dev'       => true,
 

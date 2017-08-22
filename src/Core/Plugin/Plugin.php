@@ -8,6 +8,9 @@ use Core\Exception\PluginException;
 use Core\Priority;
 use Go\Aop\Aspect;
 
+/**
+ * Class Plugin.
+ */
 class Plugin
 {
     use Current;
@@ -26,7 +29,7 @@ class Plugin
      * @param string $key
      * @param        $builders array
      */
-    public function addBuilder(string $key, array $builders)
+    public function addBuilder(string $key, array $builders): void
     {
         $this->builders[$key] = $builders;
     }
@@ -34,7 +37,7 @@ class Plugin
     /**
      * @param array $plugin
      */
-    public function addPlugin(array $plugin)
+    public function addPlugin(array $plugin): void
     {
         $this->plugins[Priority::PLUGIN] = $plugin;
     }
@@ -46,7 +49,7 @@ class Plugin
      *
      * @return array|null
      */
-    public function getBuilders(string $key)
+    public function getBuilders(string $key): ?array
     {
         if (!$this->hasBuilder($key)) {
             return null;
@@ -62,7 +65,7 @@ class Plugin
      *
      * @return string
      */
-    public function getPlugin(string $class_name)
+    public function getPlugin(string $class_name): string
     {
         return current(array_filter(
             $this->plugins[Priority::PLUGIN],
@@ -79,7 +82,7 @@ class Plugin
      *
      * @return array
      */
-    public function getPlugins()
+    public function getPlugins(): array
     {
         return (isset($this->plugins[Priority::PLUGIN]) && !empty($this->plugins[Priority::PLUGIN]))
             ? $this->plugins[Priority::PLUGIN]
@@ -88,12 +91,12 @@ class Plugin
 
     /**
      * Récupère les plugin qui implement Aspect définis dans Priority::PLUGIN et les instancies.
-	 *
-	 * @example Dans le fichier config.php => Priority::PLUGIN => [\App\TestAspect::class]
-	 *
+     *
+     * @example Dans le fichier config.php => Priority::PLUGIN => [\App\TestAspect::class]
+     *
      * @return array Un tableau d'object des plugin pour gérer l'AOP
      */
-    public function getAspectPlugins()
+    public function getAspectPlugins(): array
     {
         $aspect_plugins = [];
         foreach ($this->getPlugins() as $plugin) {
@@ -111,7 +114,7 @@ class Plugin
      *
      * @return bool
      */
-    public function hasBuilder(string $key)
+    public function hasBuilder(string $key): bool
     {
         return array_key_exists($key, $this->builders);
     }
@@ -121,7 +124,7 @@ class Plugin
      *
      * @return null|PluginInterface
      */
-    public function get($class_name)
+    public function get($class_name): ?PluginInterface
     {
         $plugin = null;
         $plugin = self::current()->getPlugin(get_class($class_name));

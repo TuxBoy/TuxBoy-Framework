@@ -16,14 +16,19 @@ class RouterTwigExtension extends \Twig_Extension
         $this->router = $router;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
            new \Twig_SimpleFunction('path', [$this, 'pathFor'])
         ];
     }
 
-    public function pathFor(string $name)
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    public function pathFor(string $name): string
     {
         return $this->router->getUrl($name);
     }

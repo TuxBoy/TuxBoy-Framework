@@ -12,7 +12,7 @@ use Whoops\Run;
  */
 class Whoops implements Registrable, HandlerInterface
 {
-    public function handle()
+    public function handle(): void
     {
         $whoops = new Run();
         $whoops->pushHandler(new PrettyPageHandler());
