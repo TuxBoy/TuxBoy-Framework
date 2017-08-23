@@ -29,33 +29,47 @@ class App
     public $router;
 
     /**
-     * @param array $config
+     * @param array $custom_config
      */
-    public function __construct(array $config = [])
+    public function __construct(array $custom_config = [])
     {
         $container_builder = new ContainerBuilder();
         $default_config = require __DIR__ . '/config.php';
         $container_builder->addDefinitions($default_config[Priority::APP]);
+        $this->addPluginConfig($custom_config[Priority::PLUGIN], $default_config[Priority::PLUGIN]);
+        $this->addCoreConfig($custom_config[Priority::CORE], $default_config[Priority::CORE]);
 
-        if ((!empty($default_config) && !empty($default_config[Priority::PLUGIN])) ||
-            (!empty($config) && !empty($config[Priority::PLUGIN]))
-        ) {
-            $config = array_merge($default_config[Priority::PLUGIN], $config[Priority::PLUGIN]);
-            Plugin::current()->addPlugin($config);
-        }
-
-        if ((!empty($default_config) && !empty($default_config[Priority::CORE])) ||
-            (!empty($config) && !empty($config[Priority::CORE]))
-        ) {
-            $config = array_merge($default_config[Priority::CORE], $config[Priority::CORE]);
-            Plugin::current()->addBuilder(Priority::CORE, $config[Priority::CORE]);
-        } elseif (!empty($config) && !empty($config[Priority::APP])) {
-            $container_builder->addDefinitions($config[Priority::APP]);
+        if (!empty($custom_config) && !empty($custom_config[Priority::APP])) {
+            $container_builder->addDefinitions($custom_config[Priority::APP]);
         }
         $this->container = $container_builder->build();
         // Active le handle pour afficher les erreurs
         $this->container->get(HandlerInterface::class)->handle();
     }
+
+	/**
+	 * @param array $custom_config
+	 * @param array $default_config
+	 */
+    public function addPluginConfig(array $custom_config = [], array $default_config = []): void
+	{
+		if (!empty($custom_config)) {
+			$custom_config = array_merge($default_config, $custom_config);
+			Plugin::current()->addPlugin($custom_config);
+		} else {
+			Plugin::current()->addPlugin($default_config);
+		}
+	}
+
+	public function addCoreConfig(array $config, array $default_config): void
+	{
+		if (!empty($config)) {
+			$config = array_merge($config, $default_config);
+			Plugin::current()->addBuilder(Priority::CORE, $config);
+		} else {
+			Plugin::current()->addBuilder(Priority::CORE, $default_config);
+		}
+	}
 
     /**
      * @todo Cette méthode a besoin d'un bon réfactoring
@@ -63,7 +77,7 @@ class App
      * @param ServerRequestInterface $request
      *
      * @throws Exception
-     *
+	 *
      * @return mixed|ResponseInterface
      */
     public function run(ServerRequestInterface $request): ResponseInterface

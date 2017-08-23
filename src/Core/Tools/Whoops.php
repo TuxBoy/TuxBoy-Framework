@@ -10,7 +10,7 @@ use Whoops\Run;
 /**
  * Class WhoopsPlugin.
  */
-class Whoops implements Registrable, HandlerInterface
+class Whoops implements HandlerInterface
 {
     public function handle(): void
     {

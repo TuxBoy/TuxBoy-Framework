@@ -1,8 +1,8 @@
 <?php
 
+use Core\Database\Database;
 use Core\Priority;
 use Core\Tools\Whoops;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteParser\Std;
@@ -19,13 +19,14 @@ return [
         'db.pass'         => env('DB_PASS', 'root'),
         'db.host'         => env('DB_HOST', 'localhost'),
         'db.driver'       => env('DB_DRVER', 'pdo_mysql'),
-        Connection::class => function (ContainerInterface $container) {
+        Database::class => function (ContainerInterface $container) {
             return DriverManager::getConnection([
-                'dbname'   => $container->get('db.name'),
-                'user'     => $container->get('db.user'),
-                'password' => $container->get('db.pass'),
-                'host'     => $container->get('db.host'),
-                'driver'   => $container->get('db.driver'),
+                'dbname'       => $container->get('db.name'),
+                'user'         => $container->get('db.user'),
+                'password'     => $container->get('db.pass'),
+                'host'         => $container->get('db.host'),
+                'driver'       => $container->get('db.driver'),
+				'wrapperClass' => Database::class
             ]);
         },
         'app'             => \DI\object(\Core\App::class),
@@ -44,7 +45,7 @@ return [
 
             return $twig;
         },
-        \Core\Handler\HandlerInterface::class => \DI\object(Whoops::class)
+        \Core\Handler\HandlerInterface::class => \DI\object(Whoops::class),
     ],
 
     Priority::CORE => [],

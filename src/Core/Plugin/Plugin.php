@@ -34,13 +34,20 @@ class Plugin
         $this->builders[$key] = $builders;
     }
 
-    /**
-     * @param array $plugin
-     */
-    public function addPlugin(array $plugin): void
+	/**
+	 * @param array $plugins
+	 */
+    public function addPlugin(array $plugins): void
     {
-        $this->plugins[Priority::PLUGIN] = $plugin;
-    }
+		foreach ($plugins as $key => $plugin) {
+			if (is_array($plugin)) {
+				$this->plugins[Priority::PLUGIN][$key] = $plugin;
+			}
+			else {
+				$this->plugins[Priority::PLUGIN][$plugin] = [];
+			}
+		}
+	}
 
     /**
      * @param string $key
@@ -99,10 +106,15 @@ class Plugin
     public function getAspectPlugins(): array
     {
         $aspect_plugins = [];
-        foreach ($this->getPlugins() as $plugin) {
-            $object = Builder::create($plugin);
-            if ($object instanceof Aspect) {
-                $aspect_plugins[] = $object;
+        foreach ($this->getPlugins() as $plugin_name => $configuration) {
+        	if (!empty($configuration)) {
+        		$object = Builder::create($plugin_name, [$configuration]);
+			}
+			else {
+				$object = Builder::create($plugin_name);
+			}
+			if ($object instanceof Aspect) {
+				$aspect_plugins[] = $object;
             }
         }
 
@@ -127,7 +139,8 @@ class Plugin
     public function get($class_name): ?PluginInterface
     {
         $plugin = null;
-        $plugin = self::current()->getPlugin(get_class($class_name));
+        $class_name = is_string($class_name) ? $class_name : get_class($class_name);
+		$plugin = self::current()->getPlugin($class_name);
         if ($plugin) {
             $plugin = Builder::create($plugin);
         }

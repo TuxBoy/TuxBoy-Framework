@@ -13,52 +13,57 @@ class ClassBuilder
      *
      * @return string
      */
-    public static function build(string $class_name, array $traits)
+    public static function build(string $class_name, array $traits): string
     {
-        $namespace = self::getNamespace($class_name) . '\\Built';
-        $short_class = self::shortClassName($class_name);
-        $traits_names = !empty($traits) ? implode("; \n \t use \\", $traits) : '';
-        $built_class = $namespace . '\\' . $short_class;
-        $source = 'namespace ' . $namespace . "; \n class " . $short_class . " extends \\$class_name { \n"
-            . ($traits_names ? "\t use \\" . $traits_names . ';' : '')
-             . "\n}";
-        eval($source);
+    	static $built_class = null;
+    	if (!isset($built_class)) {
+			$namespace = self::getBuiltNameSpace($class_name);
+			$short_class = Namespaces::shortClassName($class_name);
+			$traits_names = !empty($traits) ? implode("; \n \t use \\", $traits) : '';
+			$built_class = $namespace . '\\' . $short_class;
+			$source = 'namespace ' . $namespace . "; \n class " . $short_class . " extends \\$class_name { \n"
+				. ($traits_names ? "\t use \\" . $traits_names . ';' : '')
+				. "\n}";
+			// On peut sauvegarder en cache
+			eval($source);
+		}
 
         return $built_class;
     }
 
-    /**
-     * Récupère le namespace sans le nom de la classe.
-     *
-     * @param string $class_name
-     *
-     * @return string
-     */
-    public static function getNamespace(string $class_name)
-    {
-        // Calcul le nombre de caractère avant le dernier \
-        if ($i = mb_strrpos($class_name, '\\')) {
-            return mb_substr($class_name, 0, $i);
-        }
+    //--------------------------------------------------------------------------------------- isBuilt
+	/**
+	 * Returns true if class name is a built class name
+	 *
+	 * A built class has a namespace beginning with 'Vendor\Application\Built\'
+	 *
+	 * @param $class_name string
+	 * @return boolean
+	 */
+	public static function isBuilt($class_name)
+	{
 
-        return '';
-    }
+		$cache_file = dirname(dirname(dirname(__DIR__))) . '/cache/builder/dependencies';
+		$built_class = file_get_contents($cache_file);
+		$namespace = self::getBuiltNameSpace($class_name);
+		return ($namespace = self::getBuiltNameSpace($built_class))
+			? (substr($class_name, 0, strlen($namespace)) === $namespace)
+			: false;
+	}
 
-    /**
-     * Récupère le nom de la classe sans le namespace.
-     *
-     * @param string $class_name
-     *
-     * @return string
-     */
-    public static function shortClassName(string $class_name)
-    {
-        $i = mb_strrpos($class_name, '\\');
-        // On a un antislash du coup on prend ce qu'il y a après
-        if ($i !== false) {
-            $class_name = mb_substr($class_name, $i + 1);
-        }
+	/**
+	 * Returns the prefix namespace for built classes
+	 *
+	 * @return string|null
+	 */
+	public static function getBuiltNameSpace($class_name)
+	{
+		static $namespace = null;
+		if (!isset($namespace)) {
+			$namespace = Namespaces::getNamespace($class_name) . '\\Built\\';
+		}
+		return $namespace;
+	}
 
-        return $class_name;
-    }
+
 }

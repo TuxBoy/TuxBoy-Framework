@@ -73,7 +73,9 @@ class Builder
                 $traits[] = $object->getName();
             }
         }
-        $source = ClassBuilder::build($class_name, $traits);
+        $source = !ClassBuilder::isBuilt($class_name)
+			? ClassBuilder::build($class_name, $traits)
+			: $class_name;
 
         return $source;
     }
