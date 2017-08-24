@@ -18,12 +18,17 @@ class Fake_Article {
 	public $name;
 }
 
-class Fake_Plugin implements Registrable, Aspect {
+class Fake_Plugin implements Aspect {
 
 }
 
 class Fake_Plugin_Test implements Registrable {
 
+	/**
+	 * Registrable constructor.
+	 * @param array $configuration
+	 */
+	public function __construct(array $configuration = []) {  }
 }
 
 /**

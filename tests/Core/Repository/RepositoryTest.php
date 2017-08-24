@@ -1,6 +1,7 @@
 <?php
 namespace Test\Core\Repository;
 
+use Core\Database\Database;
 use Core\Database\Repository;
 use Doctrine\DBAL\Connection;
 use Mockable;
@@ -26,7 +27,7 @@ class RepositoryTest extends TestCase
 
 	public function setUp()
 	{
-		$this->database = $this->getMockBuilder(Connection::class)
+		$this->database = $this->getMockBuilder(Database::class)
 			->disableOriginalConstructor()
 			->setMethods(['fetch', 'fetchAll'])
 			->getMock();
@@ -35,7 +36,7 @@ class RepositoryTest extends TestCase
 
 	public function testgetClassName()
 	{
-		$this->assertEquals(FakeRepository::class, $this->repository->getClassName());
+		$this->assertEquals('FakeRepository', $this->repository->getClassName());
 	}
 
 }
