@@ -50,5 +50,7 @@ return [
 
     Priority::CORE => [],
 
-    Priority::PLUGIN => []
+    Priority::PLUGIN => [
+		\Core\Aspect\MaintainerAspect::class
+	]
 ];

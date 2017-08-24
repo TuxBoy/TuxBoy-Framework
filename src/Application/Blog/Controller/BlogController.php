@@ -2,6 +2,8 @@
 
 namespace TuxBoy\Application\Blog\Controller;
 
+use TuxBoy\Application\Blog\Entity\Article;
+use TuxBoy\Application\Blog\Entity\Category;
 use TuxBoy\Application\Blog\Repository\ArticleRepository;
 
 /**
@@ -10,6 +12,8 @@ use TuxBoy\Application\Blog\Repository\ArticleRepository;
  */
 class BlogController
 {
+
+	public $entities = [Article::class, Category::class];
 
 	public function index(\Twig_Environment $twig, ArticleRepository $articleRepository)
 	{

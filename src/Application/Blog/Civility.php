@@ -9,6 +9,7 @@ trait Civility
 {
 
 	/**
+	 * @length 60
 	 * @var string
 	 */
 	public $code;

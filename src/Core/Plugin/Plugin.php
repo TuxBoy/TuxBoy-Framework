@@ -74,8 +74,9 @@ class Plugin
      */
     public function getPlugin(string $class_name): string
     {
+    	$plugins = array_keys($this->plugins[Priority::PLUGIN]);
         return current(array_filter(
-            $this->plugins[Priority::PLUGIN],
+            $plugins,
             function ($plugin) use ($class_name) {
                 return $plugin === $class_name;
             }

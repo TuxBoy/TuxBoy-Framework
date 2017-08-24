@@ -9,5 +9,4 @@ class ArticleRepository extends Repository
 {
 
 	protected static $ENTITY = Article::class;
-
 }

@@ -2,8 +2,8 @@
 namespace Core\Database;
 
 use Core\Builder\Builder;
-use Core\Plugin\Registrable;
-use Go\ParserReflection\ReflectionClass;
+use Core\ReflectionAnnotation;
+use Doctrine\DBAL\Schema\Schema;
 
 class Maintainer
 {
@@ -20,7 +20,7 @@ class Maintainer
 
 	/**
 	 * Registrable constructor.
-	 * @param Database $database
+	 * @param Database         $database
 	 */
 	public function __construct(Database $database)
 	{
@@ -28,15 +28,43 @@ class Maintainer
 		$this->schemaManager = $this->database->getSchemaManager();
 	}
 
+	/**
+	 * Met à jour la structure de la base de données
+	 *
+	 * @TODO Gros réfactoring à faire
+	 *
+	 * @param string $table
+	 * @param string $entity
+	 */
 	public function updateTable(string $table, string $entity)
 	{
-		$columns = $this->schemaManager->listTableColumns($table);
-		// Il faut analser la classe grace au builder afin d'avoir toutes propriétés et voir les quelles qu'il manque en base
+		$currentSchema = $this->schemaManager->createSchema();
 		$entity = Builder::create($entity);
-		foreach (get_object_vars($entity) as $property) {
-			if (!in_array($property, $columns)) {
-				// On peut rajouter la colonne
-			}
+		$reflection = new \ReflectionClass($entity);
+		// S'il n'y a pas de colonne, la table est nouvelle, on la créé.
+		$newSchema = new Schema();
+		$new_table = $newSchema->createTable($table);
+		if (!$new_table->hasColumn('id')) {
+			$new_table->addColumn('id', 'string');
+			$new_table->setPrimaryKey(['id']);
 		}
+		foreach (get_object_vars($entity) as $field => $value) {
+			// On peut rajouter la colonne
+			$reflectionAnnotation = new ReflectionAnnotation($reflection->getProperty($field)->getDocComment());
+			$type_name = $reflectionAnnotation->getAnnotation('var')->getValue();
+			if (($type_name === '\DateTime') || ($type_name === 'DateTime')) {
+				$type_name = 'datetime';
+			}
+			if ($reflectionAnnotation->hasAnnotation('length')) {
+				$options['length'] = $reflectionAnnotation->getAnnotation('length')->getValue();
+			}
+			$new_table->addColumn($field, $type_name, $options);
+		}
+		$migrationQueries = $currentSchema->getMigrateToSql($newSchema, $this->database->getDatabasePlatform());
+		$this->database->transactional(function () use ($migrationQueries) {
+			foreach ($migrationQueries as $query) {
+				$this->database->exec($query);
+			}
+		});
 	}
 }

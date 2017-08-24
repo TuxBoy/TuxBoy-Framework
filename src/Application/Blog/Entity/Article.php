@@ -2,6 +2,11 @@
 
 namespace TuxBoy\Application\Blog\Entity;
 
+/**
+ * Class Article
+ *
+ * @set posts
+ */
 class Article
 {
 
@@ -11,9 +16,11 @@ class Article
     public $name;
 
 	/**
+	 * @length 60
 	 * @var string
 	 */
     public $slug;
+
 
     /**
      * @return mixed
