@@ -31,4 +31,10 @@ class BlogController extends Controller
 		return $this->twig->render('blog/create.twig');
 	}
 
+	public function show(string $slug, ArticleRepository $articleRepository)
+	{
+		$article = $articleRepository->findOneBy(['slug' => $slug]);
+		return $this->twig->render('blog/show.twig', compact('article'));
+	}
+
 }

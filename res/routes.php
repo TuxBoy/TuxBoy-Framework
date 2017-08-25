@@ -9,4 +9,5 @@ $router = $app->container->get(Router::class);
 $router->get('/', [HomeController::class, 'index'], 'root');
 $router->get('/blog', [BlogController::class, 'index'], 'blog.index');
 $router->get('/blog/new', [BlogController::class, 'create'], 'blog.new');
+$router->get('/blog/{slug}', [BlogController::class, 'show'], 'blog.show');
 $router->post('/blog/new', [BlogController::class, 'create']);
