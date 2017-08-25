@@ -8,7 +8,6 @@ use TuxBoy\Application\Blog\Repository\ArticleRepository;
 
 /**
  * BlogController.
- * @set("articles")
  */
 class BlogController
 {

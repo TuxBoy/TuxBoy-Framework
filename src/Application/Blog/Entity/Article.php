@@ -21,6 +21,11 @@ class Article
 	 */
     public $slug;
 
+	/**
+	 * @var text
+	 */
+    public $content;
+
 
     /**
      * @return mixed

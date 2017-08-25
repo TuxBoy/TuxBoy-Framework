@@ -3,9 +3,9 @@
 namespace Core\Database;
 
 use Core\Builder\Namespaces;
+use Core\ReflectionAnnotation;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\VarDumper\Cloner\Data;
 
 class Repository implements ObjectRepository
 {
@@ -72,7 +72,7 @@ class Repository implements ObjectRepository
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-    	$where = implode(', ', $criteria);
+    	// $where = implode(', ', $criteria);
         // $this->connection->fetchAll("SELECT * FROM {$this->getTableName()} WHERE ")
     }
 
@@ -109,8 +109,8 @@ class Repository implements ObjectRepository
 		if (!is_null(static::$TABLE)) {
 			return static::$TABLE;
 		}
-		$table_name = strtolower(str_replace('Repository', '', $this->getClassName())) . 's';
-		return $table_name;
+		$docClass = (new \ReflectionClass($this->getEntity()))->getDocComment();
+		return (new ReflectionAnnotation($docClass))->getAnnotation('set')->getValue();
 	}
 
 	/**

@@ -98,7 +98,7 @@ class ReflectionAnnotation
 
 	/**
 	 * Récupère la valeur de l'anotation s'il y en a une
-	 * @return string
+	 * @return null|string
 	 */
 	public function getValue(): ?string
 	{
