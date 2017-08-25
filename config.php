@@ -13,10 +13,13 @@ return [
 
 	Priority::APP => [],
 
-	Priority::CORE => [],
+	Priority::CORE => [
+		\TuxBoy\Application\Blog\Entity\Article::class => [
+			\TuxBoy\Application\Blog\Civility::class,
+			\Core\Tools\Has_Time::class
+		]
+	],
 
-    Priority::PLUGIN => [
-		\Core\Aspect\DemoAspect::class
-	]
+    Priority::PLUGIN => []
 
 ];

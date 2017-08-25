@@ -7,8 +7,8 @@
     <title>Portfolio</title>
 
     <!-- CSS  -->
-    <link href="/assets/min/plugin-min.css" type="text/css" rel="stylesheet">
-    <link href="/assets/min/custom-min.css" type="text/css" rel="stylesheet" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+
 </head>
 <body id="top" class="scrollspy">
 
@@ -29,13 +29,12 @@
                 <a href="{{ path('root') }}" id="logo-container" class="brand-logo">Portfolio</a>
                 <ul class="right hide-on-med-and-down">
                     <li><a href="#intro">Service</a></li>
-                    <li><a href="{{ path('work.index') }}">Portfolio</a></li>
-                    <li><a href="#team">Team</a></li>
+                    <li><a href="{{ path('blog.index') }}">Blog</a></li>
+                    <li><a href="{{ path('blog.new') }}">Créer un article</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
                 <ul id="nav-mobile" class="side-nav">
                     <li><a href="#intro">Service</a></li>
-                    <li><a href="{{ path('work.index') }}">Portfolio</a></li>
                     <li><a href="#team">Team</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>

@@ -65,16 +65,8 @@ class Builder
         if (!isset($dependencies[$class_name])) {
             return $class_name;
         }
-        $traits = [];
-        // Je parcours chaque trait des dépendances récupéré :
-        foreach ($dependencies[$class_name] as $dependency) {
-            $object = new ReflectionClass($dependency);
-            if ($object->isTrait()) {
-                $traits[] = $object->getName();
-            }
-        }
-        $source = ClassBuilder::build($class_name, $traits);
-
+        $class_builder = ClassBuilder::current();
+		$source = $class_builder->build($class_name, $dependencies);
         return $source;
     }
 }
