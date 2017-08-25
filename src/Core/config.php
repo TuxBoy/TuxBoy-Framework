@@ -17,7 +17,8 @@ return [
 	'dev'             => true,
 
 	'basepath'        => dirname(dirname(__DIR__)),
-	'aop.appDir'      => string('{basepath}/src/'),
+	'aspect.appDir'   => string('{basepath}/src/'),
+	'aspect.cacheDir' => false,
 
 	'db.name'         => env('DB_NAME'),
 	'db.user'         => env('DB_USER', 'root'),
@@ -34,15 +35,24 @@ return [
 			'wrapperClass' => Database::class
 		]);
 	},
-	\Core\ApplicationApsect::class => function () {
-		return \Core\ApplicationApsect::getInstance();
+	\Go\Core\AspectKernel::class => function (ContainerInterface $container) {
+		$applicationKernel = \Core\ApplicationApsect::getInstance();
+		$applicationKernel->init([
+			'debug'        => $container->get('dev'),
+			'appDir'       => $container->get('aspect.appDir'),
+			'cacheDir'     => $container->get('aspect.cacheDir'),
+			'includePaths' => []
+		]);
+		return $applicationKernel;
 	},
-	\Core\Aspect\MaintainerAspect::class => object()->constructor(get(Database::class)),
-	\Core\App::class  => object(\Core\App::class),
+	\Go\Core\AspectContainer::class => function (ContainerInterface $container) {
+		$kernel = $container->get(\Go\Core\AspectKernel::class);
+		return $kernel->getContainer();
+	} ,
 	'twig.path'       => string('{basepath}/res/views'),
 	'twig.extensions' => [
 		object(\Core\Twig\RouterTwigExtension::class)
-			->constructor(\DI\get(\Core\Router\Router::class))
+			->constructor(get(\Core\Router\Router::class))
 	],
 	\Core\Router\Router::class => object()->constructor(new Std(), new GroupCountBased()),
 	Twig_Environment::class    => function (ContainerInterface $container) {
@@ -54,6 +64,10 @@ return [
 
 		return $twig;
 	},
+	\Go\Core\AspectContainer::class => object(\Go\Core\GoAspectContainer::class),
+	'goaop.aspect' => [
+		object(\Core\Aspect\MaintainerAspect::class)->constructor(get(Database::class), get('dev'))
+	],
 	\Core\Database\Maintainer::class =>
 		object()->constructorParameter('database', get(Database::class)),
 	\Core\Handler\HandlerInterface::class => object(Whoops::class),
@@ -61,9 +75,6 @@ return [
 
 	Priority::CORE => [],
 
-	Priority::PLUGIN => [
-		\Core\Aspect\MaintainerAspect::class
-	]
-
+	Priority::PLUGIN => []
 
 ];

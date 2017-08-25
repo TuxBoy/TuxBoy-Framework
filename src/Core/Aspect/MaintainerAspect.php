@@ -23,31 +23,36 @@ class MaintainerAspect implements Aspect
 	 */
 	private $database;
 
-	public function __construct(Database $database)
+	/**
+	 * @var bool
+	 */
+	private $debug;
+
+	public function __construct(Database $database, bool $debug)
 	{
 		$this->database = $database;
+		$this->debug = $debug;
 	}
 
 	/**
      * @param MethodInvocation $methodInvocation
      *
-     * @Before("execution(public **->*(*))")
+     * @Before("execution(public TuxBoy\Application\*\Controller\*->*(*))")
      */
     public function beforeExcecution(MethodInvocation $methodInvocation)
     {
-    	/** @var $current_repository Repository */
-    	$current_repository = current(array_filter($methodInvocation->getArguments(), function ($argument) {
-			return $argument instanceof Repository;
-		}));
-    	if (isset($methodInvocation->getThis()->entities) && $current_repository) {
+    	if (isset($methodInvocation->getThis()->entities)) {
 			$entities = array_map(function ($entity) {
 				return $entity;
 			}, $methodInvocation->getThis()->entities);
 			if (!empty($entities)) {
-				$maintainer = new Maintainer($current_repository->getConnection(), $entities);
+				$maintainer = new Maintainer($this->database, $entities);
 				$maintainer->updateTable();
 			}
 		}
-		echo 'Calling Before Interceptor ' . $methodInvocation->getMethod()->getName();
+
+		if ($this->debug) {
+			echo 'Calling Before Interceptor ' . $methodInvocation->getMethod()->getName();
+		}
 	}
 }

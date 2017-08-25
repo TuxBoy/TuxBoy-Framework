@@ -23,11 +23,6 @@ class ApplicationApsect extends AspectKernel
      */
     protected function configureAop(AspectContainer $container)
     {
-        // Get all aspect plugins for enabled.
-        $plugins = Plugin::current()->getAspectPlugins();
-        $container->registerAspect(new MaintainerAspect());
-        foreach ($plugins as $plugin) {
-            $container->registerAspect($plugin);
-        }
+
     }
 }

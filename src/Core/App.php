@@ -9,6 +9,8 @@ use Core\Router\Router;
 use DI\ContainerBuilder;
 use Exception;
 use FastRoute\Dispatcher;
+use Go\Core\AspectContainer;
+use Go\Core\AspectKernel;
 use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -45,15 +47,17 @@ class App
 			$container_builder->addDefinitions($custom_config[Priority::APP]);
 		}
 		$this->container = $container_builder->build();
+
+		$kernel = $this->container->get(AspectKernel::class);
 		// Active le handle pour afficher les erreurs
         $this->container->get(HandlerInterface::class)->handle();
 
-		$this->getContainer()->get(ApplicationApsect::class)->init([
-			'debug'        => $this->getContainer()->get('dev'),
-			'appDir'       => $this->getContainer()->get('aop.appDir'),
-			'cacheDir'     => false, // dirname(__DIR__) . '/cache/',
-			'includePaths' => []
-		]);
+        // Il faudra réfactorer la partie GoAOP dans PHP-DI
+		$aspectContainer = $kernel->getContainer();
+        $aspects = $this->getContainer()->get('goaop.aspect');
+		foreach ($aspects as $aspect) {
+			$aspectContainer->registerAspect($aspect);
+        }
     }
 
 	/**
