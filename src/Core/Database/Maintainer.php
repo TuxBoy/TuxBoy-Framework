@@ -99,7 +99,7 @@ class Maintainer
 		foreach ($this->entites as $entity) {
 			$table = $this->getTable($schema, $entity);
 			if (!$table->hasColumn('id')) {
-				$table->addColumn('id', 'string');
+				$table->addColumn('id', 'integer', ['unsigned' => true, 'autoincrement' => true]);
 				$table->setPrimaryKey(['id']);
 			}
 			$entity = Builder::create($entity);
@@ -113,13 +113,13 @@ class Maintainer
 					// On peut rajouter la colonne
 					$reflectionAnnotation = new ReflectionAnnotation($reflection->getProperty($field)->getDocComment());
 					$type_name = $reflectionAnnotation->getAnnotation('var')->getValue();
-					if (!in_array($type_name, AnnotationType::DEFAULT)) {
-						throw new \Exception("The annotation value does not exist");
-					}
-					$options = [];
 					if (($type_name === '\DateTime') || ($type_name === 'DateTime')) {
 						$type_name = 'datetime';
 					}
+					if (!in_array($type_name, AnnotationType::DEFAULT)) {
+						throw new \Exception("The annotation value does not exist " . $type_name);
+					}
+					$options = [];
 					if ($reflectionAnnotation->hasAnnotation('length')) {
 						$options['length'] = $reflectionAnnotation->getAnnotation('length')->getValue();
 					}

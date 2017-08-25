@@ -26,7 +26,7 @@ class MaintainerAspect implements Aspect
     	$current_repository = current(array_filter($methodInvocation->getArguments(), function ($argument) {
 			return $argument instanceof Repository;
 		}));
-    	if (isset($methodInvocation->getThis()->entities)) {
+    	if (isset($methodInvocation->getThis()->entities) && $current_repository) {
 			$entities = array_map(function ($entity) {
 				return $entity;
 			}, $methodInvocation->getThis()->entities);

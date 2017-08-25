@@ -8,3 +8,5 @@ $router = $app->container->get(Router::class);
 
 $router->get('/', [HomeController::class, 'index'], 'root');
 $router->get('/blog', [BlogController::class, 'index'], 'blog.index');
+$router->get('/blog/new', [BlogController::class, 'create'], 'blog.new');
+$router->post('/blog/new', [BlogController::class, 'create']);

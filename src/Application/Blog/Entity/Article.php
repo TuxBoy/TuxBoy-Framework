@@ -58,4 +58,20 @@ class Article
 	{
 		$this->slug = $slug;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getContent(): string
+	{
+		return $this->content;
+	}
+
+	/**
+	 * @param $content text
+	 */
+	public function setContent($content)
+	{
+		$this->content = $content;
+	}
 }

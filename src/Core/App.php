@@ -39,11 +39,11 @@ class App
         $this->addPluginConfig($custom_config[Priority::PLUGIN], $default_config[Priority::PLUGIN]);
         $this->addCoreConfig($custom_config[Priority::CORE], $default_config[Priority::CORE]);
 
-        if (!empty($custom_config) && !empty($custom_config[Priority::APP])) {
-            $container_builder->addDefinitions($custom_config[Priority::APP]);
-        }
-        $this->container = $container_builder->build();
-        // Active le handle pour afficher les erreurs
+		if (!empty($custom_config) && !empty($custom_config[Priority::APP])) {
+			$container_builder->addDefinitions($custom_config[Priority::APP]);
+		}
+		$this->container = $container_builder->build();
+		// Active le handle pour afficher les erreurs
         $this->container->get(HandlerInterface::class)->handle();
     }
 
