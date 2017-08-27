@@ -1,6 +1,7 @@
 <?php
 namespace Core\Controller;
 
+use Core\Session\FlashService;
 use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,17 +20,23 @@ class Controller
 	 */
 	protected $twig;
 
-	/**
+    /**
+     * @var FlashService
+     */
+    protected $flash;
+
+    /**
 	 * Controller constructor.
 	 *
 	 * @param ContainerInterface $container
 	 * @param Twig_Environment  $twig
 	 */
-	public function __construct(ContainerInterface $container, Twig_Environment $twig)
+	public function __construct(ContainerInterface $container, Twig_Environment $twig, FlashService $flash)
 	{
 		$this->container = $container;
 		$this->twig = $twig;
-	}
+        $this->flash = $flash;
+    }
 
 	/**
 	 * @param ServerRequestInterface $request
