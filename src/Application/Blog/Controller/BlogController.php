@@ -3,11 +3,8 @@
 namespace TuxBoy\Application\Blog\Controller;
 
 use Cocur\Slugify\Slugify;
-use Core\Builder\Builder;
 use Core\Controller\Controller;
-use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
-use TuxBoy\Application\Annotation\Sluggable;
 use TuxBoy\Application\Blog\Entity\Article;
 use TuxBoy\Application\Blog\Entity\Category;
 use TuxBoy\Application\Blog\Repository\ArticleRepository;
@@ -20,7 +17,7 @@ class BlogController extends Controller
 
 	public $entities = [Article::class, Category::class];
 
-	public function index(ArticleRepository $articleRepository)
+    public function index(ArticleRepository $articleRepository)
 	{
 		$articles = $articleRepository->findAll();
 		return $this->twig->render('blog/index.twig', compact('articles'));
@@ -41,6 +38,7 @@ class BlogController extends Controller
 
             $data['slug'] = empty($slug) ? $slugify->slugify($name) : $slug;
             $articleRepository->insert($data);
+            $this->flash->success("L'aticle a bien été créé");
             return $this->redirectTo('/blog');
         }
 		return $this->twig->render('blog/create.twig');
