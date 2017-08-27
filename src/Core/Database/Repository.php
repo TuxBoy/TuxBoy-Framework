@@ -137,8 +137,13 @@ class Repository implements ObjectRepository
 		return $this->connection;
 	}
 
-	public function insert(array $data)
+    /**
+     * @param array $data
+     * @return int|null
+     */
+	public function insert(array $data): ?int
 	{
 		$this->getConnection()->insert($this->getTableName(), $data);
+		return $this->getConnection()->lastInsertId();
 	}
 }
