@@ -72,8 +72,11 @@ class Repository implements ObjectRepository
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-    	// $where = implode(', ', $criteria);
-        // $this->connection->fetchAll("SELECT * FROM {$this->getTableName()} WHERE ")
+    	$where = '';
+		foreach ($criteria as $field => $value) {
+			$where .= $field . " = " . (is_string($value) ? "'$value'" : $value);
+    	}
+        return $this->connection->fetchAll("SELECT * FROM {$this->getTableName()} WHERE {$where}");
     }
 
     /**
@@ -85,7 +88,7 @@ class Repository implements ObjectRepository
      */
     public function findOneBy(array $criteria)
     {
-        // TODO: Implement findOneBy() method.
+    	return current($this->findBy($criteria, null, 1));
     }
 
     /**
@@ -134,8 +137,13 @@ class Repository implements ObjectRepository
 		return $this->connection;
 	}
 
-	public function insert(array $data)
+    /**
+     * @param array $data
+     * @return int|null
+     */
+	public function insert(array $data): ?int
 	{
 		$this->getConnection()->insert($this->getTableName(), $data);
+		return $this->getConnection()->lastInsertId();
 	}
 }

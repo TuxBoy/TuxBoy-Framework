@@ -8,18 +8,24 @@ use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteParser\Std;
 use Psr\Container\ContainerInterface;
 use function DI\env;
+use function DI\string;
+use function DI\object;
+use function DI\get;
 
 return [
     Priority::APP => [
-	'dev'       => true,
+	'dev'             => true,
 
 	'basepath'        => dirname(dirname(__DIR__)),
+	'aspect.appDir'   => string('{basepath}/src/'),
+	'aspect.cacheDir' => false,
+
 	'db.name'         => env('DB_NAME'),
 	'db.user'         => env('DB_USER', 'root'),
 	'db.pass'         => env('DB_PASS', 'root'),
 	'db.host'         => env('DB_HOST', 'localhost'),
 	'db.driver'       => env('DB_DRVER', 'pdo_mysql'),
-	Database::class => function (ContainerInterface $container) {
+	Database::class   => function (ContainerInterface $container) {
 		return DriverManager::getConnection([
 			'dbname'       => $container->get('db.name'),
 			'user'         => $container->get('db.user'),
@@ -29,13 +35,26 @@ return [
 			'wrapperClass' => Database::class
 		]);
 	},
-	'app'             => \DI\object(\Core\App::class),
-	'twig.path'       => \DI\string('{basepath}/res/views'),
+	\Go\Core\AspectKernel::class => function (ContainerInterface $container) {
+		$applicationKernel = \Core\ApplicationApsect::getInstance();
+		$applicationKernel->init([
+			'debug'        => $container->get('dev'),
+			'appDir'       => $container->get('aspect.appDir'),
+			'cacheDir'     => $container->get('aspect.cacheDir'),
+			'includePaths' => []
+		]);
+		return $applicationKernel;
+	},
+	\Go\Core\AspectContainer::class => function (ContainerInterface $container) {
+		$kernel = $container->get(\Go\Core\AspectKernel::class);
+		return $kernel->getContainer();
+	} ,
+	'twig.path'       => string('{basepath}/res/views'),
 	'twig.extensions' => [
-		\DI\object(\Core\Twig\RouterTwigExtension::class)
-			->constructor(\DI\get(\Core\Router\Router::class))
+		object(\Core\Twig\RouterTwigExtension::class)
+			->constructor(get(\Core\Router\Router::class))
 	],
-	\Core\Router\Router::class => \DI\object()->constructor(new Std(), new GroupCountBased()),
+	\Core\Router\Router::class => object()->constructor(new Std(), new GroupCountBased()),
 	Twig_Environment::class    => function (ContainerInterface $container) {
 		$loader = new Twig_Loader_Filesystem($container->get('twig.path'));
 		$twig = new Twig_Environment($loader);
@@ -45,16 +64,17 @@ return [
 
 		return $twig;
 	},
+	\Go\Core\AspectContainer::class => object(\Go\Core\GoAspectContainer::class),
+	'goaop.aspect' => [
+		object(\Core\Aspect\MaintainerAspect::class)->constructor(get(Database::class), get('dev'))
+	],
 	\Core\Database\Maintainer::class =>
-		\DI\object()->constructorParameter('database', \DI\get(Database::class)),
-	\Core\Handler\HandlerInterface::class => \DI\object(Whoops::class),
+		object()->constructorParameter('database', get(Database::class)),
+	\Core\Handler\HandlerInterface::class => object(Whoops::class),
     ],
 
 	Priority::CORE => [],
 
-	Priority::PLUGIN => [
-		\Core\Aspect\MaintainerAspect::class
-	]
-
+	Priority::PLUGIN => []
 
 ];

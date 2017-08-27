@@ -2,13 +2,12 @@
 
 namespace TuxBoy\Application\Home\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Twig_Environment;
+use Core\Controller\Controller;
 
-class HomeController
+class HomeController extends Controller
 {
-    public function index(ServerRequestInterface $request, Twig_Environment $twig)
+    public function index()
     {
-        return $twig->render('home/index.twig');
+        return $this->twig->render('home/index.twig');
     }
 }

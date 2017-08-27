@@ -2,12 +2,15 @@
 
 namespace Core;
 
+use Core\Concern\Current;
 use Core\Handler\HandlerInterface;
 use Core\Plugin\Plugin;
 use Core\Router\Router;
 use DI\ContainerBuilder;
 use Exception;
 use FastRoute\Dispatcher;
+use Go\Core\AspectContainer;
+use Go\Core\AspectKernel;
 use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -18,6 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class App
 {
+
     /**
      * @var ContainerInterface
      */
@@ -28,14 +32,14 @@ class App
      */
     public $router;
 
-    /**
-     * @param array $custom_config
-     */
+	/**
+	 * @param array $custom_config
+	 */
     public function __construct(array $custom_config = [])
     {
         $container_builder = new ContainerBuilder();
         $default_config = require __DIR__ . '/config.php';
-        $container_builder->addDefinitions($default_config[Priority::APP]);
+		$container_builder->addDefinitions($default_config[Priority::APP]);
         $this->addPluginConfig($custom_config[Priority::PLUGIN], $default_config[Priority::PLUGIN]);
         $this->addCoreConfig($custom_config[Priority::CORE], $default_config[Priority::CORE]);
 
@@ -43,8 +47,17 @@ class App
 			$container_builder->addDefinitions($custom_config[Priority::APP]);
 		}
 		$this->container = $container_builder->build();
+
+		$kernel = $this->container->get(AspectKernel::class);
 		// Active le handle pour afficher les erreurs
         $this->container->get(HandlerInterface::class)->handle();
+
+        // Il faudra réfactorer la partie GoAOP dans PHP-DI
+		$aspectContainer = $kernel->getContainer();
+        $aspects = $this->getContainer()->get('goaop.aspect');
+		foreach ($aspects as $aspect) {
+			$aspectContainer->registerAspect($aspect);
+        }
     }
 
 	/**

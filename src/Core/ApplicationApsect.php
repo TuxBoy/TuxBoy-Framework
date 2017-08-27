@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Core\Aspect\MaintainerAspect;
 use Core\Plugin\Plugin;
 use Go\Core\AspectContainer;
 use Go\Core\AspectKernel;
@@ -22,10 +23,6 @@ class ApplicationApsect extends AspectKernel
      */
     protected function configureAop(AspectContainer $container)
     {
-        // Get all aspect plugins for enabled.
-        $plugins = Plugin::current()->getAspectPlugins();
-        foreach ($plugins as $plugin) {
-            $container->registerAspect($plugin);
-        }
+
     }
 }

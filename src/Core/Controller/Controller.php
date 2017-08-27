@@ -1,6 +1,7 @@
 <?php
 namespace Core\Controller;
 
+use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig_Environment;
@@ -41,4 +42,26 @@ class Controller
 			return in_array($item, $dataAllow);
 		}, ARRAY_FILTER_USE_KEY);
 	}
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param string $field
+     * @return mixed
+     */
+	public function getParam(ServerRequestInterface $request, string $field)
+    {
+        return array_key_exists($field, $request->getParsedBody())
+            ? $request->getParsedBody()[$field]
+            : null;
+    }
+
+    /**
+     * @param string $route
+     * @return \GuzzleHttp\Psr7\MessageTrait
+     */
+    public function redirectTo(string $route)
+    {
+        $response = new Response();
+        return $response->withStatus(200)->withHeader('Location', $route);
+    }
 }
