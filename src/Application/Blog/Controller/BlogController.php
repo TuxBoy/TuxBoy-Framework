@@ -2,8 +2,12 @@
 
 namespace TuxBoy\Application\Blog\Controller;
 
+use Cocur\Slugify\Slugify;
+use Core\Builder\Builder;
 use Core\Controller\Controller;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
+use TuxBoy\Application\Annotation\Sluggable;
 use TuxBoy\Application\Blog\Entity\Article;
 use TuxBoy\Application\Blog\Entity\Category;
 use TuxBoy\Application\Blog\Repository\ArticleRepository;
@@ -22,12 +26,23 @@ class BlogController extends Controller
 		return $this->twig->render('blog/index.twig', compact('articles'));
 	}
 
-	public function create(ServerRequest $request, ArticleRepository $articleRepository)
+    /**
+     * @param ServerRequest $request
+     * @param ArticleRepository $articleRepository
+     * @param Slugify $slugify
+     * @return string
+     */
+	public function create(ServerRequest $request, ArticleRepository $articleRepository, Slugify $slugify)
 	{
 		if ($request->getMethod() === 'POST') {
-			$data = $this->getParams($request, ['name', 'slug', 'content']);
-			$articleRepository->insert($data);
-		}
+            $slug = $this->getParam($request, 'slug');
+		    $data = $this->getParams($request, ['name', 'slug', 'content']);
+            $name = $this->getParam($request, 'name');
+
+            $data['slug'] = empty($slug) ? $slugify->slugify($name) : $slug;
+            $articleRepository->insert($data);
+            return $this->redirectTo('/blog');
+        }
 		return $this->twig->render('blog/create.twig');
 	}
 
