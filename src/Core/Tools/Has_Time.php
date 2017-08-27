@@ -7,19 +7,19 @@ trait Has_Time
 	/**
 	 * @var \DateTime
 	 */
-	public $created_at;
+	public $createdAt;
 
 	/**
 	 * @var \DateTime
 	 */
-	public $updated_at;
+	public $updatedAt;
 
 	/**
 	 * @return \DateTime
 	 */
 	public function getCreatedAt(): \DateTime
 	{
-		return $this->created_at;
+		return $this->createdAt;
 	}
 
 	/**
@@ -27,6 +27,22 @@ trait Has_Time
 	 */
 	public function setCreatedAt($created_at)
 	{
-		$this->created_at = $created_at;
+		$this->createdAt = $created_at;
 	}
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
 }
