@@ -1,8 +1,19 @@
 <?php
 namespace Test\Core\Builder;
 
+use Core\Builder\ClassBuilder;
 use Core\Builder\Namespaces;
 use PHPUnit\Framework\TestCase;
+use Test\Core\Entity\FakeEntity;
+
+trait FakeOnline
+{
+
+	/**
+	 * @var bool
+	 */
+	public $online = false;
+}
 
 class ClassBuilderTest extends TestCase
 {

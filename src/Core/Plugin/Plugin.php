@@ -34,20 +34,19 @@ class Plugin
         $this->builders[$key] = $builders;
     }
 
-	/**
-	 * @param array $plugins
-	 */
+    /**
+     * @param array $plugins
+     */
     public function addPlugin(array $plugins): void
     {
-		foreach ($plugins as $key => $plugin) {
-			if (is_array($plugin)) {
-				$this->plugins[Priority::PLUGIN][$key] = $plugin;
-			}
-			else {
-				$this->plugins[Priority::PLUGIN][$plugin] = [];
-			}
-		}
-	}
+        foreach ($plugins as $key => $plugin) {
+            if (is_array($plugin)) {
+                $this->plugins[Priority::PLUGIN][$key] = $plugin;
+            } else {
+                $this->plugins[Priority::PLUGIN][$plugin] = [];
+            }
+        }
+    }
 
     /**
      * @param string $key
@@ -74,7 +73,8 @@ class Plugin
      */
     public function getPlugin(string $class_name): string
     {
-    	$plugins = array_keys($this->plugins[Priority::PLUGIN]);
+        $plugins = array_keys($this->plugins[Priority::PLUGIN]);
+
         return current(array_filter(
             $plugins,
             function ($plugin) use ($class_name) {
@@ -108,14 +108,13 @@ class Plugin
     {
         $aspect_plugins = [];
         foreach ($this->getPlugins() as $plugin_name => $configuration) {
-        	if (!empty($configuration)) {
-        		$object = Builder::create($plugin_name, [$configuration]);
-			}
-			else {
-				$object = Builder::create($plugin_name);
-			}
-			if ($object instanceof Aspect) {
-				$aspect_plugins[] = $object;
+            if (!empty($configuration)) {
+                $object = Builder::create($plugin_name, [$configuration]);
+            } else {
+                $object = Builder::create($plugin_name);
+            }
+            if ($object instanceof Aspect) {
+                $aspect_plugins[] = $object;
             }
         }
 
@@ -141,7 +140,7 @@ class Plugin
     {
         $plugin = null;
         $class_name = is_string($class_name) ? $class_name : get_class($class_name);
-		$plugin = self::current()->getPlugin($class_name);
+        $plugin = self::current()->getPlugin($class_name);
         if ($plugin) {
             $plugin = Builder::create($plugin);
         }

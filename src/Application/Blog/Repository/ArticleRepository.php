@@ -7,7 +7,5 @@ use TuxBoy\Application\Blog\Entity\Article;
 
 class ArticleRepository extends Repository
 {
-
-	protected static $ENTITY = Article::class;
-
+    protected static $ENTITY = Article::class;
 }

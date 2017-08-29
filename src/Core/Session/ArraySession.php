@@ -2,20 +2,19 @@
 
 namespace Core\Session;
 
-
 class ArraySession implements SessionInterface
 {
-
     /**
      * @var array
      */
     private $session = [];
 
     /**
-     * Récupère une inforamtion en session
+     * Récupère une inforamtion en session.
      *
      * @param string $key
      * @param $default
+     *
      * @return mixed
      */
     public function get(string $key, $default = null)
@@ -23,11 +22,12 @@ class ArraySession implements SessionInterface
         if (array_key_exists($key, $this->session)) {
             return $this->session[$key];
         }
+
         return $default;
     }
 
     /**
-     * Ajoute une information en session
+     * Ajoute une information en session.
      *
      * @param string $key
      * @param $value
@@ -38,7 +38,7 @@ class ArraySession implements SessionInterface
     }
 
     /**
-     * Supprime une clef en session
+     * Supprime une clef en session.
      *
      * @param string $key
      */

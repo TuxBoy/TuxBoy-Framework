@@ -11,7 +11,5 @@ use Core\Tools\Has_Name;
  */
 class Category
 {
-
-	use Has_Name;
-
+    use Has_Name;
 }
