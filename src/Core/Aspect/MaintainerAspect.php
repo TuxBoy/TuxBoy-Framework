@@ -19,19 +19,19 @@ class MaintainerAspect implements Aspect
 {
 
 	/**
-	 * @var Database
-	 */
-	private $database;
-
-	/**
 	 * @var bool
 	 */
 	private $debug;
 
-	public function __construct(Database $database, bool $debug)
+	/**
+	 * @var Maintainer
+	 */
+	private $maintainer;
+
+	public function __construct(Maintainer $maintainer, bool $debug)
 	{
-		$this->database = $database;
 		$this->debug = $debug;
+		$this->maintainer = $maintainer;
 	}
 
 	/**
@@ -46,13 +46,12 @@ class MaintainerAspect implements Aspect
 				return $entity;
 			}, $methodInvocation->getThis()->entities);
 			if (!empty($entities)) {
-				$maintainer = new Maintainer($this->database, $entities);
-				$maintainer->updateTable();
+				$this->maintainer->setEntities($entities)->updateTable();
 			}
 		}
 
 		if ($this->debug) {
-			echo 'Calling Before Interceptor ' . $methodInvocation->getMethod()->getName();
+			echo 'Maintainer is updated ' . $methodInvocation->getMethod()->getName();
 		}
 	}
 }

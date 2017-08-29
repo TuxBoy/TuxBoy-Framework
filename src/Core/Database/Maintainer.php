@@ -47,6 +47,17 @@ class Maintainer
 	}
 
 	/**
+	 * @param array $entities
+	 * @return $this
+	 */
+	public function setEntities(array $entities): self
+	{
+		$this->entites = $entities;
+
+		return $this;
+	}
+
+	/**
 	 * Exécute la nouvelle version du schema définie dans schemaDefinition
 	 * @param bool $force Si true ça exécute la requête sinon ça on esite que la BDD est à jour
 	 */
