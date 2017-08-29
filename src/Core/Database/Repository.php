@@ -112,8 +112,7 @@ class Repository implements ObjectRepository
 		if (!is_null(static::$TABLE)) {
 			return static::$TABLE;
 		}
-		$docClass = (new \ReflectionClass($this->getEntity()))->getDocComment();
-		return (new ReflectionAnnotation($docClass))->getAnnotation('set')->getValue();
+		return (new ReflectionAnnotation($this->getEntity()))->getAnnotation('set')->getValue();
 	}
 
 	/**

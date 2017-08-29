@@ -86,8 +86,7 @@ class Maintainer
 	 */
 	private function getTable(Schema $schema, string $entity): Table
 	{
-		$reflection = new ReflectionClass($entity);
-		$reflectionAnnotation = new ReflectionAnnotation($reflection->getDocComment());
+		$reflectionAnnotation = new ReflectionAnnotation($entity);
 		if (!$reflectionAnnotation->getAnnotation('set')->getValue()) {
 			throw new Exception("Not table name defined");
 		}
@@ -114,7 +113,6 @@ class Maintainer
 				$table->setPrimaryKey(['id']);
 			}
 			$entity = Builder::create($entity);
-			$reflection = new ReflectionClass($entity);
 			$diff = array_diff_key($table->getColumns(), get_object_vars($entity));
 			if (array_key_exists('id', $diff)) {
 				unset($diff['id']);
@@ -122,7 +120,7 @@ class Maintainer
 			foreach (get_object_vars($entity) as $field => $value) {
 				if (!array_key_exists($field, $table->getColumns())) {
 					// On peut rajouter la colonne
-					$reflectionAnnotation = new ReflectionAnnotation($reflection->getProperty($field)->getDocComment());
+					$reflectionAnnotation = new ReflectionAnnotation($entity, $field);
 					$type_name = $reflectionAnnotation->getAnnotation('var')->getValue();
 					if (($type_name === '\DateTime') || ($type_name === 'DateTime')) {
 						$type_name = 'datetime';
