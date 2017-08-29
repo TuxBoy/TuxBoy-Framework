@@ -1,6 +1,7 @@
 <?php
 
 use Core\Database\Database;
+use Core\Database\Maintainer;
 use Core\Handler\HandlerInterface;
 use Core\Priority;
 use Core\Router\Router;
@@ -12,6 +13,7 @@ use Core\Twig\RouterTwigExtension;
 use Doctrine\DBAL\DriverManager;
 use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteParser\Std;
+use Go\Core\AspectContainer;
 use Psr\Container\ContainerInterface;
 use function DI\env;
 use function DI\string;
@@ -51,13 +53,13 @@ return [
             ]);
             return $applicationKernel;
         },
-        \Go\Core\AspectContainer::class => function (ContainerInterface $container) {
+        AspectContainer::class => function (ContainerInterface $container) {
             $kernel = $container->get(\Go\Core\AspectKernel::class);
             return $kernel->getContainer();
         } ,
         'twig.path'       => string('{basepath}/res/views'),
         'twig.extensions' => [
-            object(RouterTwigExtension::class)->constructor(get(Router::class)),
+            get(RouterTwigExtension::class),
             get(FlashExtension::class)
 
         ],
@@ -71,11 +73,11 @@ return [
 
             return $twig;
         },
-        \Go\Core\AspectContainer::class => object(\Go\Core\GoAspectContainer::class),
+        AspectContainer::class => object(\Go\Core\GoAspectContainer::class),
         'goaop.aspect' => [
-            object(\Core\Aspect\MaintainerAspect::class)->constructor(get(Database::class), get('dev'))
+            object(\Core\Aspect\MaintainerAspect::class)->constructor(get(Maintainer::class), get('dev'))
         ],
-        \Core\Database\Maintainer::class =>
+        Maintainer::class =>
             object()->constructorParameter('database', get(Database::class)),
         HandlerInterface::class => object(Whoops::class),
         SessionInterface::class => object(PHPSession::class)
