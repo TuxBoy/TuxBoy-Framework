@@ -3,6 +3,7 @@
 namespace Core;
 
 use Exception;
+use ReflectionClass;
 
 /**
  * ReflectionAnnotation.
@@ -27,11 +28,17 @@ class ReflectionAnnotation
 
 	/**
 	 * ReflectionAnnotation constructor.
-	 * @param string $docComment
+	 *
+	 * @param string|object $argument Le nom de la classe ou l'object que l'on souhaite récupérer les annotations
+	 * @param string|null   $property_name
 	 */
-	public function __construct(string $docComment)
+	public function __construct($argument, string $property_name = null)
 	{
-		$this->docComment = $docComment;
+		$argument = new ReflectionClass($argument);
+		// Si le property_name est null, alors on souhaite obtenir les annotations de la classe
+		$this->docComment = is_null($property_name)
+			? $argument->getDocComment()
+			: $argument->getProperty($property_name)->getDocComment();
 	}
 
 	/**
@@ -43,9 +50,8 @@ class ReflectionAnnotation
 	 */
 	public function getAnnotation(string $annotationName): self
 	{
-		list($name, $value) = $this->parseDocComment($annotationName);
-		$this->value = $value;
-		$this->name = str_replace('@', '', $name);
+		list($this->name, $this->value) = $this->parseDocComment($annotationName);
+
 		return $this;
 	}
 
@@ -57,8 +63,7 @@ class ReflectionAnnotation
 	 */
 	public function hasAnnotation(string $annotationName): bool
 	{
-		$this->parseDocComment($annotationName);
-		return boolval($this->name);
+		return in_array($annotationName, $this->parseDocComment($annotationName));
 	}
 
 	/**
@@ -83,6 +88,7 @@ class ReflectionAnnotation
 		$getAnnotationValue = current(array_filter($annotations, function ($item) use ($annotationName) {
 			return preg_match('#@'. $annotationName .'.+#', $item);
 		}));
+		// L'annotation sans valeur @example @length
 		$getAnnotation = current(array_filter($annotations, function ($item) use ($annotationName) {
 			return preg_match('#@'. $annotationName .'#', $item);
 		}));
@@ -93,7 +99,7 @@ class ReflectionAnnotation
 		} elseif ($getAnnotation) {
 			list($name) = explode(' ', $getAnnotation);
 		}
-		return [$name, $value];
+		return [str_replace('@', '', $name), $value];
 	}
 
 	/**
