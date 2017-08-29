@@ -7,7 +7,7 @@ namespace PHPSTORM_META {
   $STATIC_METHOD_TYPES = [
 		ContainerInterface::get('') => [
 		 	'' == '@'
-		]
+		],
 		Builder::create('') => [
 			'' == '@'
 		],
