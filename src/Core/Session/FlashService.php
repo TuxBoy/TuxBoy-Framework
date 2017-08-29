@@ -2,7 +2,6 @@
 
 namespace Core\Session;
 
-
 class FlashService
 {
     const FLASH = 'flash';
@@ -34,15 +33,16 @@ class FlashService
 
     /**
      * @param string $type
+     *
      * @return null|string
      */
     public function get(string $type): ?string
     {
-        if (is_null($this->messages)) {
+        if (null === $this->messages) {
             $this->messages = $this->session->get(self::FLASH, []);
             $this->session->delete(self::FLASH);
         }
+
         return array_key_exists($type, $this->messages) ? $this->messages[$type] : null;
     }
-
 }

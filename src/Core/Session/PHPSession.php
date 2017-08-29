@@ -2,12 +2,10 @@
 
 namespace Core\Session;
 
-
 class PHPSession implements SessionInterface
 {
-
     /**
-     * Assure que la session soit démarrer
+     * Assure que la session soit démarrer.
      */
     private function ensureStarted()
     {
@@ -17,10 +15,11 @@ class PHPSession implements SessionInterface
     }
 
     /**
-     * Récupère une inforamtion en session
+     * Récupère une inforamtion en session.
      *
      * @param string $key
      * @param $default
+     *
      * @return mixed
      */
     public function get(string $key, $default = null)
@@ -29,11 +28,12 @@ class PHPSession implements SessionInterface
         if (array_key_exists($key, $_SESSION)) {
             return $_SESSION[$key];
         }
+
         return $default;
     }
 
     /**
-     * Ajoute une information en session
+     * Ajoute une information en session.
      *
      * @param string $key
      * @param $value
@@ -45,7 +45,7 @@ class PHPSession implements SessionInterface
     }
 
     /**
-     * Supprime une clef en session
+     * Supprime une clef en session.
      *
      * @param string $key
      */

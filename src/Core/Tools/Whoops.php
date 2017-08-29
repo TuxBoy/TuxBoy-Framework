@@ -3,7 +3,6 @@
 namespace Core\Tools;
 
 use Core\Handler\HandlerInterface;
-use Core\Plugin\Registrable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 

@@ -1,11 +1,11 @@
 <?php
+
 namespace Core\Twig;
 
 use Core\Session\FlashService;
 
 class FlashExtension extends \Twig_Extension
 {
-
     /**
      * @var FlashService
      */
@@ -28,11 +28,11 @@ class FlashExtension extends \Twig_Extension
 
     /**
      * @param string $type
+     *
      * @return null|string
      */
-    public function getFlash(string $type) : ?string
+    public function getFlash(string $type): ?string
     {
         return $this->flash->get($type);
     }
-
 }

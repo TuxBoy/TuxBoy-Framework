@@ -66,7 +66,8 @@ class Builder
             return $class_name;
         }
         $class_builder = ClassBuilder::current();
-		$source = $class_builder->build($class_name, $dependencies);
+        $source = $class_builder->build($class_name, $dependencies);
+
         return $source;
     }
 }

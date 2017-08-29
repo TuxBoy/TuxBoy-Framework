@@ -9,28 +9,28 @@ use Doctrine\DBAL\Connection;
 
 class Repository implements ObjectRepository
 {
+    protected static $TABLE = null;
 
-	protected static $TABLE = null;
+    protected static $ENTITY = null;
 
-	protected static $ENTITY = null;
+    protected $defaultFetchMode = \PDO::FETCH_CLASS;
 
-	protected $defaultFetchMode = \PDO::FETCH_CLASS;
+    /**
+     * @var Connection
+     */
+    private $connection;
 
-	/**
-	 * @var Connection
-	 */
-	private $connection;
+    /**
+     * Repository constructor.
+     *
+     * @param Database $connection
+     */
+    public function __construct(Database $connection)
+    {
+        $this->connection = $connection;
+    }
 
-	/**
-	 * Repository constructor.
-	 * @param Database $connection
-	 */
-	public function __construct(Database $connection)
-	{
-		$this->connection = $connection;
-	}
-
-	/**
+    /**
      * Finds an object by its primary key / identifier.
      *
      * @param mixed $id the identifier
@@ -40,8 +40,11 @@ class Repository implements ObjectRepository
     public function find($id)
     {
         return $this->connection->fetch(
-        	"SELECT * FROM {$this->getTableName()} WHERE id= ?", [$id], [], $this->getEntity()
-		);
+            "SELECT * FROM {$this->getTableName()} WHERE id= ?",
+            [$id],
+            [],
+            $this->getEntity()
+        );
     }
 
     /**
@@ -51,7 +54,7 @@ class Repository implements ObjectRepository
      */
     public function findAll()
     {
-    	return $this->connection->fetchObject("SELECT * FROM {$this->getTableName()}", [], [], $this->getEntity());
+        return $this->connection->fetchObject("SELECT * FROM {$this->getTableName()}", [], [], $this->getEntity());
     }
 
     /**
@@ -72,10 +75,11 @@ class Repository implements ObjectRepository
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-    	$where = '';
-		foreach ($criteria as $field => $value) {
-			$where .= $field . " = " . (is_string($value) ? "'$value'" : $value);
-    	}
+        $where = '';
+        foreach ($criteria as $field => $value) {
+            $where .= $field . ' = ' . (is_string($value) ? "'$value'" : $value);
+        }
+
         return $this->connection->fetchAll("SELECT * FROM {$this->getTableName()} WHERE {$where}");
     }
 
@@ -88,7 +92,7 @@ class Repository implements ObjectRepository
      */
     public function findOneBy(array $criteria)
     {
-    	return current($this->findBy($criteria, null, 1));
+        return current($this->findBy($criteria, null, 1));
     }
 
     /**
@@ -101,48 +105,52 @@ class Repository implements ObjectRepository
         return Namespaces::shortClassName(get_class($this));
     }
 
-	/**
-	 * Récupère le nom de la table par rapport au nom du repository, si le nom de la table n'a pas été
-	 * définie manuelement via la constante $TABLE
-	 *
-	 * @return string
-	 */
+    /**
+     * Récupère le nom de la table par rapport au nom du repository, si le nom de la table n'a pas été
+     * définie manuelement via la constante $TABLE.
+     *
+     * @return string
+     */
     public function getTableName(): string
-	{
-		if (!is_null(static::$TABLE)) {
-			return static::$TABLE;
-		}
-		return (new ReflectionAnnotation($this->getEntity()))->getAnnotation('set')->getValue();
-	}
+    {
+        if (null !== static::$TABLE) {
+            return static::$TABLE;
+        }
 
-	/**
-	 * Récupère le nom de l'entité définie dans $ENTITY.
-	 *
-	 * @return string
-	 */
-	public function getEntity(): ?string
-	{
-		if (!is_null(static::$ENTITY)) {
-			return static::$ENTITY;
-		}
-		return null;
-	}
+        return (new ReflectionAnnotation($this->getEntity()))->getAnnotation('set')->getValue();
+    }
 
-	/**
-	 * @return Database
-	 */
-	public function getConnection(): Database
-	{
-		return $this->connection;
-	}
+    /**
+     * Récupère le nom de l'entité définie dans $ENTITY.
+     *
+     * @return string
+     */
+    public function getEntity(): ?string
+    {
+        if (null !== static::$ENTITY) {
+            return static::$ENTITY;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return Database
+     */
+    public function getConnection(): Database
+    {
+        return $this->connection;
+    }
 
     /**
      * @param array $data
+     *
      * @return int|null
      */
-	public function insert(array $data): ?int
-	{
-		$this->getConnection()->insert($this->getTableName(), $data);
-		return $this->getConnection()->lastInsertId();
-	}
+    public function insert(array $data): ?int
+    {
+        $this->getConnection()->insert($this->getTableName(), $data);
+
+        return $this->getConnection()->lastInsertId();
+    }
 }
