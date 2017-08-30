@@ -2,7 +2,7 @@
 
 namespace TuxBoy\Application\Blog\Entity;
 
-use Core\Tools\Has_Name;
+use Core\Tools\HasName;
 
 /**
  * Category.
@@ -11,5 +11,5 @@ use Core\Tools\Has_Name;
  */
 class Category
 {
-    use Has_Name;
+    use HasName;
 }
