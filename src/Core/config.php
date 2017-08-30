@@ -11,6 +11,7 @@ use Core\Session\SessionInterface;
 use Core\Tools\Whoops;
 use Core\Twig\FlashExtension;
 use Core\Twig\RouterTwigExtension;
+use Core\Twig\TwigFactory;
 use Doctrine\DBAL\DriverManager;
 use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteParser\Std;
@@ -22,6 +23,7 @@ use function DI\env;
 use function DI\get;
 use function DI\object;
 use function DI\string;
+use function DI\factory;
 
 return [
     Priority::APP => [
@@ -68,18 +70,10 @@ return [
                     get(RouterTwigExtension::class),
                     get(FlashExtension::class)
             ],
-            Router::class              => object()->constructor(new Std(), new GroupCountBased()),
-            Twig_Environment::class    => function (ContainerInterface $container) {
-                $loader = new Twig_Loader_Filesystem($container->get('twig.path'));
-                $twig = new Twig_Environment($loader);
-                foreach ($container->get('twig.extensions') as $extension) {
-                    $twig->addExtension($extension);
-                }
-
-                return $twig;
-            },
-            AspectContainer::class => object(GoAspectContainer::class),
-            'goaop.aspect'         => [
+            Router::class           => object()->constructor(new Std(), new GroupCountBased()),
+            Twig_Environment::class => factory(TwigFactory::class),
+            AspectContainer::class  => object(GoAspectContainer::class),
+            'goaop.aspect'          => [
                     object(MaintainerAspect::class)
             ->constructor(get(Maintainer::class), get('dev'), get('migration.auto'))
             ],
