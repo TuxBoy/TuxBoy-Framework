@@ -15,7 +15,6 @@ class Article
     public $name;
 
     /**
-     * @length 60
      *
      * @var string
      */
@@ -25,6 +24,13 @@ class Article
      * @var text
      */
     public $content;
+
+    /**
+     * @link belongsTo
+     *
+     * @var \TuxBoy\Application\Blog\Entity\Category
+     */
+    public $category;
 
     /**
      * @return mixed
@@ -72,5 +78,21 @@ class Article
     public function setContent($content)
     {
         $this->content = $content;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getCategory(): Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param $category Category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
     }
 }
