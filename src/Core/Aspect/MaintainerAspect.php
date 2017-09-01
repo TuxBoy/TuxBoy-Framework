@@ -50,12 +50,14 @@ class MaintainerAspect implements Aspect
                     return $entity;
                 }, $methodInvocation->getThis()->entities);
                 if (!empty($entities)) {
-                    $this->maintainer->setEntities($entities)->updateTable();
+                    foreach ($entities as $entity) {
+                        $this->maintainer->updateTable($entity);
+                    }
                 }
             }
 
             if ($this->debug) {
-                echo 'Maintainer is updated ' . $methodInvocation->getMethod()->getName();
+                echo ' Maintainer is running ' . $methodInvocation->getMethod()->getName();
             }
         }
     }

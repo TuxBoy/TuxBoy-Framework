@@ -20,10 +20,10 @@ use Go\Core\AspectKernel;
 use Go\Core\GoAspectContainer;
 use Psr\Container\ContainerInterface;
 use function DI\env;
+use function DI\factory;
 use function DI\get;
 use function DI\object;
 use function DI\string;
-use function DI\factory;
 
 return [
     Priority::APP => [
