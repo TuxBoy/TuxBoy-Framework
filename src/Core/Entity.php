@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Core\Exception\NotEntitySetterException;
+
 /**
  * Class Entity
  */
@@ -13,9 +15,10 @@ class Entity
         if (!empty($data)) {
             foreach ($data as $field => $value) {
                 $setter = 'set' . ucfirst($field);
-                if (method_exists($this, $setter)) {
-                    $this->$setter($value);
+                if (!method_exists($this, $setter)) {
+                    throw new NotEntitySetterException();
                 }
+                $this->$setter($value);
             }
         }
     }

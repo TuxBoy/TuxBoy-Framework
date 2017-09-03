@@ -15,7 +15,6 @@ return [
 
 	Priority::CORE => [
 		\TuxBoy\Application\Blog\Entity\Article::class => [
-			\TuxBoy\Application\Blog\Civility::class,
 			\Core\Tools\HasTime::class
 		]
 	],
