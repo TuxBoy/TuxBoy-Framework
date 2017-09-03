@@ -1,0 +1,25 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Ajouter un article</h1>
+
+        <div class="row">
+            <form class="col s12" action="{{ path('blog.category.new') }}" method="post">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="name" type="text" name="name" class="validate">
+                        <label for="name">Titre</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="slug" type="text" name="slug" class="validate">
+                        <label for="slug">Slug</label>
+                    </div>
+                </div>
+                <button class="waves-effect waves-light btn" type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
