@@ -2,12 +2,14 @@
 
 namespace TuxBoy\Application\Blog\Entity;
 
+use Core\Entity;
+
 /**
  * Class Article.
  *
  * @set posts
  */
-class Article
+class Article extends Entity
 {
     /**
      * @var string
@@ -25,12 +27,6 @@ class Article
      */
     public $content;
 
-    /**
-     * @link belongsTo
-     *
-     * @var \TuxBoy\Application\Blog\Entity\Category
-     */
-    public $category;
 
     /**
      * @return mixed

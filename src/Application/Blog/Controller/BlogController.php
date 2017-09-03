@@ -3,6 +3,7 @@
 namespace TuxBoy\Application\Blog\Controller;
 
 use Cocur\Slugify\Slugify;
+use Core\Builder\Builder;
 use Core\Controller\Controller;
 use GuzzleHttp\Psr7\ServerRequest;
 use TuxBoy\Application\Blog\Entity\Article;
@@ -33,12 +34,11 @@ class BlogController extends Controller
     public function create(ServerRequest $request, ArticleRepository $articleRepository, Slugify $slugify)
     {
         if ($request->getMethod() === 'POST') {
-            $slug = $this->getParam($request, 'slug');
             $data = $this->getParams($request, ['name', 'slug', 'content']);
-            $name = $this->getParam($request, 'name');
 
-            $data['slug'] = empty($slug) ? $slugify->slugify($name) : $slug;
-            $articleRepository->insert($data);
+            $article = Builder::create(Article::class, [$data]);
+            $article->setSlug('un-nouvel-article');
+            $articleRepository->insert($article);
             $this->flash->success("L'aticle a bien été créé");
 
             return $this->redirectTo('/blog');

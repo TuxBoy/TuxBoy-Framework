@@ -3,7 +3,9 @@
 namespace Core\Database;
 
 use Core\Builder\Builder;
+use Core\Entity;
 use Core\Exception\DatabaseException;
+use Core\ReflectionAnnotation;
 use Doctrine\DBAL\Connection;
 use Go\ParserReflection\ReflectionClass;
 
@@ -81,5 +83,30 @@ class Database extends Connection
         }
 
         return $entity;
+    }
+
+    /**
+     * @param Entity $entity
+     * @param string $table
+     * @return int
+     */
+    public function write(Entity $entity, string $table)
+    {
+        $reflection = new \ReflectionClass($entity);
+        $fields = [];
+        $values = [];
+        $set = [];
+        foreach ($reflection->getProperties() as $property) {
+            if (!is_null($property->getValue($entity))) {
+                $fields[] = $property->getName(); // Nom des champs
+                $values[] = $property->getValue($entity);
+                $set[] = '?';
+            }
+        }
+        return $this->executeUpdate(
+            "INSERT INTO {$table} (". join(', ', $fields) .") 
+            VALUES (". join(', ', $set) .")",
+            $values
+        );
     }
 }

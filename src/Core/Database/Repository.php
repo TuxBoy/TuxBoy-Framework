@@ -143,13 +143,18 @@ class Repository implements ObjectRepository
     }
 
     /**
-     * @param array $data
-     *
+     * @param $data mixed
      * @return int|null
+     *
      */
-    public function insert(array $data): ?int
+    public function insert($data): ?int
     {
-        $this->getConnection()->insert($this->getTableName(), $data);
+        // C'est une entity => on appelle la méthode write pour l'hydrater auto.
+        if (is_object($data)) {
+            $this->getConnection()->write($data, $this->getTableName());
+        } else {
+            $this->getConnection()->insert($this->getTableName(), $data);
+        }
 
         return $this->getConnection()->lastInsertId();
     }

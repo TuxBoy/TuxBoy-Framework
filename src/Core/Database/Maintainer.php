@@ -50,9 +50,9 @@ class Maintainer
     /**
      * @param array $entities
      *
-     * @return $this
+     * @return Maintainer
      */
-    public function setEntities(array $entities): self
+    public function setEntities(array $entities): Maintainer
     {
         $this->entites = $entities;
 
@@ -221,7 +221,7 @@ class Maintainer
                 $table->addIndex([$field], $field . '_index');
             }
             $table->addForeignKeyConstraint($this->getTable($schema, $className),
-                [$field], ['id'], ['onDelete' => 'CASCADE'], $field . 'contrain'
+                [$field], ['id'], ['onDelete' => 'CASCADE', 'notnull' => false], $field . 'contrain'
             );
         }
         return $field;

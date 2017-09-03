@@ -35,7 +35,7 @@ class ReflectionAnnotation
     {
         $argument = new ReflectionClass($argument);
         // Si le property_name est null, alors on souhaite obtenir les annotations de la classe
-        $this->docComment = null === $property_name
+        $this->docComment = is_null($property_name)
             ? $argument->getDocComment()
             : $argument->getProperty($property_name)->getDocComment();
     }
