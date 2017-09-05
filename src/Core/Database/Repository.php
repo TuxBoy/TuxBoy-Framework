@@ -58,6 +58,20 @@ class Repository implements ObjectRepository
     }
 
     /**
+     * Créé un tableau indexé par l'id de l'élément.
+     *
+     * @return array
+     */
+    public function findList(): array
+    {
+        $items = [];
+        foreach ($this->findAll() as $item) {
+            $categories[$item->id] = $item;
+        }
+        return $items;
+    }
+
+    /**
      * Finds objects by a set of criteria.
      *
      * Optionally sorting and limiting details can be passed. An implementation may throw

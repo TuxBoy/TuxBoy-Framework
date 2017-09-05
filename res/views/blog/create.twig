@@ -8,13 +8,21 @@
         <div class="row">
             <form class="col s12" action="{{ path('blog.new') }}" method="post">
                 <div class="row">
-                    <div class="input-field col s6">
+                    <div class="input-field col s4">
                         <input id="name" type="text" name="name" class="validate">
                         <label for="name">Titre</label>
                     </div>
-                    <div class="input-field col s6">
+                    <div class="input-field col s4">
                         <input id="slug" type="text" name="slug" class="validate">
                         <label for="slug">Slug</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <select name="category_id">
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="category_id">Catégorie :</label>
                     </div>
                 </div>
                 <div class="row">

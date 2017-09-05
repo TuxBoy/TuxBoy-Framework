@@ -71,6 +71,15 @@ class Database extends Connection
         $reflection = new ReflectionClass($class_name);
         $entity = Builder::create($class_name);
         foreach ($reflection->getProperties() as $property) {
+            if ($this->isLinkProperty($entity, $property)) {
+                $foreignEntity = (new ReflectionAnnotation($class_name, $property->getName()))->getAnnotation('var')->getValue();
+                $table = (new ReflectionAnnotation($foreignEntity))->getAnnotation('set')->getValue();
+                $relations = $this->fetchObject("SELECT * FROM {$table} WHERE id = ?", [$result[$property->getName() . '_id']]);
+                if ($relations) {
+                    $setterName = 'set' . ucfirst($property->getName());
+                    $entity->$setterName(current($relations));
+                }
+            }
             // Contruit à la volé le setter de la propriété afin de mettre à jour sa donnée
             $setter_name = 'set' . ucfirst($property->getName());
             if (!method_exists($entity, $setter_name)) {
@@ -98,15 +107,35 @@ class Database extends Connection
         $set = [];
         foreach ($reflection->getProperties() as $property) {
             if (!is_null($property->getValue($entity))) {
-                $fields[] = $property->getName(); // Nom des champs
+                if ($this->isLinkProperty($entity, $property)) {
+                    $fields[] = $property->getName() . '_id';
+                }
+                else {
+                    $fields[] = $property->getName(); // Nom des champs
+                }
                 $values[] = $property->getValue($entity);
                 $set[] = '?';
             }
         }
+
         return $this->executeUpdate(
             "INSERT INTO {$table} (". join(', ', $fields) .") 
             VALUES (". join(', ', $set) .")",
             $values
         );
+    }
+
+    /**
+     * Vérifie si la propriété en de l'entité est un lien de table (@link)
+     *
+     * @param Entity              $entity
+     * @param \ReflectionProperty $property
+     * @return bool
+     */
+    private function isLinkProperty(Entity $entity, \ReflectionProperty $property): bool
+    {
+        $reflectionAnnotation = new ReflectionAnnotation($entity, $property->getName());
+        return $reflectionAnnotation->hasAnnotation('link')
+            && in_array($reflectionAnnotation->getAnnotation('link')->getValue(), ['belongsTo']);
     }
 }

@@ -7,7 +7,10 @@
 
         {% for article in articles %}
            <ul>
-               <h1><a href="/blog/{{ article.slug }}">{{ article.name }}</a></h1>
+               <li>
+                   <a href="/blog/{{ article.slug }}">{{ article.getName() }}</a>
+                   <small>{{ article.category.name }}</small>
+               </li>
            </ul>
         {% endfor %}
     </div>

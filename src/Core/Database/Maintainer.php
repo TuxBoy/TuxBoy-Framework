@@ -216,12 +216,13 @@ class Maintainer
             $foreignTable = $this->getTable($schema, $className);
             $this->createPrimaryKey($foreignTable);
             $options['unsigned'] = true;
+            $options['notnull']  = false;
             $table->addColumn($field, 'integer', $options);
             if (!$table->hasIndex($field . '_index')) {
                 $table->addIndex([$field], $field . '_index');
             }
             $table->addForeignKeyConstraint($this->getTable($schema, $className),
-                [$field], ['id'], ['onDelete' => 'CASCADE', 'notnull' => false], $field . 'contrain'
+                [$field], ['id'], ['onDelete' => 'CASCADE'], $field . '_contrain'
             );
         }
         return $field;
