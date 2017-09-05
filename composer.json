@@ -27,7 +27,8 @@
         "doctrine/dbal": "^2.6",
         "filp/whoops": "^2.1",
         "goaop/framework": "^2.0",
-        "mnapoli/dbal-schema": "^0.2.1"
+        "mnapoli/dbal-schema": "^0.2.1",
+        "cocur/slugify": "^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.2",

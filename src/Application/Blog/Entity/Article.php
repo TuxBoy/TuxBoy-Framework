@@ -2,6 +2,7 @@
 
 namespace TuxBoy\Application\Blog\Entity;
 
+use Cocur\Slugify\Slugify;
 use Core\Entity;
 
 /**
@@ -27,6 +28,12 @@ class Article extends Entity
      */
     public $content;
 
+    /**
+     * @link belongsTo
+     *
+     * @var \TuxBoy\Application\Blog\Entity\Category
+     */
+    public $category;
 
     /**
      * @return mixed
@@ -57,7 +64,11 @@ class Article extends Entity
      */
     public function setSlug($slug)
     {
-        $this->slug = $slug;
+        if (isset($this->name) && !isset($this->slug)) {
+            $this->slug = (new Slugify())->slugify($this->name);
+        } else {
+            $this->slug = $slug;
+        }
     }
 
     /**
