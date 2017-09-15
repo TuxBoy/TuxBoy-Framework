@@ -10,6 +10,7 @@ use Core\Exception\MaintainerEcxeption;
 use Core\ReflectionAnnotation;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * Maintainer.
@@ -139,9 +140,12 @@ class Maintainer
                 $reflectionAnnotation = new ReflectionAnnotation($entity, $field);
                 $type_name = $reflectionAnnotation->getAnnotation('var')->getValue();
                 $options = [];
-                $options['length'] = $reflectionAnnotation->getAnnotation('length')->getValue()
-                    ? $reflectionAnnotation->getAnnotation('length')->getValue()
-                    : 255;
+                if ($type_name === Type::STRING && $reflectionAnnotation->getAnnotation('length')->getValue()) {
+                    $options['length'] = $reflectionAnnotation->getAnnotation('length')->getValue();
+                }
+                elseif ($type_name === Type::STRING && !$reflectionAnnotation->getAnnotation('length')->getValue()) {
+                    $options['length'] = 255;
+                }
                 if (!array_key_exists($field, $table->getColumns())) {
                     if (($type_name === '\DateTime') || ($type_name === 'DateTime')) {
                         $type_name = 'datetime';
