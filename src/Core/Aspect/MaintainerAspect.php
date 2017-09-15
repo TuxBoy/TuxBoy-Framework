@@ -57,7 +57,7 @@ class MaintainerAspect implements Aspect
             }
 
             if ($this->debug) {
-                echo ' Maintainer is running ' . $methodInvocation->getMethod()->getName();
+                // echo ' Maintainer is running ' . $methodInvocation->getMethod()->getName();
             }
         }
     }

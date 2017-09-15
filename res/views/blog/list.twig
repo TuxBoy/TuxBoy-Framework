@@ -1,0 +1,33 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Liste des articles</h1>
+        <a class="btn-floating btn-large waves-effect waves-light red" href="{{ path('blog.new') }}"><i class="material-icons">add</i></a>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Lien</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for article in articles %}
+            <tr>
+                <td>{{ article.id }}</td>
+                <td>{{ article.name }}</td>
+                <td>{{ article.slug }}</td>
+                <td>
+                    <a class="waves-effect waves-light btn" href="{{ path('blog.update', {'id': article.id}) }}">Editer</a>
+                    <a class="waves-effect waves-light btn red">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

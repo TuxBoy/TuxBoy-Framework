@@ -12,6 +12,12 @@ use Core\Entity;
  */
 class Article extends Entity
 {
+
+    /**
+     * @var integer
+     */
+    public $id;
+
     /**
      * @var string
      */
@@ -101,5 +107,21 @@ class Article extends Entity
     public function setCategory($category)
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param $id int
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }

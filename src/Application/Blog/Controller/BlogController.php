@@ -23,6 +23,12 @@ class BlogController extends Controller
         return $this->twig->render('blog/index.twig', compact('articles'));
     }
 
+    public function listToArticles(ArticleRepository $articleRepository)
+    {
+        $articles = $articleRepository->findAll();
+        return $this->twig->render('blog/list.twig', compact('articles'));
+    }
+
     /**
      * @param ServerRequest      $request
      * @param ArticleRepository  $articleRepository

@@ -2,81 +2,43 @@
 
 namespace Core\Router;
 
-use FastRoute\Dispatcher\GroupCountBased as FastDispatcher;
-use FastRoute\RouteCollector;
+use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Router\FastRouteRouter;
+use Zend\Expressive\Router\Route as ZendRoute;
 
-class Router extends RouteCollector
+/**
+ * Class Router
+ */
+class Router
 {
-    /**
-     * @var array
-     */
-    private $routes = [];
 
     /**
-     * @param string      $method
-     * @param string      $route
-     * @param callable    $handle
-     * @param null|string $name
-     *
-     * @return Router
+     * @var FastRouteRouter
      */
-    public function add($method, $route, $handle, ?string $name = null): Router
+    private $router;
+
+    public function __construct()
     {
-        $this->routes[$name] = $route;
-        $this->addRoute($method, $route, $handle);
+        $this->router = new FastRouteRouter;
+    }
 
-        return $this;
+    public function get(string $path, callable $callable, string $name)
+    {
+        $this->router->addRoute(new ZendRoute($path, $callable, ['GET'], $name));
     }
 
     /**
-     * @param string      $route
-     * @param mixed       $handler
-     * @param null|string $name
-     *
-     * @return Router
+     * @param ServerRequestInterface $request
+     * @return Route
      */
-    public function get($route, $handler, ?string $name = null): Router
+    public function match(ServerRequestInterface $request): ?Route
     {
-        $this->add('GET', $route, $handler, $name);
-
-        return $this;
+        $result = $this->router->match($request);
+        return $result->isSuccess() ? new Route(
+            $result->getMatchedRouteName(),
+            $result->getMatchedMiddleware(),
+            $result->getMatchedParams()
+        ) : null;
     }
 
-    /**
-     * @param string      $route
-     * @param mixed       $handler
-     * @param null|string $name
-     *
-     * @return Router
-     */
-    public function post($route, $handler, ?string $name = null): Router
-    {
-        $this->add('POST', $route, $handler, $name);
-
-        return $this;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @throws RouterException
-     *
-     * @return string
-     */
-    public function getUrl(string $name): string
-    {
-        if (!array_key_exists($name, $this->routes)) {
-            throw new RouterException('Aucune route ne correspond au nom donnée');
-        }
-
-        return $this->routes[$name];
-    }
-
-    /**
-     * @return FastDispatcher
-     */
-    public function getDispatcher(): FastDispatcher
-    {
-        return new FastDispatcher($this->getData());
-    }
 }
