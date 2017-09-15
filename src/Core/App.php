@@ -31,9 +31,15 @@ class App
     public $router;
 
     /**
-     * @param array $custom_config
+     * @var array
      */
-    public function __construct(array $custom_config = [])
+    private $applications;
+
+    /**
+     * @param array $custom_config
+     * @param array $applications
+     */
+    public function __construct(array $custom_config = [], array $applications = [])
     {
         $container_builder = new ContainerBuilder();
         $default_config = require __DIR__ . '/config.php';
@@ -56,6 +62,20 @@ class App
         foreach ($aspects as $aspect) {
             $aspectContainer->registerAspect($aspect);
         }
+        $this->applications = $applications;
+
+        $this->initApplications();
+    }
+
+    private function initApplications()
+    {
+        foreach ($this->applications as $application) {
+            $getFileRouter = str_replace('Application', '', $application);
+            $getFileRouter = str_replace('App', '', $getFileRouter);
+            $getFileRouter = str_replace('\\', '/', $getFileRouter);
+            $app = $this;
+            require dirname(__DIR__) . '/Application/' . $getFileRouter . 'routes.php';
+        }
     }
 
     /**
@@ -72,6 +92,10 @@ class App
         }
     }
 
+    /**
+     * @param array $config
+     * @param array $default_config
+     */
     public function addCoreConfig(array $config, array $default_config): void
     {
         if (!empty($config)) {
@@ -93,40 +117,18 @@ class App
      */
     public function run(ServerRequestInterface $request): ResponseInterface
     {
-        $request_method = $request->getMethod();
-        $path_uri = $request->getUri()->getPath();
         $router = $this->container->get(Router::class);
-        $route = $router->getDispatcher()->dispatch($request_method, $path_uri);
+        $route = $router->match($request);
 
-        switch ($route[0]) {
-            case Dispatcher::NOT_FOUND:
-                $response = new Response();
-                $response->getBody()->write('Page Not Found.');
-
-                return $response->withStatus(404);
-                break;
-            case Dispatcher::METHOD_NOT_ALLOWED:
-                $response = new Response();
-                $response->getBody()->write('Page Not Allow.');
-
-                return $response->withStatus(405);
-                break;
-            case Dispatcher::FOUND:
-                $controller = $route[1];
-                $parameters = $route[2];
-                $parameters = array_merge($parameters, ['request' => $request]);
-                $response = $this->container->call($controller, $parameters);
-                if (is_string($response)) {
-                    return new Response(200, [], $response);
-                } elseif ($response instanceof ResponseInterface) {
-                    return $response;
-                }
-
-                throw new Exception('The response is not a string or an instance of ResponseInterface');
-                break;
+        $parameters = array_merge($route->getParams(), ['request' => $request]);
+        $response = $this->container->call($route->getCallback(), $parameters);
+        if (is_string($response)) {
+            return new Response(200, [], $response);
+        } elseif ($response instanceof ResponseInterface) {
+            return $response;
         }
+        throw new Exception('The response is not a string or an instance of ResponseInterface');
 
-        return null;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace TuxBoy\Application\Blog\Entity;
+namespace App\Blog\Entity;
 
 use Cocur\Slugify\Slugify;
 use Core\Entity;
@@ -12,6 +12,12 @@ use Core\Entity;
  */
 class Article extends Entity
 {
+
+    /**
+     * @var integer
+     */
+    public $id;
+
     /**
      * @var string
      */
@@ -31,7 +37,7 @@ class Article extends Entity
     /**
      * @link belongsTo
      *
-     * @var \TuxBoy\Application\Blog\Entity\Category
+     * @var \App\Blog\Entity\Category
      */
     public $category;
 
@@ -101,5 +107,21 @@ class Article extends Entity
     public function setCategory($category)
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param $id int
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }

@@ -2,81 +2,71 @@
 
 namespace Core\Router;
 
-use FastRoute\Dispatcher\GroupCountBased as FastDispatcher;
-use FastRoute\RouteCollector;
+use Psr\Http\Message\ServerRequestInterface;
+use Zend\Expressive\Router\FastRouteRouter;
+use Zend\Expressive\Router\Route as ZendRoute;
 
-class Router extends RouteCollector
+/**
+ * Class Router
+ */
+class Router
 {
-    /**
-     * @var array
-     */
-    private $routes = [];
 
     /**
-     * @param string      $method
-     * @param string      $route
-     * @param callable    $handle
-     * @param null|string $name
-     *
-     * @return Router
+     * @var FastRouteRouter
      */
-    public function add($method, $route, $handle, ?string $name = null): Router
+    private $router;
+
+    /**
+     * Router constructor.
+     */
+    public function __construct()
     {
-        $this->routes[$name] = $route;
-        $this->addRoute($method, $route, $handle);
-
-        return $this;
+        $this->router = new FastRouteRouter;
     }
 
     /**
-     * @param string      $route
-     * @param mixed       $handler
-     * @param null|string $name
-     *
-     * @return Router
+     * @param string $path
+     * @param callable $callable
+     * @param string $name
      */
-    public function get($route, $handler, ?string $name = null): Router
+    public function get(string $path, $callable, ?string $name = null)
     {
-        $this->add('GET', $route, $handler, $name);
-
-        return $this;
+        $this->router->addRoute(new ZendRoute($path, $callable, ['GET'], $name));
     }
 
     /**
-     * @param string      $route
-     * @param mixed       $handler
-     * @param null|string $name
-     *
-     * @return Router
+     * @param string $path
+     * @param callable $callable
+     * @param string $name
      */
-    public function post($route, $handler, ?string $name = null): Router
+    public function post(string $path, $callable, ?string $name = null)
     {
-        $this->add('POST', $route, $handler, $name);
+        $this->router->addRoute(new ZendRoute($path, $callable, ['POST'], $name));
+    }
 
-        return $this;
+    /**
+     * @param ServerRequestInterface $request
+     * @return Route
+     */
+    public function match(ServerRequestInterface $request): ?Route
+    {
+        $result = $this->router->match($request);
+        return $result->isSuccess() ? new Route(
+            $result->getMatchedRouteName(),
+            $result->getMatchedMiddleware(),
+            $result->getMatchedParams()
+        ) : null;
     }
 
     /**
      * @param string $name
-     *
-     * @throws RouterException
-     *
-     * @return string
+     * @param array $params
+     * @return null|string
      */
-    public function getUrl(string $name): string
+    public function generateUri(string $name, array $params = []) : ?string
     {
-        if (!array_key_exists($name, $this->routes)) {
-            throw new RouterException('Aucune route ne correspond au nom donnée');
-        }
-
-        return $this->routes[$name];
+        return $this->router->generateUri($name, $params);
     }
 
-    /**
-     * @return FastDispatcher
-     */
-    public function getDispatcher(): FastDispatcher
-    {
-        return new FastDispatcher($this->getData());
-    }
 }

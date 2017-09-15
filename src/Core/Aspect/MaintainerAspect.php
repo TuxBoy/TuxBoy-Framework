@@ -40,7 +40,7 @@ class MaintainerAspect implements Aspect
     /**
      * @param MethodInvocation $methodInvocation
      *
-     * @Before("execution(public TuxBoy\Application\*\Controller\*->*(*))")
+     * @Before("execution(public App\*\Controller\*->*(*))")
      */
     public function beforeExcecution(MethodInvocation $methodInvocation)
     {
@@ -57,7 +57,7 @@ class MaintainerAspect implements Aspect
             }
 
             if ($this->debug) {
-                echo ' Maintainer is running ' . $methodInvocation->getMethod()->getName();
+                // echo ' Maintainer is running ' . $methodInvocation->getMethod()->getName();
             }
         }
     }

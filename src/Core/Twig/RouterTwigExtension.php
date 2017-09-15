@@ -26,10 +26,11 @@ class RouterTwigExtension extends \Twig_Extension
     /**
      * @param string $name
      *
-     * @return string
+     * @param array  $params
+     * @return string|null
      */
-    public function pathFor(string $name): string
+    public function pathFor(string $name, array $params = []): ?string
     {
-        return $this->router->getUrl($name);
+        return $this->router->generateUri($name, $params);
     }
 }

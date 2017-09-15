@@ -70,7 +70,10 @@ return [
                     get(RouterTwigExtension::class),
                     get(FlashExtension::class)
             ],
-            Router::class           => object()->constructor(new Std(), new GroupCountBased()),
+            Std::class => object(),
+            GroupCountBased::class => object(),
+            \FastRoute\RouteCollector::class => object()->constructor(get(Std::class), get(GroupCountBased::class)),
+            Router::class           => object()->constructor(get(\FastRoute\RouteCollector::class)),
             Twig_Environment::class => factory(TwigFactory::class),
             AspectContainer::class  => object(GoAspectContainer::class),
             'goaop.aspect'          => [

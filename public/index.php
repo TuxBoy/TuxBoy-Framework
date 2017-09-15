@@ -9,8 +9,11 @@ if (file_exists(__DIR__ . '/../.env')) {
     $dotenv->load();
 }
 $config = require dirname(__DIR__) . '/config.php';
-$app = new Core\App($config);
-require __DIR__ . '/../res/routes.php';
+$applications = [
+    \App\Home\Application::class,
+    \App\Blog\Application::class
+];
+$app = new Core\App($config, $applications);
 
 $response = $app->run(ServerRequest::fromGlobals());
 \Http\Response\send($response);

@@ -1,9 +1,9 @@
 <?php
 
-namespace TuxBoy\Application\Blog\Repository;
+namespace App\Blog\Repository;
 
 use Core\Database\Repository;
-use TuxBoy\Application\Blog\Entity\Article;
+use App\Blog\Entity\Article;
 
 class ArticleRepository extends Repository
 {

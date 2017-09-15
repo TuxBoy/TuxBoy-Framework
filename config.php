@@ -14,7 +14,7 @@ return [
 	Priority::APP => [],
 
 	Priority::CORE => [
-		\TuxBoy\Application\Blog\Entity\Article::class => [
+		\App\Blog\Entity\Article::class => [
 			\Core\Tools\HasTime::class
 		]
 	],
