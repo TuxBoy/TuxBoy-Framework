@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "TuxBoy\\": "src/",
+            "App\\": "src/Application",
             "Core\\": "src/Core/"
         }
     },

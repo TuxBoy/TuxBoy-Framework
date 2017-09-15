@@ -1,6 +1,6 @@
 <?php
 
-namespace TuxBoy\Application\Blog\Entity;
+namespace App\Blog\Entity;
 
 use Core\Entity;
 use Core\Tools\HasName;

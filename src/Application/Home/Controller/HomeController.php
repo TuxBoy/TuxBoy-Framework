@@ -1,6 +1,6 @@
 <?php
 
-namespace TuxBoy\Application\Home\Controller;
+namespace App\Home\Controller;
 
 use Core\Controller\Controller;
 

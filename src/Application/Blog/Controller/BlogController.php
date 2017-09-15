@@ -1,14 +1,14 @@
 <?php
 
-namespace TuxBoy\Application\Blog\Controller;
+namespace App\Blog\Controller;
 
 use Core\Builder\Builder;
 use Core\Controller\Controller;
 use GuzzleHttp\Psr7\ServerRequest;
-use TuxBoy\Application\Blog\Entity\Article;
-use TuxBoy\Application\Blog\Entity\Category;
-use TuxBoy\Application\Blog\Repository\ArticleRepository;
-use TuxBoy\Application\Blog\Repository\CategoryRepository;
+use App\Blog\Entity\Article;
+use App\Blog\Entity\Category;
+use App\Blog\Repository\ArticleRepository;
+use App\Blog\Repository\CategoryRepository;
 
 /**
  * BlogController.

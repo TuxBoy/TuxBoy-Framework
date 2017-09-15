@@ -17,14 +17,32 @@ class Router
      */
     private $router;
 
+    /**
+     * Router constructor.
+     */
     public function __construct()
     {
         $this->router = new FastRouteRouter;
     }
 
-    public function get(string $path, callable $callable, string $name)
+    /**
+     * @param string $path
+     * @param callable $callable
+     * @param string $name
+     */
+    public function get(string $path, $callable, ?string $name = null)
     {
         $this->router->addRoute(new ZendRoute($path, $callable, ['GET'], $name));
+    }
+
+    /**
+     * @param string $path
+     * @param callable $callable
+     * @param string $name
+     */
+    public function post(string $path, $callable, ?string $name = null)
+    {
+        $this->router->addRoute(new ZendRoute($path, $callable, ['POST'], $name));
     }
 
     /**
@@ -39,6 +57,16 @@ class Router
             $result->getMatchedMiddleware(),
             $result->getMatchedParams()
         ) : null;
+    }
+
+    /**
+     * @param string $name
+     * @param array $params
+     * @return null|string
+     */
+    public function generateUri(string $name, array $params = []) : ?string
+    {
+        return $this->router->generateUri($name, $params);
     }
 
 }

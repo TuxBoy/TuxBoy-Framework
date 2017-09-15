@@ -1,13 +1,9 @@
 <?php
 
+use App\Blog\Controller\BlogController;
 use Core\Router\Router;
-use TuxBoy\Application\Blog\Controller\BlogController;
-use TuxBoy\Application\Blog\Controller\CategoryController;
-use TuxBoy\Application\Home\Controller\HomeController;
 
 $router = $app->container->get(Router::class);
-
-$router->get('/', [HomeController::class, 'index'], 'root');
 $router->get('/blog', [BlogController::class, 'index'], 'blog.index');
 $router->get('/blog/new', [BlogController::class, 'create'], 'blog.new');
 $router->get('/blog/list', [BlogController::class, 'listToArticles'], 'blog.list.articles');

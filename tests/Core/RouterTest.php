@@ -32,12 +32,17 @@ class RouterTest extends TestCase
         $this->assertEquals('blog.view', $route->getName());
         $this->assertEquals('hello', call_user_func_array($route->getCallback(), [$request]));
         $this->assertEquals(['slug' => 'mon-slug', 'id' => '8'], $route->getParams());
+        // Test invalid url
+        $route = $this->router->match(new ServerRequest('GET', '/blog/mon_slug-8'));
+        $this->assertEquals(null, $route);
     }
 
     public function testGenerateUri()
     {
         $this->router->get('/blog', function () { return 'Blog'; }, 'blog');
         $this->router->get('/blog/{slug:[a-z0-9\-]+}-{id:\d+}', function () { return 'hello'; }, 'blog.view');
+        $uri = $this->router->generateUri('blog.view', ['slug' => 'mon-slug', 'id' => 18]);
+        $this->assertEquals('/blog/mon-slug-18', $uri);
     }
 
 }

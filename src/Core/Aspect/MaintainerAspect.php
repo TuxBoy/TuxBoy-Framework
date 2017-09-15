@@ -40,7 +40,7 @@ class MaintainerAspect implements Aspect
     /**
      * @param MethodInvocation $methodInvocation
      *
-     * @Before("execution(public TuxBoy\Application\*\Controller\*->*(*))")
+     * @Before("execution(public App\*\Controller\*->*(*))")
      */
     public function beforeExcecution(MethodInvocation $methodInvocation)
     {

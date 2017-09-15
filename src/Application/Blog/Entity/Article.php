@@ -1,6 +1,6 @@
 <?php
 
-namespace TuxBoy\Application\Blog\Entity;
+namespace App\Blog\Entity;
 
 use Cocur\Slugify\Slugify;
 use Core\Entity;
@@ -37,7 +37,7 @@ class Article extends Entity
     /**
      * @link belongsTo
      *
-     * @var \TuxBoy\Application\Blog\Entity\Category
+     * @var \App\Blog\Entity\Category
      */
     public $category;
 

@@ -1,11 +1,11 @@
 <?php
-namespace TuxBoy\Application\Blog\Controller;
+namespace App\Blog\Controller;
 
 use Core\Builder\Builder;
 use Core\Controller\Controller;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use TuxBoy\Application\Blog\Entity\Category;
-use TuxBoy\Application\Blog\Repository\CategoryRepository;
+use App\Blog\Entity\Category;
+use App\Blog\Repository\CategoryRepository;
 
 class CategoryController extends Controller
 {

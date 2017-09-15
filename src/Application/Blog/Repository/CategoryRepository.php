@@ -1,8 +1,8 @@
 <?php
-namespace TuxBoy\Application\Blog\Repository;
+namespace App\Blog\Repository;
 
 use Core\Database\Repository;
-use TuxBoy\Application\Blog\Entity\Category;
+use App\Blog\Entity\Category;
 
 class CategoryRepository extends Repository
 {
