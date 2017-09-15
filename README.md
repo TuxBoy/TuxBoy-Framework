@@ -38,5 +38,8 @@ $ phpunit
 - [ ] Ajouter un système de middleware (ou un système de plugin).
 - [X] Intégrer GoPhp framework pour utiliser l'AOP (A voir dans l'usage).
 - [X] Ajouter Whoops pour afficher mieux les erreurs.
-- [ ] Intégrer Phinx pour gérer les migrations.
-- [ ] Continuer l'intégration de Doctrine/Dbal 
+- [X] Création d'un système de migration auto via doctrine dbal (Maintener).
+- [ ] Continuer l'intégration de Doctrine/Dbal (Penser peut être à voir côté ORM)
+- [ ] Améliorer la partie Application.
+- [ ] Sépparer les vues et les mettres dans leur application.
+- [ ] Rendre une application (Module à voir pour le nom) autonome, que l'on puisse l'importer via composer
