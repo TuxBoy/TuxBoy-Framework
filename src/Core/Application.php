@@ -3,27 +3,32 @@ namespace Core;
 
 use Core\Router\Router;
 
-abstract class Application
+class Application implements ApplicationInterface
 {
-
 
     public function getName(): string
     {
         return str_replace('\\Application', '', get_class($this));
     }
 
+
     /**
      * Définie les routes de l'application.
      *
      * @param Router $router
      */
-    abstract public function getRoutes(Router $router): void;
+    public function getRoutes(Router $router): void
+    {
+        // TODO: Implement getRoutes() method.
+    }
 
     /**
      * Pour ajouter la configuration au container de son application
      *
      * @return array
      */
-    abstract public function addConfig(): array;
-
+    public function addConfig(): array
+    {
+        // TODO: Implement addConfig() method.
+    }
 }

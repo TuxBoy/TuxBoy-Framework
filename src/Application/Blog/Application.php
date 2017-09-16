@@ -3,12 +3,26 @@ namespace App\Blog;
 
 use App\Blog\Controller\BlogController;
 use App\Blog\Controller\CategoryController;
-use Core;
+use App\Blog\Entity\Article;
+use App\Blog\Entity\Category;
+use Core\ApplicationInterface;
 use Core\Router\Router;
 use function DI\add;
 
-class Application extends Core\Application
+
+/**
+ * Class Application
+ */
+class Application implements ApplicationInterface
 {
+
+    /**
+     * @return array
+     */
+    public function entites(): array
+    {
+        return [Article::class, Category::class];
+    }
 
     /**
      * @param Router $router
@@ -35,7 +49,16 @@ class Application extends Core\Application
         return [
             'twig.path' => add([
                 'blog' => __DIR__ . '/views/'
-            ])
+            ]),
+            'entities' => add([
+                Article::class,
+                Category::class
+            ]),
         ];
+    }
+
+    public function getName(): string
+    {
+        return str_replace('\\Application', '', get_class($this));
     }
 }

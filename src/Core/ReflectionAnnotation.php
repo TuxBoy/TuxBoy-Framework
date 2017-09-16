@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Exception;
 use ReflectionClass;
 
@@ -26,6 +27,11 @@ class ReflectionAnnotation
     private $docComment;
 
     /**
+     * @var ReflectionClass
+     */
+    private $argument;
+
+    /**
      * ReflectionAnnotation constructor.
      *
      * @param string|object $argument      Le nom de la classe ou l'object que l'on souhaite récupérer les annotations
@@ -33,11 +39,11 @@ class ReflectionAnnotation
      */
     public function __construct($argument, string $property_name = null)
     {
-        $argument = new ReflectionClass($argument);
+        $this->argument = new ReflectionClass($argument);
         // Si le property_name est null, alors on souhaite obtenir les annotations de la classe
         $this->docComment = is_null($property_name)
-            ? $argument->getDocComment()
-            : $argument->getProperty($property_name)->getDocComment();
+            ? $this->argument->getDocComment()
+            : $this->argument->getProperty($property_name)->getDocComment();
     }
 
     /**
@@ -125,5 +131,14 @@ class ReflectionAnnotation
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $annotationName
+     * @return null|object
+     */
+    public function getClassAnnotation(string $annotationName)
+    {
+        return (new AnnotationReader)->getClassAnnotation($this->argument, $annotationName);
     }
 }

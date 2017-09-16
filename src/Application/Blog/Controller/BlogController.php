@@ -6,7 +6,6 @@ use Core\Builder\Builder;
 use Core\Controller\Controller;
 use GuzzleHttp\Psr7\ServerRequest;
 use App\Blog\Entity\Article;
-use App\Blog\Entity\Category;
 use App\Blog\Repository\ArticleRepository;
 use App\Blog\Repository\CategoryRepository;
 
@@ -15,8 +14,11 @@ use App\Blog\Repository\CategoryRepository;
  */
 class BlogController extends Controller
 {
-    public $entities = [Article::class, Category::class];
 
+    /**
+     * @param ArticleRepository $articleRepository
+     * @return string
+     */
     public function index(ArticleRepository $articleRepository)
     {
         $articles = $articleRepository->findAll();

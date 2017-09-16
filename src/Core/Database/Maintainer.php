@@ -2,6 +2,7 @@
 
 namespace Core\Database;
 
+use Core\Annotation\Set;
 use Core\Builder\Builder;
 use Core\Builder\Namespaces;
 use Core\Exception\AnnotationException;
@@ -92,11 +93,11 @@ class Maintainer
      */
     private function getTable(Schema $schema, string $entity): Table
     {
-        $reflectionAnnotation = new ReflectionAnnotation($entity);
-        if (!$reflectionAnnotation->getAnnotation('set')->getValue()) {
+        $annotion = new ReflectionAnnotation($entity);
+        if (!$annotion->getClassAnnotation(Set::class)->tableName) {
             throw new DatabaseException('Not table name defined');
         }
-        $setTable = $reflectionAnnotation->getAnnotation('set')->getValue();
+        $setTable = $annotion->getClassAnnotation(Set::class)->tableName;
 
         return $schema->hasTable($setTable)
             ? $schema->getTable($setTable)

@@ -3,12 +3,13 @@
 namespace App\Blog\Entity;
 
 use Cocur\Slugify\Slugify;
+use Core\Annotation\Set;
 use Core\Entity;
 
 /**
  * Class Article.
  *
- * @set posts
+ * @Set(tableName="posts")
  */
 class Article extends Entity
 {
@@ -86,7 +87,7 @@ class Article extends Entity
     }
 
     /**
-     * @param $content text
+     * @param $content string
      */
     public function setContent($content)
     {

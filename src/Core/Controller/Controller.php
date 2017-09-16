@@ -2,6 +2,7 @@
 
 namespace Core\Controller;
 
+use Core\Annotation\Maintainer;
 use Core\Session\FlashService;
 use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
@@ -27,6 +28,7 @@ class Controller
 
     /**
      * Controller constructor.
+     * @Maintainer
      *
      * @param ContainerInterface $container
      * @param Twig_Environment   $twig

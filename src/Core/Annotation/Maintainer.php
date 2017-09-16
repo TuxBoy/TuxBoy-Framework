@@ -8,8 +8,8 @@ use Doctrine\Common\Annotations\Annotation;
  * Class Initialize.
  *
  * @Annotation
- * @Annotation\Target("METHOD")
+ * @Annotation\Target("CLASS")
  */
-class Initialize extends Annotation
+class Maintainer extends Annotation
 {
 }

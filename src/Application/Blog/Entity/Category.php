@@ -2,13 +2,13 @@
 
 namespace App\Blog\Entity;
 
+use Core\Annotation\Set;
 use Core\Entity;
 use Core\Tools\HasName;
 
 /**
  * Category.
- *
- * @set categories
+ * @Set(tableName="categories")
  */
 class Category extends Entity
 {
@@ -20,7 +20,6 @@ class Category extends Entity
     public $id;
 
     /**
-     * @length 60
      *
      * @var string
      */

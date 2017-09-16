@@ -2,8 +2,11 @@
 
 namespace Core\Database;
 
+use Core\Annotation\Set;
 use Core\Builder\Namespaces;
 use Core\ReflectionAnnotation;
+use Doctrine\Common\Annotations\Annotation;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\Connection;
 
@@ -130,8 +133,8 @@ class Repository implements ObjectRepository
         if (null !== static::$TABLE) {
             return static::$TABLE;
         }
-
-        return (new ReflectionAnnotation($this->getEntity()))->getAnnotation('set')->getValue();
+        $annotation = (new ReflectionAnnotation($this->getEntity()))->getClassAnnotation(Set::class);
+        return $annotation->tableName;
     }
 
     /**

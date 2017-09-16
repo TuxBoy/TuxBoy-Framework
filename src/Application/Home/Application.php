@@ -2,11 +2,11 @@
 namespace App\Home;
 
 use App\Home\Controller\HomeController;
-use Core;
+use Core\ApplicationInterface;
 use Core\Router\Router;
 use function DI\add;
 
-class Application extends Core\Application
+class Application implements ApplicationInterface
 {
     /**
      * @param Router $router
@@ -26,7 +26,12 @@ class Application extends Core\Application
         return [
             'twig.path' => add([
                 'home' => __DIR__ . '/views/'
-            ])
+            ]),
         ];
+    }
+
+    public function getName(): string
+    {
+        return str_replace('\\Application', '', get_class($this));
     }
 }

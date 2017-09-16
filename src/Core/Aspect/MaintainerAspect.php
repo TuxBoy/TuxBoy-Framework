@@ -6,6 +6,7 @@ use Core\Database\Maintainer;
 use Go\Aop\Aspect;
 use Go\Aop\Intercept\MethodInvocation;
 use Go\Lang\Annotation\Before;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class MaintainerAspect.
@@ -30,6 +31,12 @@ class MaintainerAspect implements Aspect
      */
     private $auto;
 
+    /**
+     * MaintainerAspect constructor.
+     * @param Maintainer $maintainer
+     * @param bool $debug
+     * @param bool $auto
+     */
     public function __construct(Maintainer $maintainer, bool $debug, bool $auto)
     {
         $this->debug = $debug;
@@ -40,15 +47,17 @@ class MaintainerAspect implements Aspect
     /**
      * @param MethodInvocation $methodInvocation
      *
-     * @Before("execution(public App\*\Controller\*->*(*))")
+     * @Before("@execution(Core\Annotation\Maintainer)")
      */
-    public function beforeExcecution(MethodInvocation $methodInvocation)
+    public function beforeAllExecution(MethodInvocation $methodInvocation)
     {
         if ($this->auto) {
-            if (isset($methodInvocation->getThis()->entities)) {
+            /** @var $container ContainerInterface */
+            $container = current($methodInvocation->getArguments());
+            if (null !== $container->get('entities') && !empty($container->get('entities'))) {
                 $entities = array_map(function ($entity) {
                     return $entity;
-                }, $methodInvocation->getThis()->entities);
+                }, $container->get('entities'));
                 if (!empty($entities)) {
                     foreach ($entities as $entity) {
                         $this->maintainer->updateTable($entity);

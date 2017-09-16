@@ -12,6 +12,7 @@ use Core\Tools\Whoops;
 use Core\Twig\FlashExtension;
 use Core\Twig\RouterTwigExtension;
 use Core\Twig\TwigFactory;
+use function DI\add;
 use Doctrine\DBAL\DriverManager;
 use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteParser\Std;
@@ -70,6 +71,9 @@ return [
                 get(RouterTwigExtension::class),
                 get(FlashExtension::class)
         ],
+        'annotations' => add([
+            \Core\Annotation\Set::class,
+        ]),
         Std::class => object(),
         GroupCountBased::class => object(),
         \FastRoute\RouteCollector::class => object()->constructor(get(Std::class), get(GroupCountBased::class)),
@@ -77,8 +81,8 @@ return [
         Twig_Environment::class => factory(TwigFactory::class),
         AspectContainer::class  => object(GoAspectContainer::class),
         'goaop.aspect'          => [
-                object(MaintainerAspect::class)
-        ->constructor(get(Maintainer::class), get('dev'), get('migration.auto'))
+            object(MaintainerAspect::class)
+                ->constructor(get(Maintainer::class), get('dev'), get('migration.auto'))
         ],
         Maintainer::class       => object()->constructorParameter('database', get(Database::class)),
         HandlerInterface::class => object(Whoops::class),

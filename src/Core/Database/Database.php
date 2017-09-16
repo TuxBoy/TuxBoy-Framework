@@ -2,6 +2,7 @@
 
 namespace Core\Database;
 
+use Core\Annotation\Set;
 use Core\Builder\Builder;
 use Core\Entity;
 use Core\Exception\DatabaseException;
@@ -73,7 +74,7 @@ class Database extends Connection
         foreach ($reflection->getProperties() as $property) {
             if ($this->isLinkProperty($entity, $property)) {
                 $foreignEntity = (new ReflectionAnnotation($class_name, $property->getName()))->getAnnotation('var')->getValue();
-                $table = (new ReflectionAnnotation($foreignEntity))->getAnnotation('set')->getValue();
+                $table = (new ReflectionAnnotation($foreignEntity))->getClassAnnotation(Set::class)->tableName;
                 $relations = $this->fetchObject("SELECT * FROM {$table} WHERE id = ?", [$result[$property->getName() . '_id']]);
                 if ($relations) {
                     $setterName = 'set' . ucfirst($property->getName());

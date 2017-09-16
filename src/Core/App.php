@@ -7,6 +7,7 @@ use Core\Handler\HandlerInterface;
 use Core\Plugin\Plugin;
 use Core\Router\Router;
 use DI\ContainerBuilder;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Exception;
 use Go\Core\AspectKernel;
 use GuzzleHttp\Psr7\Response;
@@ -57,6 +58,9 @@ class App
         // Active le handle pour afficher les erreurs
         $this->container->get(HandlerInterface::class)->handle();
 
+        foreach ($this->getContainer()->get('annotations') as $annotation) {
+            AnnotationRegistry::loadAnnotationClass($annotation);
+        }
         // Il faudra réfactorer la partie GoAOP dans PHP-DI
         $aspectContainer = $kernel->getContainer();
         $aspects = $this->getContainer()->get('goaop.aspect');
