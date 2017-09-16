@@ -65,7 +65,7 @@ return [
 
             return $kernel->getContainer();
         },
-        'twig.path'       => string('{basepath}/res/views'),
+        'twig.path'       => \DI\add([string('{basepath}/res/views')]),
         'twig.extensions' => [
                 get(RouterTwigExtension::class),
                 get(FlashExtension::class)

@@ -32,6 +32,10 @@ class Application extends Core\Application
      */
     public function addConfig(): array
     {
-        return [];
+        return [
+            'twig.path' => add([
+                'blog' => __DIR__ . '/views/'
+            ])
+        ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Home;
 use App\Home\Controller\HomeController;
 use Core;
 use Core\Router\Router;
+use function DI\add;
 
 class Application extends Core\Application
 {
@@ -22,6 +23,10 @@ class Application extends Core\Application
      */
     public function addConfig(): array
     {
-        return [];
+        return [
+            'twig.path' => add([
+                'home' => __DIR__ . '/views/'
+            ])
+        ];
     }
 }

@@ -20,13 +20,13 @@ class BlogController extends Controller
     public function index(ArticleRepository $articleRepository)
     {
         $articles = $articleRepository->findAll();
-        return $this->twig->render('blog/index.twig', compact('articles'));
+        return $this->twig->render('@blog/index.twig', compact('articles'));
     }
 
     public function listToArticles(ArticleRepository $articleRepository)
     {
         $articles = $articleRepository->findAll();
-        return $this->twig->render('blog/list.twig', compact('articles'));
+        return $this->twig->render('@blog/list.twig', compact('articles'));
     }
 
     /**
@@ -48,13 +48,13 @@ class BlogController extends Controller
             return $this->redirectTo('/blog');
         }
         $categories = $categoryRepository->findAll();
-        return $this->twig->render('blog/create.twig', compact('categories'));
+        return $this->twig->render('@blog/create.twig', compact('categories'));
     }
 
     public function show(string $slug, ArticleRepository $articleRepository)
     {
         $article = $articleRepository->findOneBy(['slug' => $slug]);
 
-        return $this->twig->render('blog/show.twig', compact('article'));
+        return $this->twig->render('@blog/show.twig', compact('article'));
     }
 }

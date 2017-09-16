@@ -20,10 +20,18 @@ class TwigFactory
      */
     public function __invoke(ContainerInterface $container)
     {
-        $loader = new Twig_Loader_Filesystem($container->get('twig.path'));
+        $loader = new Twig_Loader_Filesystem();
         $twig = new Twig_Environment($loader);
+        $paths = $container->get('twig.path');
         foreach ($container->get('twig.extensions') as $extension) {
             $twig->addExtension($extension);
+        }
+        foreach ($paths as $namespace => $path) {
+            if (is_string($namespace)) {
+                $loader->addPath($path, $namespace);
+            } else {
+                $loader->addPath($path);
+            }
         }
 
         return $twig;
