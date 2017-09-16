@@ -42,13 +42,13 @@ return [
         'db.driver'       => env('DB_DRVER', 'pdo_mysql'),
         Database::class   => function (ContainerInterface $container) {
             return DriverManager::getConnection([
-                        'dbname'       => $container->get('db.name'),
-                        'user'         => $container->get('db.user'),
-                        'password'     => $container->get('db.pass'),
-                        'host'         => $container->get('db.host'),
-                        'driver'       => $container->get('db.driver'),
-                        'wrapperClass' => Database::class
-                ]);
+                'dbname'       => $container->get('db.name'),
+                'user'         => $container->get('db.user'),
+                'password'     => $container->get('db.pass'),
+                'host'         => $container->get('db.host'),
+                'driver'       => $container->get('db.driver'),
+                'wrapperClass' => Database::class
+            ]);
         },
         AspectKernel::class => function (ContainerInterface $container) {
             $applicationKernel = \Core\ApplicationApsect::getInstance();
