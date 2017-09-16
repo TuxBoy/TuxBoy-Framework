@@ -13,7 +13,7 @@ class Controller
     /**
      * @var ContainerInterface
      */
-    private $container;
+    protected $container;
 
     /**
      * @var Twig_Environment

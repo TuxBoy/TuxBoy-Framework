@@ -2,13 +2,12 @@
 
 namespace Core;
 
-use Core\Concern\Current;
+use Core\Builder\Builder;
 use Core\Handler\HandlerInterface;
 use Core\Plugin\Plugin;
 use Core\Router\Router;
 use DI\ContainerBuilder;
 use Exception;
-use FastRoute\Dispatcher;
 use Go\Core\AspectKernel;
 use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
@@ -31,7 +30,7 @@ class App
     public $router;
 
     /**
-     * @var array
+     * @var Application[]
      */
     private $applications;
 
@@ -41,16 +40,18 @@ class App
      */
     public function __construct(array $custom_config = [], array $applications = [])
     {
-        $container_builder = new ContainerBuilder();
+        $this->initApplications($applications);
+        $this->container_builder = new ContainerBuilder;
         $default_config = require __DIR__ . '/config.php';
-        $container_builder->addDefinitions($default_config[Priority::APP]);
+        $this->container_builder->addDefinitions($default_config[Priority::APP]);
         $this->addPluginConfig($custom_config[Priority::PLUGIN], $default_config[Priority::PLUGIN]);
         $this->addCoreConfig($custom_config[Priority::CORE], $default_config[Priority::CORE]);
 
+        $this->initApplicationConfig();
         if (!empty($custom_config) && !empty($custom_config[Priority::APP])) {
-            $container_builder->addDefinitions($custom_config[Priority::APP]);
+            $this->container_builder->addDefinitions($custom_config[Priority::APP]);
         }
-        $this->container = $container_builder->build();
+        $this->container = $this->container_builder->build();
 
         $kernel = $this->container->get(AspectKernel::class);
         // Active le handle pour afficher les erreurs
@@ -62,19 +63,29 @@ class App
         foreach ($aspects as $aspect) {
             $aspectContainer->registerAspect($aspect);
         }
-        $this->applications = $applications;
 
-        $this->initApplications();
+        $this->initApplicationsRoutes($this->getContainer()->get(Router::class));
     }
 
-    private function initApplications()
+    private function initApplicationConfig(): void
     {
         foreach ($this->applications as $application) {
-            $getFileRouter = str_replace('Application', '', $application);
-            $getFileRouter = str_replace('App', '', $getFileRouter);
-            $getFileRouter = str_replace('\\', '/', $getFileRouter);
-            $app = $this;
-            require dirname(__DIR__) . '/Application/' . $getFileRouter . 'routes.php';
+            $this->container_builder->addDefinitions($application->addConfig());
+        }
+    }
+
+    private function initApplicationsRoutes($router): void
+    {
+        foreach ($this->applications as $application) {
+            $application->getRoutes($router);
+        }
+    }
+
+    private function initApplications(array $applications = []): void
+    {
+        foreach ($applications as $application) {
+            /** @var $application Application */
+            $this->applications[] = Builder::create($application);
         }
     }
 
