@@ -67,6 +67,9 @@ class App
         $this->initApplicationsRoutes($this->getContainer()->get(Router::class));
     }
 
+    /**
+     * Ajoute la définition des DI de l'application
+     */
     private function initApplicationConfig(): void
     {
         foreach ($this->applications as $application) {
@@ -74,13 +77,23 @@ class App
         }
     }
 
-    private function initApplicationsRoutes($router): void
+    /**
+     * Ajoute les routes définies dans l'application
+     *
+     * @param $router Router
+     */
+    private function initApplicationsRoutes(Router $router): void
     {
         foreach ($this->applications as $application) {
             $application->getRoutes($router);
         }
     }
 
+    /**
+     * Initialisize les nouvelles applications.
+     *
+     * @param array $applications
+     */
     private function initApplications(array $applications = []): void
     {
         foreach ($applications as $application) {
