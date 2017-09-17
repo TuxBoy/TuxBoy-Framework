@@ -22,7 +22,9 @@
                 <td>{{ article.slug }}</td>
                 <td>
                     <a class="waves-effect waves-light btn" href="{{ path('blog.update', {'id': article.id}) }}">Editer</a>
-                    <a class="waves-effect waves-light btn red">Supprimer</a>
+                    <form action="{{ path('blog.delete', {'id': article.id}) }}" method="post" style="display: inline-block;">
+                        <button class="waves-effect waves-light btn red" type="submit">Supprimer</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}

@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Cake\Datasource\ConnectionManager;
 use Core\Builder\Builder;
 use Core\Handler\HandlerInterface;
 use Core\Plugin\Plugin;
@@ -67,6 +68,14 @@ class App
         foreach ($aspects as $aspect) {
             $aspectContainer->registerAspect($aspect);
         }
+        ConnectionManager::setConfig('default', [
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Mysql',
+            'database' => $this->getContainer()->get('db.name'),
+            'username' => $this->getContainer()->get('db.user'),
+            'password' => $this->getContainer()->get('db.pass'),
+            'cacheMetadata' => false // If set to `true` you need to install the optional "cakephp/cache" package.
+        ]);
 
         $this->initApplicationsRoutes($this->getContainer()->get(Router::class));
     }

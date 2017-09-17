@@ -2,29 +2,31 @@
 
 namespace Core;
 
+use Cake\ORM;
 use Core\Exception\NotEntitySetterException;
+
 
 /**
  * Class Entity
  */
-class Entity
+class Entity extends ORM\Entity
 {
 
     /**
      * Entity constructor.
-     * @param array $data
+     * @param array $properties
+     * @param array $options
      */
-    public function __construct(array $data = [])
+    public function __construct(array $properties = [], array $options = [])
     {
-        $this->loadData($data);
+        parent::__construct($properties, $options);
     }
-
     /**
-     * @param array $data
+     * @param array $properties
      */
-    public function setData(array $data)
+    public function setData(array $properties)
     {
-        $this->loadData($data);
+        $this->loadData($properties);
     }
 
     /**

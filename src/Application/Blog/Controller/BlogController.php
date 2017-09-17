@@ -2,12 +2,13 @@
 
 namespace App\Blog\Controller;
 
+use App\Blog\Table\CategoriesTable;
+use App\Blog\Table\PostsTable;
 use Core\Builder\Builder;
 use Core\Controller\Controller;
+use DI\NotFoundException;
 use GuzzleHttp\Psr7\ServerRequest;
-use App\Blog\Entity\Article;
-use App\Blog\Repository\ArticleRepository;
-use App\Blog\Repository\CategoryRepository;
+use App\Blog\Entity\Post;
 
 /**
  * BlogController.
@@ -16,47 +17,73 @@ class BlogController extends Controller
 {
 
     /**
-     * @param ArticleRepository $articleRepository
+     * @param PostsTable $postsTable
      * @return string
      */
-    public function index(ArticleRepository $articleRepository)
+    public function index(PostsTable $postsTable)
     {
-        $articles = $articleRepository->findAll();
-        return $this->twig->render('@blog/index.twig', compact('articles'));
+        $articles = $postsTable->find()->contain(['Categories'])->all();
+        return $this->view->render('@blog/index.twig', compact('articles'));
     }
 
-    public function listToArticles(ArticleRepository $articleRepository)
+    public function listToArticles(PostsTable $postsTable)
     {
-        $articles = $articleRepository->findAll();
-        return $this->twig->render('@blog/list.twig', compact('articles'));
+        $articles = $postsTable->find('all');
+        return $this->view->render('@blog/list.twig', compact('articles'));
     }
 
     /**
-     * @param ServerRequest      $request
-     * @param ArticleRepository  $articleRepository
-     *
-     * @param CategoryRepository $categoryRepository
+     * @param ServerRequest $request
+     * @param PostsTable $postsTable
      * @return string
      */
-    public function create(ServerRequest $request, ArticleRepository $articleRepository, CategoryRepository $categoryRepository)
+    public function create(ServerRequest $request, PostsTable $postsTable, CategoriesTable $categories)
     {
         if ($request->getMethod() === 'POST') {
             $data = $this->getParams($request, ['name', 'slug', 'content', 'category_id']);
 
-            $article = Builder::create(Article::class, [$data]);
-            $articleRepository->insert($article);
+            $article = Builder::create(Post::class, [$data]);
+            $postsTable->save($article);
             $this->flash->success("L'aticle a bien été créé");
 
             return $this->redirectTo('/blog');
         }
-        $categories = $categoryRepository->findAll();
-        return $this->twig->render('@blog/create.twig', compact('categories'));
+        $categories = $categories->find()->all();
+        return $this->view->render('@blog/create.twig', compact('categories'));
     }
 
-    public function show(string $slug, ArticleRepository $articleRepository)
+    /**
+     * @param int $id
+     * @param ServerRequest $request
+     * @param PostsTable $postsTable
+     * @return string
+     */
+    public function update(int $id, ServerRequest $request, PostsTable $postsTable)
     {
-        $article = $articleRepository->findOneBy(['slug' => $slug]);
+        /** @var $article Post */
+        $article = $postsTable->get($id);
+        if ($request->getMethod() === 'POST') {
+            $data = $this->getParams($request, ['name', 'slug', 'content', 'category_id']);
+            $postsTable->patchEntity($article, $data);
+            $postsTable->save($article);
+        }
+        return $this->view->render('@blog/update.twig', compact('article'));
+    }
 
-        return $this->twig->render('@blog/show.twig', compact('article'));
+    public function delete(int $id, PostsTable $postsTable)
+    {
+        $article = $postsTable->get($id);
+        if (!$article) {
+            throw new NotFoundException();
+        }
+        $postsTable->delete($article);
+        return $this->redirectTo('blog.list');
+    }
+
+    public function show(string $slug, PostsTable $postsTable)
+    {
+        $article = $postsTable->find()->where(['slug' => $slug])->first();
+
+        return $this->view->render('@blog/show.twig', compact('article'));
     }
 }

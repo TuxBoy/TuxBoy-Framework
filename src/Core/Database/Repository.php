@@ -43,7 +43,7 @@ class Repository implements ObjectRepository
     public function find($id)
     {
         return $this->connection->fetch(
-            "SELECT * FROM {$this->getTableName()} WHERE id= ?",
+            "SELECT * FROM {$this->getTableName()} AS t WHERE t.id= ?",
             [$id],
             [],
             $this->getEntity()
@@ -174,5 +174,14 @@ class Repository implements ObjectRepository
         }
 
         return $this->getConnection()->lastInsertId();
+    }
+
+    /**
+     * @param $data
+     * @return int
+     */
+    public function update($data): int
+    {
+        return $this->getConnection()->update($this->getTableName(), $data);
     }
 }

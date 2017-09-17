@@ -7,11 +7,11 @@ use Core\Annotation\Set;
 use Core\Entity;
 
 /**
- * Class Article.
+ * Class Post.
  *
  * @Set(tableName="posts")
  */
-class Article extends Entity
+class Post extends Entity
 {
 
     /**

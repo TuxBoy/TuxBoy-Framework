@@ -14,7 +14,7 @@ return [
 	Priority::APP => [],
 
 	Priority::CORE => [
-		\App\Blog\Entity\Article::class => [
+		\App\Blog\Entity\Post::class => [
 			\Core\Tools\HasTime::class
 		]
 	],
