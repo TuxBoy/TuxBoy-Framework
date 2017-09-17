@@ -19,7 +19,7 @@ class Controller
     /**
      * @var Twig_Environment
      */
-    protected $twig;
+    protected $view;
 
     /**
      * @var FlashService
@@ -31,12 +31,12 @@ class Controller
      * @Maintainer
      *
      * @param ContainerInterface $container
-     * @param Twig_Environment   $twig
+     * @param Twig_Environment   $view
      */
-    public function __construct(ContainerInterface $container, Twig_Environment $twig, FlashService $flash)
+    public function __construct(ContainerInterface $container, Twig_Environment $view, FlashService $flash)
     {
         $this->container = $container;
-        $this->twig = $twig;
+        $this->view = $view;
         $this->flash = $flash;
     }
 

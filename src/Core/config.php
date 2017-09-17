@@ -40,24 +40,24 @@ return [
         'db.pass'         => env('DB_PASS', 'root'),
         'db.host'         => env('DB_HOST', 'localhost'),
         'db.driver'       => env('DB_DRVER', 'pdo_mysql'),
-        Database::class   => function (ContainerInterface $container) {
+        \Doctrine\DBAL\Connection::class   => function (ContainerInterface $container) {
             return DriverManager::getConnection([
                 'dbname'       => $container->get('db.name'),
                 'user'         => $container->get('db.user'),
                 'password'     => $container->get('db.pass'),
                 'host'         => $container->get('db.host'),
                 'driver'       => $container->get('db.driver'),
-                'wrapperClass' => Database::class
             ]);
         },
+        Database::class => object()->constructor(get(\Doctrine\DBAL\Connection::class)),
         AspectKernel::class => function (ContainerInterface $container) {
             $applicationKernel = \Core\ApplicationApsect::getInstance();
             $applicationKernel->init([
-                        'debug'        => $container->get('dev'),
-                        'appDir'       => $container->get('aspect.appDir'),
-                        'cacheDir'     => $container->get('aspect.cacheDir'),
-                        'includePaths' => []
-                ]);
+                'debug'        => $container->get('dev'),
+                'appDir'       => $container->get('aspect.appDir'),
+                'cacheDir'     => $container->get('aspect.cacheDir'),
+                'includePaths' => []
+            ]);
 
             return $applicationKernel;
         },
