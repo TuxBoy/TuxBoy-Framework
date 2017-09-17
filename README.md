@@ -39,7 +39,7 @@ $ phpunit
 - [X] Intégrer GoPhp framework pour utiliser l'AOP (A voir dans l'usage).
 - [X] Ajouter Whoops pour afficher mieux les erreurs.
 - [X] Création d'un système de migration auto via doctrine dbal (Maintener).
-- [ ] Continuer l'intégration de Doctrine/Dbal (Penser peut être à voir côté ORM)
 - [X] Améliorer la partie Application.
 - [X] Sépparer les vues et les mettres dans leur application.
 - [ ] Rendre une application (Module à voir pour le nom) autonome, que l'on puisse l'importer via composer
+- [X] Mise en place de cake orm.
