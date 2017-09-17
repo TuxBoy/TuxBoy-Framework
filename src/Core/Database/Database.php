@@ -10,8 +10,19 @@ use Core\ReflectionAnnotation;
 use Doctrine\DBAL\Connection;
 use Go\ParserReflection\ReflectionClass;
 
-class Database extends Connection
+class Database
 {
+
+    /**
+     * @var Connection
+     */
+    public $connection;
+
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
+
     /**
      * Récupère les données depuis la BDD sous forme d'object, elle hydrate aussi les données si
      * l'entité est renseigné afin de pouvoir utiliser le Builder.
@@ -26,10 +37,10 @@ class Database extends Connection
     public function fetchObject(string $statement, array $params = [], array $types = [], string $class_name = null)
     {
         if (null === $class_name) {
-            return $this->executeQuery($statement, $params, $types)
+            return $this->connection->executeQuery($statement, $params, $types)
                 ->fetchAll(\PDO::FETCH_CLASS, $class_name);
         }
-        $results = $this->fetchAll($statement, $params, $types);
+        $results = $this->connection->fetchAll($statement, $params, $types);
         if ($results) {
             foreach ($results as $key => $result) {
                 $results[$key] = $this->hydrate($class_name, $result);
@@ -52,7 +63,7 @@ class Database extends Connection
      */
     public function fetch($statement, array $params, array $types, string $class_name)
     {
-        $result = parent::fetchAssoc($statement, $params, $types);
+        $result = $this->connection->fetchAssoc($statement, $params, $types);
 
         return $result ? $this->hydrate($class_name, $result) : $result;
     }

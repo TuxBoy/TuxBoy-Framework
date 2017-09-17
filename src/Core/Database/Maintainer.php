@@ -45,7 +45,7 @@ class Maintainer
     public function __construct(Database $database, array $entites = [])
     {
         $this->database = $database;
-        $this->schemaManager = $this->database->getSchemaManager();
+        $this->schemaManager = $this->database->connection->getSchemaManager();
         $this->entites = $entites;
     }
 
@@ -69,12 +69,12 @@ class Maintainer
      */
     public function updateTable(string $entity, bool $force = true): void
     {
-        $currentSchema = $this->database->getSchemaManager()->createSchema();
+        $currentSchema = $this->database->connection->getSchemaManager()->createSchema();
         $newSchema = clone $currentSchema;
         $schema = $this->schemaDefinition($newSchema, $entity);
         // Compare le newSchema et le currentSchema afin de savoir s'il doit CREATE ou ALTER
-        $migrationQueries = $currentSchema->getMigrateToSql($schema, $this->database->getDatabasePlatform());
-        $this->database->transactional(function () use ($migrationQueries, $force) {
+        $migrationQueries = $currentSchema->getMigrateToSql($schema, $this->database->connection->getDatabasePlatform());
+        $this->database->connection->transactional(function () use ($migrationQueries, $force) {
             foreach ($migrationQueries as $query) {
                 if ($force) {
                     $this->database->exec($query);
