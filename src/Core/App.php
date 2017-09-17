@@ -4,6 +4,7 @@ namespace Core;
 
 use Cake\Datasource\ConnectionManager;
 use Core\Builder\Builder;
+use Core\Exception\NotMatchRouteException;
 use Core\Handler\HandlerInterface;
 use Core\Plugin\Plugin;
 use Core\Router\Router;
@@ -156,7 +157,9 @@ class App
     {
         $router = $this->container->get(Router::class);
         $route = $router->match($request);
-
+        if (is_null($route)) {
+            throw new NotMatchRouteException();
+        }
         $parameters = array_merge($route->getParams(), ['request' => $request]);
         $response = $this->container->call($route->getCallback(), $parameters);
         if (is_string($response)) {
