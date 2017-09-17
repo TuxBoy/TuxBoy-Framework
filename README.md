@@ -43,3 +43,4 @@ $ phpunit
 - [X] Sépparer les vues et les mettres dans leur application.
 - [ ] Rendre une application (Module à voir pour le nom) autonome, que l'on puisse l'importer via composer
 - [X] Mise en place de cake orm.
+- [ ] Créer l'annotation @length pour définir la taille d'un champ en base.
