@@ -54,7 +54,7 @@ class MaintainerAspect implements Aspect
         if ($this->auto) {
             /** @var $container ContainerInterface */
             $container = current($methodInvocation->getArguments());
-            if (null !== $container->get('entities') && !empty($container->get('entities'))) {
+            if ($container->has('entities') && !empty($container->get('entities'))) {
                 $entities = array_map(function ($entity) {
                     return $entity;
                 }, $container->get('entities'));
