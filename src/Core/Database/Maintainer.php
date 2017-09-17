@@ -77,7 +77,7 @@ class Maintainer
         $this->database->connection->transactional(function () use ($migrationQueries, $force) {
             foreach ($migrationQueries as $query) {
                 if ($force) {
-                    $this->database->exec($query);
+                    $this->database->connection->exec($query);
                 }
             }
         });
