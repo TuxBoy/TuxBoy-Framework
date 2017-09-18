@@ -44,3 +44,4 @@ $ phpunit
 - [ ] Rendre une application (Module à voir pour le nom) autonome, que l'on puisse l'importer via composer
 - [X] Mise en place de cake orm.
 - [ ] Créer l'annotation @length pour définir la taille d'un champ en base.
+- [ ] Créer (ou utiliser une lib) d'un form builder, générer un formulaire depuis une entité
