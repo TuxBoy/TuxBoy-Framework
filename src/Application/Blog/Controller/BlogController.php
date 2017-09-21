@@ -2,39 +2,42 @@
 
 namespace App\Blog\Controller;
 
+use App\Blog\Entity\Post;
 use App\Blog\Table\CategoriesTable;
 use App\Blog\Table\PostsTable;
-use TuxBoy\Builder\Builder;
-use TuxBoy\Controller\Controller;
 use DI\NotFoundException;
 use GuzzleHttp\Psr7\ServerRequest;
-use App\Blog\Entity\Post;
+use TuxBoy\Builder\Builder;
+use TuxBoy\Controller\Controller;
 
 /**
  * BlogController.
  */
 class BlogController extends Controller
 {
-
     /**
      * @param PostsTable $postsTable
+     *
      * @return string
      */
     public function index(PostsTable $postsTable)
     {
         $articles = $postsTable->find()->contain(['Categories'])->all();
+
         return $this->view->render('@blog/index.twig', compact('articles'));
     }
 
     public function listToArticles(PostsTable $postsTable)
     {
         $articles = $postsTable->find('all');
+
         return $this->view->render('@blog/list.twig', compact('articles'));
     }
 
     /**
      * @param ServerRequest $request
-     * @param PostsTable $postsTable
+     * @param PostsTable    $postsTable
+     *
      * @return string
      */
     public function create(ServerRequest $request, PostsTable $postsTable, CategoriesTable $categories)
@@ -49,13 +52,15 @@ class BlogController extends Controller
             return $this->redirectTo('/blog');
         }
         $categories = $categories->find()->all();
+
         return $this->view->render('@blog/create.twig', compact('categories'));
     }
 
     /**
-     * @param int $id
+     * @param int           $id
      * @param ServerRequest $request
-     * @param PostsTable $postsTable
+     * @param PostsTable    $postsTable
+     *
      * @return string
      */
     public function update(int $id, ServerRequest $request, PostsTable $postsTable)
@@ -67,6 +72,7 @@ class BlogController extends Controller
             $postsTable->patchEntity($article, $data);
             $postsTable->save($article);
         }
+
         return $this->view->render('@blog/update.twig', compact('article'));
     }
 
@@ -77,6 +83,7 @@ class BlogController extends Controller
             throw new NotFoundException();
         }
         $postsTable->delete($article);
+
         return $this->redirectTo('blog.list');
     }
 

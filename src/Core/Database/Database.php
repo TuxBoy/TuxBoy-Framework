@@ -2,17 +2,16 @@
 
 namespace TuxBoy\Database;
 
+use Doctrine\DBAL\Connection;
+use Go\ParserReflection\ReflectionClass;
 use TuxBoy\Annotation\Set;
 use TuxBoy\Builder\Builder;
 use TuxBoy\Entity;
 use TuxBoy\Exception\DatabaseException;
 use TuxBoy\ReflectionAnnotation;
-use Doctrine\DBAL\Connection;
-use Go\ParserReflection\ReflectionClass;
 
 class Database
 {
-
     /**
      * @var Connection
      */
@@ -109,6 +108,7 @@ class Database
     /**
      * @param Entity $entity
      * @param string $table
+     *
      * @return int
      */
     public function write(Entity $entity, string $table)
@@ -118,11 +118,10 @@ class Database
         $values = [];
         $set = [];
         foreach ($reflection->getProperties() as $property) {
-            if (!is_null($property->getValue($entity))) {
+            if (null !== $property->getValue($entity)) {
                 if ($this->isLinkProperty($entity, $property)) {
                     $fields[] = $property->getName() . '_id';
-                }
-                else {
+                } else {
                     $fields[] = $property->getName(); // Nom des champs
                 }
                 $values[] = $property->getValue($entity);
@@ -131,23 +130,25 @@ class Database
         }
 
         return $this->executeUpdate(
-            "INSERT INTO {$table} (". join(', ', $fields) .") 
-            VALUES (". join(', ', $set) .")",
+            "INSERT INTO {$table} (" . implode(', ', $fields) . ') 
+            VALUES (' . implode(', ', $set) . ')',
             $values
         );
     }
 
     /**
-     * Vérifie si la propriété en de l'entité est un lien de table (@link)
+     * Vérifie si la propriété en de l'entité est un lien de table (@link).
      *
      * @param Entity              $entity
      * @param \ReflectionProperty $property
+     *
      * @return bool
      */
     private function isLinkProperty(Entity $entity, \ReflectionProperty $property): bool
     {
         $reflectionAnnotation = new ReflectionAnnotation($entity, $property->getName());
+
         return $reflectionAnnotation->hasAnnotation('link')
-            && in_array($reflectionAnnotation->getAnnotation('link')->getValue(), ['belongsTo']);
+            && in_array($reflectionAnnotation->getAnnotation('link')->getValue(), ['belongsTo'], true);
     }
 }

@@ -13,9 +13,8 @@ use TuxBoy\Entity;
  */
 class Post extends Entity
 {
-
     /**
-     * @var integer
+     * @var int
      */
     public $id;
 
@@ -25,7 +24,6 @@ class Post extends Entity
     public $name;
 
     /**
-     *
      * @var string
      */
     public $slug;
@@ -36,7 +34,7 @@ class Post extends Entity
     public $content;
 
     /**
-     * @link belongsTo
+     * @see belongsTo
      *
      * @var \App\Blog\Entity\Category
      */

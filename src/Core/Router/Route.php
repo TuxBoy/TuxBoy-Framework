@@ -1,9 +1,9 @@
 <?php
+
 namespace TuxBoy\Router;
 
 class Route
 {
-
     /**
      * @var string
      */
@@ -21,13 +21,13 @@ class Route
 
     /**
      * Route constructor.
+     *
      * @param string   $name
      * @param callable $callable
      * @param array    $parameters
      */
     public function __construct(string $name, callable $callable, array $parameters)
     {
-
         $this->name = $name;
         $this->callable = $callable;
         $this->parameters = $parameters;
@@ -56,5 +56,4 @@ class Route
     {
         return $this->parameters;
     }
-
 }

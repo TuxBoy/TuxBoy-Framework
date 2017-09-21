@@ -8,6 +8,7 @@ use TuxBoy\Tools\HasName;
 
 /**
  * Category.
+ *
  * @Set(tableName="categories")
  */
 class Category extends Entity
@@ -15,12 +16,11 @@ class Category extends Entity
     use HasName;
 
     /**
-     * @var integer
+     * @var int
      */
     public $id;
 
     /**
-     *
      * @var string
      */
     public $slug;

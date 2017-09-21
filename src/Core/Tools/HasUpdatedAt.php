@@ -1,14 +1,13 @@
 <?php
+
 namespace TuxBoy\Tools;
 
 trait HasUpdatedAt
 {
-
     /**
      * @var \DateTime
      */
     public $updated_at;
-
 
     /**
      * @return \DateTime
@@ -25,5 +24,4 @@ trait HasUpdatedAt
     {
         $this->updated_at = $updated_at;
     }
-
 }

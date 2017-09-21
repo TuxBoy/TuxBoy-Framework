@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Home;
 
 use App\Home\Controller\HomeController;
@@ -17,7 +18,7 @@ class Application implements ApplicationInterface
     }
 
     /**
-     * Pour ajouter la configuration au container de son application
+     * Pour ajouter la configuration au container de son application.
      *
      * @return array
      */

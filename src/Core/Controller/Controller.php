@@ -2,11 +2,11 @@
 
 namespace TuxBoy\Controller;
 
-use TuxBoy\Annotation\Maintainer;
-use TuxBoy\Session\FlashService;
 use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TuxBoy\Annotation\Maintainer;
+use TuxBoy\Session\FlashService;
 use Twig_Environment;
 
 class Controller
@@ -26,14 +26,15 @@ class Controller
      */
     protected $flash;
 
-	/**
-	 * Controller constructor.
-	 * @Maintainer
-	 *
-	 * @param ContainerInterface $container
-	 * @param Twig_Environment   $view
-	 * @param FlashService       $flash
-	 */
+    /**
+     * Controller constructor.
+     *
+     * @Maintainer
+     *
+     * @param ContainerInterface $container
+     * @param Twig_Environment   $view
+     * @param FlashService       $flash
+     */
     public function __construct(ContainerInterface $container, Twig_Environment $view, FlashService $flash)
     {
         $this->container = $container;

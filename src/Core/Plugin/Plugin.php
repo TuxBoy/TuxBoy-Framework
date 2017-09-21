@@ -2,11 +2,11 @@
 
 namespace TuxBoy\Plugin;
 
+use Go\Aop\Aspect;
 use TuxBoy\Builder\Builder;
 use TuxBoy\Concern\Current;
 use TuxBoy\Exception\PluginException;
 use TuxBoy\Priority;
-use Go\Aop\Aspect;
 
 /**
  * Class Plugin.

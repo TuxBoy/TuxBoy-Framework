@@ -12,10 +12,8 @@ use Doctrine\Common\Annotations\Annotation;
  */
 class Set extends Annotation
 {
-
     /**
      * @var
      */
     public $tableName;
-
 }

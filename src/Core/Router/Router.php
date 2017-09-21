@@ -7,11 +7,10 @@ use Zend\Expressive\Router\FastRouteRouter;
 use Zend\Expressive\Router\Route as ZendRoute;
 
 /**
- * Class Router
+ * Class Router.
  */
 class Router
 {
-
     /**
      * @var FastRouteRouter
      */
@@ -22,13 +21,13 @@ class Router
      */
     public function __construct()
     {
-        $this->router = new FastRouteRouter;
+        $this->router = new FastRouteRouter();
     }
 
     /**
-     * @param string $path
+     * @param string   $path
      * @param callable $callable
-     * @param string $name
+     * @param string   $name
      */
     public function get(string $path, $callable, ?string $name = null)
     {
@@ -36,9 +35,9 @@ class Router
     }
 
     /**
-     * @param string $path
+     * @param string   $path
      * @param callable $callable
-     * @param string $name
+     * @param string   $name
      */
     public function post(string $path, $callable, ?string $name = null)
     {
@@ -47,11 +46,13 @@ class Router
 
     /**
      * @param ServerRequestInterface $request
+     *
      * @return Route
      */
     public function match(ServerRequestInterface $request): ?Route
     {
         $result = $this->router->match($request);
+
         return $result->isSuccess() ? new Route(
             $result->getMatchedRouteName(),
             $result->getMatchedMiddleware(),
@@ -61,12 +62,12 @@ class Router
 
     /**
      * @param string $name
-     * @param array $params
+     * @param array  $params
+     *
      * @return null|string
      */
-    public function generateUri(string $name, array $params = []) : ?string
+    public function generateUri(string $name, array $params = []): ?string
     {
         return $this->router->generateUri($name, $params);
     }
-
 }

@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Blog;
 
 use App\Blog\Controller\BlogController;
 use App\Blog\Controller\CategoryController;
-use App\Blog\Entity\Post;
 use App\Blog\Entity\Category;
+use App\Blog\Entity\Post;
 use App\Blog\Table\CategoriesTable;
 use App\Blog\Table\PostsTable;
 use Cake\ORM\TableRegistry;
@@ -12,13 +13,11 @@ use TuxBoy\ApplicationInterface;
 use TuxBoy\Router\Router;
 use function DI\add;
 
-
 /**
- * Class Application
+ * Class Application.
  */
 class Application implements ApplicationInterface
 {
-
     /**
      * @param Router $router
      */
@@ -37,7 +36,7 @@ class Application implements ApplicationInterface
     }
 
     /**
-     * Pour ajouter la configuration au container de son application
+     * Pour ajouter la configuration au container de son application.
      *
      * @return array
      */
@@ -51,10 +50,10 @@ class Application implements ApplicationInterface
                 Post::class,
                 Category::class
             ]),
-            PostsTable::class => function ()  {
+            PostsTable::class => function () {
                 return TableRegistry::get('Posts', ['className' => PostsTable::class]);
             },
-            CategoriesTable::class => function ()  {
+            CategoriesTable::class => function () {
                 return TableRegistry::get('Categories', ['className' => CategoriesTable::class]);
             }
         ];

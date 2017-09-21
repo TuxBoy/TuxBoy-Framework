@@ -25,8 +25,8 @@ class RouterTwigExtension extends \Twig_Extension
 
     /**
      * @param string $name
-     *
      * @param array  $params
+     *
      * @return string|null
      */
     public function pathFor(string $name, array $params = []): ?string

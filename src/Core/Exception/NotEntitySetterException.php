@@ -1,12 +1,9 @@
 <?php
-namespace TuxBoy\Exception;
 
+namespace TuxBoy\Exception;
 
 use Exception;
 
 class NotEntitySetterException extends Exception
 {
-
-
-
 }

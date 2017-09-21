@@ -2,11 +2,11 @@
 
 namespace TuxBoy\Aspect;
 
-use TuxBoy\Database\Maintainer;
 use Go\Aop\Aspect;
 use Go\Aop\Intercept\MethodInvocation;
 use Go\Lang\Annotation\Before;
 use Psr\Container\ContainerInterface;
+use TuxBoy\Database\Maintainer;
 
 /**
  * Class MaintainerAspect.
@@ -33,9 +33,10 @@ class MaintainerAspect implements Aspect
 
     /**
      * MaintainerAspect constructor.
+     *
      * @param Maintainer $maintainer
-     * @param bool $debug
-     * @param bool $auto
+     * @param bool       $debug
+     * @param bool       $auto
      */
     public function __construct(Maintainer $maintainer, bool $debug, bool $auto)
     {

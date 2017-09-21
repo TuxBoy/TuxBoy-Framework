@@ -2,10 +2,10 @@
 
 namespace TuxBoy\Builder;
 
+use ReflectionClass;
 use TuxBoy\Concern\Current;
 use TuxBoy\Plugin\Plugin;
 use TuxBoy\Priority;
-use ReflectionClass;
 
 /**
  * Class Builder.

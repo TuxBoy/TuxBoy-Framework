@@ -1,14 +1,13 @@
 <?php
+
 namespace TuxBoy\Tools;
 
 trait HasCreatedAt
 {
-
     /**
      * @var \DateTime
      */
     public $created_at;
-
 
     /**
      * @return \DateTime
@@ -25,5 +24,4 @@ trait HasCreatedAt
     {
         $this->created_at = $created_at;
     }
-
 }

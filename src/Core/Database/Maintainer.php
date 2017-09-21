@@ -2,6 +2,9 @@
 
 namespace TuxBoy\Database;
 
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\Type;
 use TuxBoy\Annotation\Set;
 use TuxBoy\Builder\Builder;
 use TuxBoy\Builder\Namespaces;
@@ -9,9 +12,6 @@ use TuxBoy\Exception\AnnotationException;
 use TuxBoy\Exception\DatabaseException;
 use TuxBoy\Exception\MaintainerEcxeption;
 use TuxBoy\ReflectionAnnotation;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\Type;
 
 /**
  * Maintainer.
@@ -65,7 +65,7 @@ class Maintainer
      * Exécute la nouvelle version du schema définie dans schemaDefinition.
      *
      * @param string $entity
-     * @param bool   $force Si true ça exécute la requête sinon ça on esite que la BDD est à jour
+     * @param bool   $force  Si true ça exécute la requête sinon ça on esite que la BDD est à jour
      */
     public function updateTable(string $entity, bool $force = true): void
     {
@@ -88,8 +88,10 @@ class Maintainer
      *
      * @param Schema $schema
      * @param string $entity
-     * @return Table
+     *
      * @throws DatabaseException
+     *
+     * @return Table
      */
     private function getTable(Schema $schema, string $entity): Table
     {
@@ -125,112 +127,117 @@ class Maintainer
      * uniquement les champs qui n'existent pas.
      *
      * @param Schema $schema Le nouveau schema
-     *
      * @param string $entity
-     * @return Schema
+     *
      * @throws AnnotationException
      * @throws MaintainerEcxeption
+     *
+     * @return Schema
      */
     public function schemaDefinition(Schema $schema, string $entity): Schema
     {
-            $table = $this->getTable($schema, $entity);
-            $this->createPrimaryKey($table);
-            $entity = Builder::create($entity);
-            foreach (get_object_vars($entity) as $field => $value) {
-                // On peut rajouter la colonne
-                $reflectionAnnotation = new ReflectionAnnotation($entity, $field);
-                $type_name = $reflectionAnnotation->getAnnotation('var')->getValue();
-                $options = [];
-                if ($type_name === Type::STRING && $reflectionAnnotation->getAnnotation('length')->getValue()) {
-                    $options['length'] = $reflectionAnnotation->getAnnotation('length')->getValue();
+        $table = $this->getTable($schema, $entity);
+        $this->createPrimaryKey($table);
+        $entity = Builder::create($entity);
+        foreach (get_object_vars($entity) as $field => $value) {
+            // On peut rajouter la colonne
+            $reflectionAnnotation = new ReflectionAnnotation($entity, $field);
+            $type_name = $reflectionAnnotation->getAnnotation('var')->getValue();
+            $options = [];
+            if ($type_name === Type::STRING && $reflectionAnnotation->getAnnotation('length')->getValue()) {
+                $options['length'] = $reflectionAnnotation->getAnnotation('length')->getValue();
+            } elseif ($type_name === Type::STRING && !$reflectionAnnotation->getAnnotation('length')->getValue()) {
+                $options['length'] = 255;
+            }
+            if (!array_key_exists($field, $table->getColumns())) {
+                if (($type_name === '\DateTime') || ($type_name === 'DateTime')) {
+                    $type_name = 'datetime';
                 }
-                elseif ($type_name === Type::STRING && !$reflectionAnnotation->getAnnotation('length')->getValue()) {
-                    $options['length'] = 255;
+                if (!$reflectionAnnotation->getAnnotation('link') &&
+                    !in_array($type_name, AnnotationType::DEFAULT, true)
+                ) {
+                    throw new AnnotationException('The annotation value does not exist ' . $type_name);
                 }
-                if (!array_key_exists($field, $table->getColumns())) {
-                    if (($type_name === '\DateTime') || ($type_name === 'DateTime')) {
-                        $type_name = 'datetime';
+                // Si la propriété à l'annotation link c'est une relation
+                if ($reflectionAnnotation->hasAnnotation('link')) {
+                    // Récupère le type de relation passé en valeur du @link (belongsTo, hasMany..)
+                    $foreignType = $reflectionAnnotation->getAnnotation('link')->getValue();
+                    if (!method_exists($this, $foreignType)) {
+                        throw new MaintainerEcxeption('The relation type method does not exit.');
                     }
-                    if (
-                        !$reflectionAnnotation->getAnnotation('link') &&
-                        !in_array($type_name, AnnotationType::DEFAULT)
-                    ) {
-                        throw new AnnotationException('The annotation value does not exist ' . $type_name);
-                    }
-                    // Si la propriété à l'annotation link c'est une relation
-                    if ($reflectionAnnotation->hasAnnotation('link')) {
-                        // Récupère le type de relation passé en valeur du @link (belongsTo, hasMany..)
-                        $foreignType = $reflectionAnnotation->getAnnotation('link')->getValue();
-                        if (!method_exists($this, $foreignType)) {
-                            throw new MaintainerEcxeption('The relation type method does not exit.');
-                        }
-                        $field = $this->$foreignType($schema, $table, $type_name);
-                    }
+                    $field = $this->$foreignType($schema, $table, $type_name);
+                }
 
-                    if (!$this->isForeignKey($field)) {
-                        $table->addColumn($field, $type_name, $options);
-                    }
-                } elseif (array_key_exists($field, $table->getColumns())) {
-                    if (!$this->isForeignKey($field)) {
-                        $table->changeColumn($field, $options);
-                    }
+                if (!$this->isForeignKey($field)) {
+                    $table->addColumn($field, $type_name, $options);
                 }
-                $diff = array_diff_key($table->getColumns(), get_object_vars($entity));
-                $fieldsDrop = array_filter($diff, function ($field) {
-                    return $field !== 'id';
-                }, ARRAY_FILTER_USE_KEY);
-                if (!empty($fieldsDrop)) {
-                    // il n'y a un champ encore en base qui n'est plus dans l'entity => drop
-                    foreach ($fieldsDrop as $key => $default) {
-                        // @TODO Il faudra gérer la suppression des relations
-                        if (!$this->isForeignKey($key)) {
-                            $table->dropColumn($key);
-                        }
+            } elseif (array_key_exists($field, $table->getColumns())) {
+                if (!$this->isForeignKey($field)) {
+                    $table->changeColumn($field, $options);
+                }
+            }
+            $diff = array_diff_key($table->getColumns(), get_object_vars($entity));
+            $fieldsDrop = array_filter($diff, function ($field) {
+                return $field !== 'id';
+            }, ARRAY_FILTER_USE_KEY);
+            if (!empty($fieldsDrop)) {
+                // il n'y a un champ encore en base qui n'est plus dans l'entity => drop
+                foreach ($fieldsDrop as $key => $default) {
+                    // @TODO Il faudra gérer la suppression des relations
+                    if (!$this->isForeignKey($key)) {
+                        $table->dropColumn($key);
                     }
                 }
             }
+        }
 
         return $schema;
     }
 
     /**
-     * True if the field is a foreign key (e. field_id)
+     * True if the field is a foreign key (e. field_id).
      *
      * @param string $field
+     *
      * @return bool
      */
     private function isForeignKey(string $field): bool
     {
-        return boolval(substr($field, -3) === '_id');
+        return (bool) (mb_substr($field, -3) === '_id');
     }
 
     /**
      * Créé une clé étrangère dans la table en question pour une relation simple avec suppression
-     * en cascade et met la champ en index
+     * en cascade et met la champ en index.
      *
      * @param Schema $schema
      * @param Table  $table
      * @param string $className
+     *
      * @return string
      */
-    public function belongsTo(Schema $schema, Table $table,  string $className): string
+    public function belongsTo(Schema $schema, Table $table, string $className): string
     {
-        $field = strtolower(Namespaces::shortClassName($className)) . '_id';
+        $field = mb_strtolower(Namespaces::shortClassName($className)) . '_id';
         if ($this->isForeignKey($field) && !$table->hasColumn($field)) {
             // Récupère la table sur la quelle la clé étrangère fait référence
             $foreignTable = $this->getTable($schema, $className);
             $this->createPrimaryKey($foreignTable);
             $options['unsigned'] = true;
-            $options['notnull']  = false;
+            $options['notnull'] = false;
             $table->addColumn($field, 'integer', $options);
             if (!$table->hasIndex($field . '_index')) {
                 $table->addIndex([$field], $field . '_index');
             }
-            $table->addForeignKeyConstraint($this->getTable($schema, $className),
-                [$field], ['id'], ['onDelete' => 'CASCADE'], $field . '_contrain'
+            $table->addForeignKeyConstraint(
+                $this->getTable($schema, $className),
+                [$field],
+                ['id'],
+                ['onDelete' => 'CASCADE'],
+                $field . '_contrain'
             );
         }
+
         return $field;
     }
-
 }

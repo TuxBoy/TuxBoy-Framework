@@ -41,7 +41,7 @@ class ReflectionAnnotation
     {
         $this->argument = new ReflectionClass($argument);
         // Si le property_name est null, alors on souhaite obtenir les annotations de la classe
-        $this->docComment = is_null($property_name)
+        $this->docComment = null === $property_name
             ? $this->argument->getDocComment()
             : $this->argument->getProperty($property_name)->getDocComment();
     }
@@ -135,10 +135,11 @@ class ReflectionAnnotation
 
     /**
      * @param string $annotationName
+     *
      * @return null|object
      */
     public function getClassAnnotation(string $annotationName)
     {
-        return (new AnnotationReader)->getClassAnnotation($this->argument, $annotationName);
+        return (new AnnotationReader())->getClassAnnotation($this->argument, $annotationName);
     }
 }

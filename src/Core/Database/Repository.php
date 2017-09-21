@@ -2,13 +2,11 @@
 
 namespace TuxBoy\Database;
 
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\DBAL\Connection;
 use TuxBoy\Annotation\Set;
 use TuxBoy\Builder\Namespaces;
 use TuxBoy\ReflectionAnnotation;
-use Doctrine\Common\Annotations\Annotation;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\DBAL\Connection;
 
 class Repository implements ObjectRepository
 {
@@ -71,6 +69,7 @@ class Repository implements ObjectRepository
         foreach ($this->findAll() as $item) {
             $categories[$item->id] = $item;
         }
+
         return $items;
     }
 
@@ -134,6 +133,7 @@ class Repository implements ObjectRepository
             return static::$TABLE;
         }
         $annotation = (new ReflectionAnnotation($this->getEntity()))->getClassAnnotation(Set::class);
+
         return $annotation->tableName;
     }
 
@@ -161,8 +161,8 @@ class Repository implements ObjectRepository
 
     /**
      * @param $data mixed
-     * @return int|null
      *
+     * @return int|null
      */
     public function insert($data): ?int
     {
@@ -178,6 +178,7 @@ class Repository implements ObjectRepository
 
     /**
      * @param $data
+     *
      * @return int
      */
     public function update($data): int

@@ -4,11 +4,6 @@ namespace TuxBoy;
 
 use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
-use TuxBoy\Builder\Builder;
-use TuxBoy\Exception\NotMatchRouteException;
-use TuxBoy\Handler\HandlerInterface;
-use TuxBoy\Plugin\Plugin;
-use TuxBoy\Router\Router;
 use DI\ContainerBuilder;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Exception;
@@ -17,6 +12,11 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TuxBoy\Builder\Builder;
+use TuxBoy\Exception\NotMatchRouteException;
+use TuxBoy\Handler\HandlerInterface;
+use TuxBoy\Plugin\Plugin;
+use TuxBoy\Router\Router;
 
 /**
  * Class App.
@@ -45,7 +45,7 @@ class App
     public function __construct(array $custom_config = [], array $applications = [])
     {
         $this->initApplications($applications);
-        $this->container_builder = new ContainerBuilder;
+        $this->container_builder = new ContainerBuilder();
         $default_config = require __DIR__ . '/config.php';
         $this->container_builder->addDefinitions($default_config[Priority::APP]);
         $this->addPluginConfig($custom_config[Priority::PLUGIN], $default_config[Priority::PLUGIN]);
@@ -71,13 +71,13 @@ class App
             $aspectContainer->registerAspect($aspect);
         }
         ConnectionManager::setConfig('default', [
-            'className' => Connection::class,
-            'driver' => 'Cake\Database\Driver\Mysql',
-            'database' => $this->getContainer()->get('db.name'),
-            'username' => $this->getContainer()->get('db.user'),
-            'password' => $this->getContainer()->get('db.pass'),
-            'encoding' => 'utf8',
-            'timezone' => 'UTC',
+            'className'     => Connection::class,
+            'driver'        => 'Cake\Database\Driver\Mysql',
+            'database'      => $this->getContainer()->get('db.name'),
+            'username'      => $this->getContainer()->get('db.user'),
+            'password'      => $this->getContainer()->get('db.pass'),
+            'encoding'      => 'utf8',
+            'timezone'      => 'UTC',
             'cacheMetadata' => false // If set to `true` you need to install the optional "cakephp/cache" package.
         ]);
 
@@ -85,7 +85,7 @@ class App
     }
 
     /**
-     * Ajoute la définition des DI de l'application
+     * Ajoute la définition des DI de l'application.
      */
     private function initApplicationConfig(): void
     {
@@ -95,7 +95,7 @@ class App
     }
 
     /**
-     * Ajoute les routes définies dans l'application
+     * Ajoute les routes définies dans l'application.
      *
      * @param $router Router
      */
@@ -114,7 +114,7 @@ class App
     private function initApplications(array $applications = []): void
     {
         foreach ($applications as $application) {
-            /** @var $application Application */
+            /* @var $application Application */
             $this->applications[] = Builder::create($application);
         }
     }
@@ -160,7 +160,7 @@ class App
     {
         $router = $this->container->get(Router::class);
         $route = $router->match($request);
-        if (is_null($route)) {
+        if (null === $route) {
             throw new NotMatchRouteException();
         }
         $parameters = array_merge($route->getParams(), ['request' => $request]);
@@ -171,7 +171,6 @@ class App
             return $response;
         }
         throw new Exception('The response is not a string or an instance of ResponseInterface');
-
     }
 
     /**

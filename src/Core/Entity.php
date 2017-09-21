@@ -5,15 +5,14 @@ namespace TuxBoy;
 use Cake\ORM;
 use TuxBoy\Exception\NotEntitySetterException;
 
-
 /**
- * Class Entity
+ * Class Entity.
  */
 class Entity extends ORM\Entity
 {
-
     /**
      * Entity constructor.
+     *
      * @param array $properties
      * @param array $options
      */
@@ -21,6 +20,7 @@ class Entity extends ORM\Entity
     {
         parent::__construct($properties, $options);
     }
+
     /**
      * @param array $properties
      */
@@ -31,14 +31,15 @@ class Entity extends ORM\Entity
 
     /**
      * @param array $data
+     *
      * @throws NotEntitySetterException
      */
     private function loadData(array $data = [])
     {
         if (!empty($data)) {
             foreach ($data as $field => $value) {
-                if (substr($field, -3) === '_id') {
-                    $foreignKeyToObject = str_replace(substr($field, -3), '', $field);
+                if (mb_substr($field, -3) === '_id') {
+                    $foreignKeyToObject = str_replace(mb_substr($field, -3), '', $field);
                     $field = $foreignKeyToObject;
                 }
                 if ($field !== 'id') {
@@ -51,5 +52,4 @@ class Entity extends ORM\Entity
             }
         }
     }
-
 }

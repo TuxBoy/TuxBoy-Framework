@@ -1,16 +1,15 @@
 <?php
+
 namespace TuxBoy;
 
 use TuxBoy\Router\Router;
 
 class Application implements ApplicationInterface
 {
-
     public function getName(): string
     {
         return str_replace('\\Application', '', get_class($this));
     }
-
 
     /**
      * Définie les routes de l'application.
@@ -23,7 +22,7 @@ class Application implements ApplicationInterface
     }
 
     /**
-     * Pour ajouter la configuration au container de son application
+     * Pour ajouter la configuration au container de son application.
      *
      * @return array
      */

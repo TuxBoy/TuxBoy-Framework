@@ -2,8 +2,8 @@
 
 namespace TuxBoy\Builder;
 
-use TuxBoy\Concern\Current;
 use ReflectionClass;
+use TuxBoy\Concern\Current;
 
 /**
  * Class Class_Builder.

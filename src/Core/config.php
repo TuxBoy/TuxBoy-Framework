@@ -1,5 +1,12 @@
 <?php
 
+use Doctrine\DBAL\DriverManager;
+use FastRoute\DataGenerator\GroupCountBased;
+use FastRoute\RouteParser\Std;
+use Go\Core\AspectContainer;
+use Go\Core\AspectKernel;
+use Go\Core\GoAspectContainer;
+use Psr\Container\ContainerInterface;
 use TuxBoy\Aspect\MaintainerAspect;
 use TuxBoy\Database\Database;
 use TuxBoy\Database\Maintainer;
@@ -14,13 +21,6 @@ use TuxBoy\Twig\FormExtension;
 use TuxBoy\Twig\RouterTwigExtension;
 use TuxBoy\Twig\TwigFactory;
 use function DI\add;
-use Doctrine\DBAL\DriverManager;
-use FastRoute\DataGenerator\GroupCountBased;
-use FastRoute\RouteParser\Std;
-use Go\Core\AspectContainer;
-use Go\Core\AspectKernel;
-use Go\Core\GoAspectContainer;
-use Psr\Container\ContainerInterface;
 use function DI\env;
 use function DI\factory;
 use function DI\get;
@@ -36,11 +36,11 @@ return [
         'aspect.appDir'   => string('{basepath}/src/'),
         'aspect.cacheDir' => false,
 
-        'db.name'         => env('DB_NAME'),
-        'db.user'         => env('DB_USER', 'root'),
-        'db.pass'         => env('DB_PASS', 'root'),
-        'db.host'         => env('DB_HOST', 'localhost'),
-        'db.driver'       => env('DB_DRVER', 'pdo_mysql'),
+        'db.name'                          => env('DB_NAME'),
+        'db.user'                          => env('DB_USER', 'root'),
+        'db.pass'                          => env('DB_PASS', 'root'),
+        'db.host'                          => env('DB_HOST', 'localhost'),
+        'db.driver'                        => env('DB_DRVER', 'pdo_mysql'),
         \Doctrine\DBAL\Connection::class   => function (ContainerInterface $container) {
             return DriverManager::getConnection([
                 'dbname'       => $container->get('db.name'),
@@ -50,7 +50,7 @@ return [
                 'driver'       => $container->get('db.driver'),
             ]);
         },
-        Database::class => object()->constructor(get(\Doctrine\DBAL\Connection::class)),
+        Database::class     => object()->constructor(get(\Doctrine\DBAL\Connection::class)),
         AspectKernel::class => function (ContainerInterface $container) {
             $applicationKernel = \TuxBoy\ApplicationApsect::getInstance();
             $applicationKernel->init([
@@ -71,18 +71,18 @@ return [
         'twig.extensions' => [
                 get(RouterTwigExtension::class),
                 get(FlashExtension::class),
-								get(FormExtension::class)
+                                get(FormExtension::class)
         ],
         'annotations' => add([
             \TuxBoy\Annotation\Set::class,
         ]),
-        Std::class => object(),
-        GroupCountBased::class => object(),
+        Std::class                       => object(),
+        GroupCountBased::class           => object(),
         \FastRoute\RouteCollector::class => object()->constructor(get(Std::class), get(GroupCountBased::class)),
-        Router::class           => object()->constructor(get(\FastRoute\RouteCollector::class)),
-        Twig_Environment::class => factory(TwigFactory::class),
-        AspectContainer::class  => object(GoAspectContainer::class),
-        'goaop.aspect'          => [
+        Router::class                    => object()->constructor(get(\FastRoute\RouteCollector::class)),
+        Twig_Environment::class          => factory(TwigFactory::class),
+        AspectContainer::class           => object(GoAspectContainer::class),
+        'goaop.aspect'                   => [
             object(MaintainerAspect::class)
                 ->constructor(get(Maintainer::class), get('dev'), get('migration.auto'))
         ],
