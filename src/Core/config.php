@@ -10,6 +10,7 @@ use Core\Session\PHPSession;
 use Core\Session\SessionInterface;
 use Core\Tools\Whoops;
 use Core\Twig\FlashExtension;
+use Core\Twig\FormExtension;
 use Core\Twig\RouterTwigExtension;
 use Core\Twig\TwigFactory;
 use function DI\add;
@@ -69,7 +70,8 @@ return [
         'twig.path'       => \DI\add([string('{basepath}/res/views')]),
         'twig.extensions' => [
                 get(RouterTwigExtension::class),
-                get(FlashExtension::class)
+                get(FlashExtension::class),
+								get(FormExtension::class)
         ],
         'annotations' => add([
             \Core\Annotation\Set::class,

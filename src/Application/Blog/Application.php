@@ -20,14 +20,6 @@ class Application implements ApplicationInterface
 {
 
     /**
-     * @return array
-     */
-    public function entites(): array
-    {
-        return [Post::class, Category::class];
-    }
-
-    /**
      * @param Router $router
      */
     public function getRoutes(Router $router): void

@@ -11,6 +11,7 @@ if (file_exists(__DIR__ . '/../.env')) {
 $config = require dirname(__DIR__) . '/config.php';
 $applications = [
     \App\Home\Application::class,
+		\App\Contact\Application::class,
     \App\Blog\Application::class
 ];
 $app = new Core\App($config, $applications);

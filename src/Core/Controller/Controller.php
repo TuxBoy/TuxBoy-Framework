@@ -26,13 +26,14 @@ class Controller
      */
     protected $flash;
 
-    /**
-     * Controller constructor.
-     * @Maintainer
-     *
-     * @param ContainerInterface $container
-     * @param Twig_Environment   $view
-     */
+	/**
+	 * Controller constructor.
+	 * @Maintainer
+	 *
+	 * @param ContainerInterface $container
+	 * @param Twig_Environment   $view
+	 * @param FlashService       $flash
+	 */
     public function __construct(ContainerInterface $container, Twig_Environment $view, FlashService $flash)
     {
         $this->container = $container;

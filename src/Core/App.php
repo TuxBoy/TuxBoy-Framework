@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
 use Core\Builder\Builder;
 use Core\Exception\NotMatchRouteException;
@@ -70,11 +71,13 @@ class App
             $aspectContainer->registerAspect($aspect);
         }
         ConnectionManager::setConfig('default', [
-            'className' => 'Cake\Database\Connection',
+            'className' => Connection::class,
             'driver' => 'Cake\Database\Driver\Mysql',
             'database' => $this->getContainer()->get('db.name'),
             'username' => $this->getContainer()->get('db.user'),
             'password' => $this->getContainer()->get('db.pass'),
+            'encoding' => 'utf8',
+            'timezone' => 'UTC',
             'cacheMetadata' => false // If set to `true` you need to install the optional "cakephp/cache" package.
         ]);
 
