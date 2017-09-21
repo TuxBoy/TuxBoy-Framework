@@ -2,8 +2,8 @@
 namespace App\Contact;
 
 use App\Contact\Controller\ContactController;
-use Core\ApplicationInterface;
-use Core\Router\Router;
+use TuxBoy\ApplicationInterface;
+use TuxBoy\Router\Router;
 use function DI\add;
 
 class Application implements ApplicationInterface

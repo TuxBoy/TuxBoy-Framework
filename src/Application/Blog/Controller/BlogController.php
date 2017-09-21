@@ -4,8 +4,8 @@ namespace App\Blog\Controller;
 
 use App\Blog\Table\CategoriesTable;
 use App\Blog\Table\PostsTable;
-use Core\Builder\Builder;
-use Core\Controller\Controller;
+use TuxBoy\Builder\Builder;
+use TuxBoy\Controller\Controller;
 use DI\NotFoundException;
 use GuzzleHttp\Psr7\ServerRequest;
 use App\Blog\Entity\Post;

@@ -1,8 +1,8 @@
 <?php
-namespace Test\Core;
+namespace Test\TuxBoy;
 
-use Core\Plugin\Plugin;
-use Core\Plugin\Registrable;
+use TuxBoy\Plugin\Plugin;
+use TuxBoy\Plugin\Registrable;
 use Go\Aop\Aspect;
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +33,7 @@ class Fake_Plugin_Test implements Registrable {
 
 /**
  * Class PluginTest
- * @package Test\Core
+ * @package Test\TuxBoy
  */
 class PluginTest extends TestCase
 {

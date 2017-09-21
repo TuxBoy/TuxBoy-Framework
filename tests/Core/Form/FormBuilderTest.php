@@ -1,8 +1,8 @@
 <?php
-namespace Test\Core\Form;
+namespace Test\TuxBoy\Form;
 
-use Core\Form\Builder\FormBuilder;
-use Core\Form\Input;
+use TuxBoy\Form\Builder\FormBuilder;
+use TuxBoy\Form\Input;
 use PHPUnit\Framework\TestCase;
 
 class FormBuilderTest extends TestCase

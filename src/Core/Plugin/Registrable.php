@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Plugin;
+namespace TuxBoy\Plugin;
 
 /**
  * Registrable.

@@ -1,14 +1,14 @@
 <?php
 
-namespace Core\Database;
+namespace TuxBoy\Database;
 
-use Core\Annotation\Set;
-use Core\Builder\Builder;
-use Core\Builder\Namespaces;
-use Core\Exception\AnnotationException;
-use Core\Exception\DatabaseException;
-use Core\Exception\MaintainerEcxeption;
-use Core\ReflectionAnnotation;
+use TuxBoy\Annotation\Set;
+use TuxBoy\Builder\Builder;
+use TuxBoy\Builder\Namespaces;
+use TuxBoy\Exception\AnnotationException;
+use TuxBoy\Exception\DatabaseException;
+use TuxBoy\Exception\MaintainerEcxeption;
+use TuxBoy\ReflectionAnnotation;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;

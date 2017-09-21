@@ -1,9 +1,9 @@
 <?php
 
-namespace Core\Controller;
+namespace TuxBoy\Controller;
 
-use Core\Annotation\Maintainer;
-use Core\Session\FlashService;
+use TuxBoy\Annotation\Maintainer;
+use TuxBoy\Session\FlashService;
 use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;

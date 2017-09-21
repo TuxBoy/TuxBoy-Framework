@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\Builder;
+namespace TuxBoy\Builder;
 
-use Core\Concern\Current;
+use TuxBoy\Concern\Current;
 use ReflectionClass;
 
 /**

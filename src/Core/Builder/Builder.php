@@ -1,10 +1,10 @@
 <?php
 
-namespace Core\Builder;
+namespace TuxBoy\Builder;
 
-use Core\Concern\Current;
-use Core\Plugin\Plugin;
-use Core\Priority;
+use TuxBoy\Concern\Current;
+use TuxBoy\Plugin\Plugin;
+use TuxBoy\Priority;
 use ReflectionClass;
 
 /**

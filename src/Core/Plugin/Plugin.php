@@ -1,11 +1,11 @@
 <?php
 
-namespace Core\Plugin;
+namespace TuxBoy\Plugin;
 
-use Core\Builder\Builder;
-use Core\Concern\Current;
-use Core\Exception\PluginException;
-use Core\Priority;
+use TuxBoy\Builder\Builder;
+use TuxBoy\Concern\Current;
+use TuxBoy\Exception\PluginException;
+use TuxBoy\Priority;
 use Go\Aop\Aspect;
 
 /**

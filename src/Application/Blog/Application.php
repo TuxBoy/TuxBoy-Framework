@@ -8,8 +8,8 @@ use App\Blog\Entity\Category;
 use App\Blog\Table\CategoriesTable;
 use App\Blog\Table\PostsTable;
 use Cake\ORM\TableRegistry;
-use Core\ApplicationInterface;
-use Core\Router\Router;
+use TuxBoy\ApplicationInterface;
+use TuxBoy\Router\Router;
 use function DI\add;
 
 

@@ -1,5 +1,5 @@
 <?php
-namespace Test\Core\Entity;
+namespace Test\TuxBoy\Entity;
 
 /**
  *

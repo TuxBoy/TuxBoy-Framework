@@ -1,5 +1,5 @@
 <?php
-namespace Core\Router;
+namespace TuxBoy\Router;
 
 class Route
 {

@@ -2,7 +2,7 @@
 
 namespace App\Home\Controller;
 
-use Core\Controller\Controller;
+use TuxBoy\Controller\Controller;
 
 class HomeController extends Controller
 {

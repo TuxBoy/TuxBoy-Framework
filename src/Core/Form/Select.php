@@ -1,5 +1,5 @@
 <?php
-namespace Core\Form;
+namespace TuxBoy\Form;
 
 class Select extends Element
 {

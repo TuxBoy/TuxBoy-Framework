@@ -3,8 +3,8 @@
 namespace App\Blog\Entity;
 
 use Cocur\Slugify\Slugify;
-use Core\Annotation\Set;
-use Core\Entity;
+use TuxBoy\Annotation\Set;
+use TuxBoy\Entity;
 
 /**
  * Class Post.

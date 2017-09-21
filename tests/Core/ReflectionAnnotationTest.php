@@ -1,7 +1,7 @@
 <?php
-namespace Test\Core;
+namespace Test\TuxBoy;
 
-use Core\ReflectionAnnotation;
+use TuxBoy\ReflectionAnnotation;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 

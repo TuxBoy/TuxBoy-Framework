@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Router;
+namespace TuxBoy\Router;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Router\FastRouteRouter;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Concern;
+namespace TuxBoy\Concern;
 
 /**
  * Trait Current.

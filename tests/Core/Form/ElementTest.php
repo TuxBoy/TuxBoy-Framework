@@ -1,10 +1,10 @@
 <?php
-namespace Test\Core\Form;
+namespace Test\TuxBoy\Form;
 
-use Core\Form\Checkbox;
-use Core\Form\Input;
-use Core\Form\Select;
-use Core\Form\Textarea;
+use TuxBoy\Form\Checkbox;
+use TuxBoy\Form\Input;
+use TuxBoy\Form\Select;
+use TuxBoy\Form\Textarea;
 use PHPUnit\Framework\TestCase;
 
 class ElementTest extends TestCase

@@ -1,7 +1,7 @@
 <?php
-namespace Test\Core\Concern;
+namespace Test\TuxBoy\Concern;
 
-use Core\Concern\Current;
+use TuxBoy\Concern\Current;
 use PHPUnit\Framework\TestCase;
 
 class FakeTest {

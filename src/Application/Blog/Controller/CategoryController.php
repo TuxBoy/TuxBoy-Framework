@@ -1,8 +1,8 @@
 <?php
 namespace App\Blog\Controller;
 
-use Core\Builder\Builder;
-use Core\Controller\Controller;
+use TuxBoy\Builder\Builder;
+use TuxBoy\Controller\Controller;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Blog\Entity\Category;
 use App\Blog\Repository\CategoryRepository;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Session;
+namespace TuxBoy\Session;
 
 class FlashService
 {

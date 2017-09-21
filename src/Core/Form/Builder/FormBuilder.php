@@ -1,8 +1,8 @@
 <?php
-namespace Core\Form\Builder;
+namespace TuxBoy\Form\Builder;
 
-use Core\Form\Element;
-use Core\Form\Form;
+use TuxBoy\Form\Element;
+use TuxBoy\Form\Form;
 
 class FormBuilder
 {

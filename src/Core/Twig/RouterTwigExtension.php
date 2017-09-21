@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\Twig;
+namespace TuxBoy\Twig;
 
-use Core\Router\Router;
+use TuxBoy\Router\Router;
 
 class RouterTwigExtension extends \Twig_Extension
 {

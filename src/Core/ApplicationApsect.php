@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace TuxBoy;
 
 use Go\Core\AspectContainer;
 use Go\Core\AspectKernel;

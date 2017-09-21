@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace TuxBoy;
 
 /**
  * Class Priority.

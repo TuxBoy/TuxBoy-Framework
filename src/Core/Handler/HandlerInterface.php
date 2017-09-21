@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Handler;
+namespace TuxBoy\Handler;
 
 /**
  * Interface HandlerInterface.

@@ -1,12 +1,12 @@
 <?php
 
-namespace Core\Database;
+namespace TuxBoy\Database;
 
-use Core\Annotation\Set;
-use Core\Builder\Builder;
-use Core\Entity;
-use Core\Exception\DatabaseException;
-use Core\ReflectionAnnotation;
+use TuxBoy\Annotation\Set;
+use TuxBoy\Builder\Builder;
+use TuxBoy\Entity;
+use TuxBoy\Exception\DatabaseException;
+use TuxBoy\ReflectionAnnotation;
 use Doctrine\DBAL\Connection;
 use Go\ParserReflection\ReflectionClass;
 

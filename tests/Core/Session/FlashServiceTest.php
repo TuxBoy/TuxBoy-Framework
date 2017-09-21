@@ -1,8 +1,8 @@
 <?php
-namespace Test\Core\Session;
+namespace Test\TuxBoy\Session;
 
-use Core\Session\ArraySession;
-use Core\Session\FlashService;
+use TuxBoy\Session\ArraySession;
+use TuxBoy\Session\FlashService;
 use PHPUnit\Framework\TestCase;
 
 class FlashServiceTest extends TestCase

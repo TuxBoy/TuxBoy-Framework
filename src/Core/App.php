@@ -1,14 +1,14 @@
 <?php
 
-namespace Core;
+namespace TuxBoy;
 
 use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
-use Core\Builder\Builder;
-use Core\Exception\NotMatchRouteException;
-use Core\Handler\HandlerInterface;
-use Core\Plugin\Plugin;
-use Core\Router\Router;
+use TuxBoy\Builder\Builder;
+use TuxBoy\Exception\NotMatchRouteException;
+use TuxBoy\Handler\HandlerInterface;
+use TuxBoy\Plugin\Plugin;
+use TuxBoy\Router\Router;
 use DI\ContainerBuilder;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Exception;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\Aspect;
+namespace TuxBoy\Aspect;
 
-use Core\Database\Maintainer;
+use TuxBoy\Database\Maintainer;
 use Go\Aop\Aspect;
 use Go\Aop\Intercept\MethodInvocation;
 use Go\Lang\Annotation\Before;
@@ -47,7 +47,7 @@ class MaintainerAspect implements Aspect
     /**
      * @param MethodInvocation $methodInvocation
      *
-     * @Before("@execution(Core\Annotation\Maintainer)")
+     * @Before("@execution(TuxBoy\Annotation\Maintainer)")
      */
     public function beforeAllExecution(MethodInvocation $methodInvocation)
     {

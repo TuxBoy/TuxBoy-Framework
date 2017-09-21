@@ -1,5 +1,5 @@
 <?php
-namespace Core\Tools;
+namespace TuxBoy\Tools;
 
 trait HasCreatedAt
 {

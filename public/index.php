@@ -14,7 +14,7 @@ $applications = [
 		\App\Contact\Application::class,
     \App\Blog\Application::class
 ];
-$app = new Core\App($config, $applications);
+$app = new TuxBoy\App($config, $applications);
 
 $response = $app->run(ServerRequest::fromGlobals());
 \Http\Response\send($response);

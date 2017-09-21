@@ -1,8 +1,8 @@
 <?php
-namespace Test\Core\Repository;
+namespace Test\TuxBoy\Repository;
 
-use Core\Database\Database;
-use Core\Database\Repository;
+use TuxBoy\Database\Database;
+use TuxBoy\Database\Repository;
 use Doctrine\DBAL\Connection;
 use Mockable;
 use PHPUnit\Framework\TestCase;

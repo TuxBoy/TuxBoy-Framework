@@ -1,7 +1,7 @@
 <?php
-namespace Core\Twig;
+namespace TuxBoy\Twig;
 
-use Core\Form\Builder\FormBuilder;
+use TuxBoy\Form\Builder\FormBuilder;
 
 class FormExtension extends \Twig_Extension
 {

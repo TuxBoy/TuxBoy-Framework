@@ -1,11 +1,11 @@
 <?php
 namespace App\Contact\Form;
 
-use Core\Form\Builder\FormBuilder;
-use Core\Router\Router;
-use Core\Form\Button;
-use Core\Form\Input;
-use Core\Form\Textarea;
+use TuxBoy\Form\Builder\FormBuilder;
+use TuxBoy\Router\Router;
+use TuxBoy\Form\Button;
+use TuxBoy\Form\Input;
+use TuxBoy\Form\Textarea;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ContactForm

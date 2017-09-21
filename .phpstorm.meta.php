@@ -1,7 +1,7 @@
 <?php
 namespace PHPSTORM_META {
 
-	use Core\Builder\Builder;
+	use TuxBoy\Builder\Builder;
   use Psr\Container\ContainerInterface;
 
   $STATIC_METHOD_TYPES = [

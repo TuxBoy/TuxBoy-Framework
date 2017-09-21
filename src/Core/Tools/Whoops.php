@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\Tools;
+namespace TuxBoy\Tools;
 
-use Core\Handler\HandlerInterface;
+use TuxBoy\Handler\HandlerInterface;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 

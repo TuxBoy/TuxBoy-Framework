@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\Twig;
+namespace TuxBoy\Twig;
 
-use Core\Session\FlashService;
+use TuxBoy\Session\FlashService;
 
 class FlashExtension extends \Twig_Extension
 {

@@ -1,8 +1,8 @@
 <?php
 
-use Core\Tools\Whoops;
+use TuxBoy\Tools\Whoops;
 use function DI\env;
-use Core\Priority;
+use TuxBoy\Priority;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use FastRoute\DataGenerator\GroupCountBased;
@@ -15,7 +15,7 @@ return [
 
 	Priority::CORE => [
 		\App\Blog\Entity\Post::class => [
-			\Core\Tools\HasTime::class
+			\TuxBoy\Tools\HasTime::class
 		]
 	],
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Core\Database;
+namespace TuxBoy\Database;
 
-use Core\Annotation\Set;
-use Core\Builder\Namespaces;
-use Core\ReflectionAnnotation;
+use TuxBoy\Annotation\Set;
+use TuxBoy\Builder\Namespaces;
+use TuxBoy\ReflectionAnnotation;
 use Doctrine\Common\Annotations\Annotation;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Persistence\ObjectRepository;

@@ -1,5 +1,5 @@
 <?php
-namespace Core\Exception;
+namespace TuxBoy\Exception;
 
 
 use Exception;

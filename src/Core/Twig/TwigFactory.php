@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Twig;
+namespace TuxBoy\Twig;
 
 use Psr\Container\ContainerInterface;
 use Twig_Environment;

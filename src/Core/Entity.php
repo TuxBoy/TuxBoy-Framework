@@ -1,9 +1,9 @@
 <?php
 
-namespace Core;
+namespace TuxBoy;
 
 use Cake\ORM;
-use Core\Exception\NotEntitySetterException;
+use TuxBoy\Exception\NotEntitySetterException;
 
 
 /**

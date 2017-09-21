@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Builder;
+namespace TuxBoy\Builder;
 
 class Namespaces
 {

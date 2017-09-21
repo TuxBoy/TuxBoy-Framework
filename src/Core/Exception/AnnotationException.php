@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Exception;
+namespace TuxBoy\Exception;
 
 class AnnotationException extends \Exception
 {

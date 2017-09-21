@@ -2,9 +2,9 @@
 
 namespace App\Blog\Entity;
 
-use Core\Annotation\Set;
-use Core\Entity;
-use Core\Tools\HasName;
+use TuxBoy\Annotation\Set;
+use TuxBoy\Entity;
+use TuxBoy\Tools\HasName;
 
 /**
  * Category.

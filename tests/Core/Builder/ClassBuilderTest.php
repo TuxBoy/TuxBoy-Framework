@@ -1,10 +1,10 @@
 <?php
-namespace Test\Core\Builder;
+namespace Test\TuxBoy\Builder;
 
-use Core\Builder\ClassBuilder;
-use Core\Builder\Namespaces;
+use TuxBoy\Builder\ClassBuilder;
+use TuxBoy\Builder\Namespaces;
 use PHPUnit\Framework\TestCase;
-use Test\Core\Entity\FakeEntity;
+use Test\TuxBoy\Entity\FakeEntity;
 
 trait FakeOnline
 {

@@ -1,7 +1,7 @@
 <?php
-namespace Core;
+namespace TuxBoy;
 
-use Core\Router\Router;
+use TuxBoy\Router\Router;
 
 class Application implements ApplicationInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Annotation;
+namespace TuxBoy\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
 

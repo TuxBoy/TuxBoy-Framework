@@ -1,18 +1,18 @@
 <?php
 
-use Core\Aspect\MaintainerAspect;
-use Core\Database\Database;
-use Core\Database\Maintainer;
-use Core\Handler\HandlerInterface;
-use Core\Priority;
-use Core\Router\Router;
-use Core\Session\PHPSession;
-use Core\Session\SessionInterface;
-use Core\Tools\Whoops;
-use Core\Twig\FlashExtension;
-use Core\Twig\FormExtension;
-use Core\Twig\RouterTwigExtension;
-use Core\Twig\TwigFactory;
+use TuxBoy\Aspect\MaintainerAspect;
+use TuxBoy\Database\Database;
+use TuxBoy\Database\Maintainer;
+use TuxBoy\Handler\HandlerInterface;
+use TuxBoy\Priority;
+use TuxBoy\Router\Router;
+use TuxBoy\Session\PHPSession;
+use TuxBoy\Session\SessionInterface;
+use TuxBoy\Tools\Whoops;
+use TuxBoy\Twig\FlashExtension;
+use TuxBoy\Twig\FormExtension;
+use TuxBoy\Twig\RouterTwigExtension;
+use TuxBoy\Twig\TwigFactory;
 use function DI\add;
 use Doctrine\DBAL\DriverManager;
 use FastRoute\DataGenerator\GroupCountBased;
@@ -52,7 +52,7 @@ return [
         },
         Database::class => object()->constructor(get(\Doctrine\DBAL\Connection::class)),
         AspectKernel::class => function (ContainerInterface $container) {
-            $applicationKernel = \Core\ApplicationApsect::getInstance();
+            $applicationKernel = \TuxBoy\ApplicationApsect::getInstance();
             $applicationKernel->init([
                 'debug'        => $container->get('dev'),
                 'appDir'       => $container->get('aspect.appDir'),
@@ -74,7 +74,7 @@ return [
 								get(FormExtension::class)
         ],
         'annotations' => add([
-            \Core\Annotation\Set::class,
+            \TuxBoy\Annotation\Set::class,
         ]),
         Std::class => object(),
         GroupCountBased::class => object(),

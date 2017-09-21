@@ -2,8 +2,8 @@
 namespace App\Home;
 
 use App\Home\Controller\HomeController;
-use Core\ApplicationInterface;
-use Core\Router\Router;
+use TuxBoy\ApplicationInterface;
+use TuxBoy\Router\Router;
 use function DI\add;
 
 class Application implements ApplicationInterface

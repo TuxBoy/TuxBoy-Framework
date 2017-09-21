@@ -1,7 +1,7 @@
 <?php
-namespace Test\Core;
+namespace Test\TuxBoy;
 
-use Core\Router\Router;
+use TuxBoy\Router\Router;
 use DI\Container;
 use DI\ContainerBuilder;
 use function DI\get;

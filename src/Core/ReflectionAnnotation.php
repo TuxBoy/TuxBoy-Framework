@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace TuxBoy;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Exception;
