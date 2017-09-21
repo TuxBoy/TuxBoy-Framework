@@ -16,9 +16,8 @@ class ContactForm
 	 */
 	public $formBuilder;
 
-	public function __construct(FormBuilder $formBuilder, Router $router, ServerRequestInterface $request)
+	public function __construct(FormBuilder $formBuilder, Router $router)
 	{
-		dump($request->getParsedBody());
 		$this->formBuilder = $formBuilder
 			->openForm($router->generateUri('contact.index'), 'POST')
 			->add((new Input('name'))->setAttribute('placeholder', 'Nom'))
