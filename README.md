@@ -9,7 +9,7 @@ Pre-Requis :
 - PHP >= 7.1
 - MySQL database
  
-Copier le fichier `.env.dist` en `.env` and ajouter votre configuration
+Copier le fichier `.env.dist` en `.env` et ajouter votre configuration
 
 Installer les dépendances
 
@@ -22,6 +22,18 @@ Démarrer le serveur de dev
 ```php
 $ make server
 ```
+
+Se rendre sur la page http://localhost:8000, La homepage est gérer par le module "src/Application/Home"
+qui est la base d'un module du TuxBoy-Framework.
+
+## Getting started
+
+### Créer un "Module"
+
+Pour créer un module, il suffit de créer un dossier dans le répertoire src/Application/YourModule/.
+Un module doit être composé d'un fichier Application.php qui doit systématiqument implémenter : `TuxBoy\ApplicationInterface`
+
+...
 
 Lancer les tests unitaire
 
