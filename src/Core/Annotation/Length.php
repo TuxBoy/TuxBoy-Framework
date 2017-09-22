@@ -7,7 +7,7 @@ use Doctrine\Common\Annotations\Annotation;
  * Class Length
  *
  * @Annotation
- * @Annotation\Target("METHOD")
+ * @Annotation\Target("PROPERTY")
  */
 class Length extends Annotation
 {

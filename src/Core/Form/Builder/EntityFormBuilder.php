@@ -2,6 +2,7 @@
 namespace TuxBoy\Form\Builder;
 
 use Doctrine\DBAL\Types\Type;
+use TuxBoy\Annotation\Option;
 use TuxBoy\Entity;
 use TuxBoy\Form\Button;
 use TuxBoy\Form\Input;
@@ -53,9 +54,19 @@ class EntityFormBuilder
 				if (property_exists(get_class($entity), $property) && $entity->$property) {
 					$value = $entity->$property;
 				}
-				$this->formBuilder->add(
-					(new Input($property, $value))->setAttribute('type', Type::TEXT)
-				);
+				$input = new Input($property, $value);
+				if ($propertyAnnotation->getPropertyAnnotation(Option::class)) {
+					$optionAnnoation = $propertyAnnotation->getPropertyAnnotation(Option::class);
+					$type = $optionAnnoation->type ? $optionAnnoation->type : Type::TEXT;
+					if ($optionAnnoation->mendatory) {
+						$input->setAttribute('required');
+					}
+				}
+				else {
+					$type = Type::TEXT;
+				}
+				$input->setAttribute('type', $type);
+				$this->formBuilder->add($input);
 			}
 
 			if (

@@ -9,6 +9,7 @@ use Go\Core\GoAspectContainer;
 use Psr\Container\ContainerInterface;
 use TuxBoy\Annotation\Length;
 use TuxBoy\Annotation\Set;
+use TuxBoy\Annotation\Option;
 use TuxBoy\Aspect\MaintainerAspect;
 use TuxBoy\Database\Database;
 use TuxBoy\Database\Maintainer;
@@ -77,7 +78,8 @@ return [
         ],
         'annotations' => add([
             Set::class,
-						Length::class
+						Length::class,
+						Option::class
         ]),
         Std::class                       => object(),
         GroupCountBased::class           => object(),
