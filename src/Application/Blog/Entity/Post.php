@@ -3,6 +3,7 @@
 namespace App\Blog\Entity;
 
 use Cocur\Slugify\Slugify;
+use TuxBoy\Annotation\Link;
 use TuxBoy\Annotation\Set;
 use TuxBoy\Entity;
 
@@ -34,7 +35,7 @@ class Post extends Entity
     public $content;
 
     /**
-     * @link belongsTo
+     * @Link("belongsTo")
      *
      * @var \App\Blog\Entity\Category
      */
