@@ -2,9 +2,11 @@
 
 namespace TuxBoy\Database;
 
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
+use TuxBoy\Annotation\Length;
 use TuxBoy\Annotation\Set;
 use TuxBoy\Builder\Builder;
 use TuxBoy\Builder\Namespaces;
@@ -27,7 +29,7 @@ class Maintainer
     private $database;
 
     /**
-     * @var \Doctrine\DBAL\Schema\AbstractSchemaManager
+     * @var AbstractSchemaManager
      */
     private $schemaManager;
 
@@ -144,9 +146,9 @@ class Maintainer
             $reflectionAnnotation = new ReflectionAnnotation($entity, $field);
             $type_name = $reflectionAnnotation->getAnnotation('var')->getValue();
             $options = [];
-            if ($type_name === Type::STRING && $reflectionAnnotation->getAnnotation('length')->getValue()) {
-                $options['length'] = $reflectionAnnotation->getAnnotation('length')->getValue();
-            } elseif ($type_name === Type::STRING && !$reflectionAnnotation->getAnnotation('length')->getValue()) {
+            if ($type_name === Type::STRING && $reflectionAnnotation->getPropertyAnnotation(Length::class)) {
+                $options['length'] = $reflectionAnnotation->getPropertyAnnotation(Length::class)->value;
+            } elseif ($type_name === Type::STRING && !$reflectionAnnotation->getPropertyAnnotation(Length::class)) {
                 $options['length'] = 255;
             }
             if (!array_key_exists($field, $table->getColumns())) {

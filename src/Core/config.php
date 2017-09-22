@@ -7,6 +7,8 @@ use Go\Core\AspectContainer;
 use Go\Core\AspectKernel;
 use Go\Core\GoAspectContainer;
 use Psr\Container\ContainerInterface;
+use TuxBoy\Annotation\Length;
+use TuxBoy\Annotation\Set;
 use TuxBoy\Aspect\MaintainerAspect;
 use TuxBoy\Database\Database;
 use TuxBoy\Database\Maintainer;
@@ -71,10 +73,11 @@ return [
         'twig.extensions' => [
                 get(RouterTwigExtension::class),
                 get(FlashExtension::class),
-                                get(FormExtension::class)
+                get(FormExtension::class)
         ],
         'annotations' => add([
-            \TuxBoy\Annotation\Set::class,
+            Set::class,
+						Length::class
         ]),
         Std::class                       => object(),
         GroupCountBased::class           => object(),

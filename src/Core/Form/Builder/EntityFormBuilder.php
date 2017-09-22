@@ -50,7 +50,7 @@ class EntityFormBuilder
 				&& $propertyAnnotation->getAnnotation('var')->getValue() === Type::STRING
 			) {
 				$value = null;
-				if ($entity->$property) {
+				if (property_exists(get_class($entity), $property) && $entity->$property) {
 					$value = $entity->$property;
 				}
 				$this->formBuilder->add(
@@ -63,7 +63,7 @@ class EntityFormBuilder
 				&& $propertyAnnotation->getAnnotation('var')->getValue() === Type::TEXT
 			) {
 				$value = null;
-				if ($entity->$property) {
+				if (property_exists(get_class($entity), $property) && $entity->$property) {
 					$value = $entity->$property;
 				}
 				$this->formBuilder->add((new Textarea($property, $value)));
