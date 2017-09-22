@@ -1,17 +1,14 @@
 <?php
 
-use TuxBoy\Tools\Whoops;
-use function DI\env;
+use function DI\string;
 use TuxBoy\Priority;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
-use FastRoute\DataGenerator\GroupCountBased;
-use FastRoute\RouteParser\Std;
-use Psr\Container\ContainerInterface;
 
 return [
 
-	Priority::APP => [],
+	Priority::APP => [
+        'basepath'  => __DIR__,
+        'twig.path' => \DI\add([string('{basepath}/res/views')]),
+    ],
 
 	Priority::CORE => [
 		\App\Blog\Entity\Post::class => [

@@ -34,7 +34,7 @@ class Post extends Entity
     public $content;
 
     /**
-     * @see belongsTo
+     * @link belongsTo
      *
      * @var \App\Blog\Entity\Category
      */

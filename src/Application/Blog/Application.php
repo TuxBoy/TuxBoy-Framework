@@ -48,7 +48,6 @@ class Application implements ApplicationInterface
             ]),
             'entities' => add([
                 Post::class,
-                Category::class
             ]),
             PostsTable::class => function () {
                 return TableRegistry::get('Posts', ['className' => PostsTable::class]);
