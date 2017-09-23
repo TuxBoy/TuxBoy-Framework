@@ -16,7 +16,6 @@ $app->command('init', function (OutputInterface $output) {
 
     chdir(__DIR__ . "/src/");
     shell_exec("git clone https://github.com/TuxBoy/Core.git");
-    shell_exec("composer update");
     $output->writeln("Le projet a été initialié.");
 
 });
