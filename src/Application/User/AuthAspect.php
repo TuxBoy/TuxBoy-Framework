@@ -67,8 +67,6 @@ class AuthAspect implements Aspect
             $this->flash->error('Il faut être admin pour accéder à cette page.');
             header('Location:' . '/'); exit();
         }
-
-        return $invocation->proceed();
     }
 
 
