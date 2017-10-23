@@ -52,7 +52,7 @@ class Post extends Entity
     /**
      * @param $name mixed
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -68,7 +68,7 @@ class Post extends Entity
     /**
      * @param $slug string
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug)
     {
         if (isset($this->name) && !isset($this->slug)) {
             $this->slug = (new Slugify())->slugify($this->name);
@@ -88,7 +88,7 @@ class Post extends Entity
     /**
      * @param $content string
      */
-    public function setContent($content)
+    public function setContent(string $content)
     {
         $this->content = $content;
     }
@@ -104,7 +104,7 @@ class Post extends Entity
     /**
      * @param $category Category
      */
-    public function setCategory($category)
+    public function setCategory(Category $category)
     {
         $this->category = $category;
     }
@@ -120,7 +120,7 @@ class Post extends Entity
     /**
      * @param $id int
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }

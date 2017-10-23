@@ -47,7 +47,7 @@ class Application implements ApplicationInterface
                 'blog' => __DIR__ . '/views/'
             ]),
             'entities' => add([
-                Post::class,
+                Post::class
             ]),
             PostsTable::class => function () {
                 return TableRegistry::get('Posts', ['className' => PostsTable::class]);

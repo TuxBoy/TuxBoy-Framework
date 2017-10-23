@@ -62,12 +62,12 @@ class AuthAspect implements Aspect
         $authService = $this->container->get(AuthService::class);
         if (!$authService->getUser()) {
             $this->flash->error('Il faut être connecté pour accéder à cette page.');
-            header('Location:' . '/login'); exit();
+            header('Location:' . '/login');
+            exit();
         } elseif ($authService->getUser() && $authService->getUser()->get('role') !== 'admin') {
             $this->flash->error('Il faut être admin pour accéder à cette page.');
-            header('Location:' . '/'); exit();
+            header('Location:' . '/');
+            exit();
         }
     }
-
-
 }

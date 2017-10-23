@@ -10,5 +10,4 @@ class AdminController extends Controller
     {
         return $this->view->render('@admin/index.twig');
     }
-
 }

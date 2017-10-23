@@ -11,5 +11,4 @@ class UsersTable extends Table
     {
         $this->setEntityClass(User::class);
     }
-
 }

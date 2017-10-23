@@ -16,5 +16,4 @@ class User extends TuxBoy\User\User
      * @var string
      */
     public $email;
-
 }

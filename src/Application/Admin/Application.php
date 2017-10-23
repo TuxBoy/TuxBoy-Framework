@@ -2,6 +2,8 @@
 namespace App\Admin;
 
 use App\Admin\Controller\AdminController;
+use App\Admin\Twig\MenuExtension;
+use function DI\get;
 use TuxBoy\ApplicationInterface;
 use TuxBoy\Router\Router;
 use function DI\add;
@@ -33,6 +35,9 @@ class Application implements ApplicationInterface
             'twig.path' => add([
                'admin'  => __DIR__ . '/views/'
             ]),
+                        'twig.extensions' => add([
+                            get(MenuExtension::class)
+                        ]),
         ];
     }
 

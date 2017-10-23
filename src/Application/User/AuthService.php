@@ -66,7 +66,6 @@ class AuthService implements AuthServiceInterface
                 $this->session->delete('auth.user');
                 return null;
             }
-
         }
         return null;
     }
