@@ -10,6 +10,8 @@ use Cake\ORM\TableRegistry;
 use function DI\add;
 use function DI\factory;
 use TuxBoy\ApplicationInterface;
+use TuxBoy\Html\BootstrapMenu;
+use TuxBoy\Html\Menu;
 use TuxBoy\Router\Router;
 
 class Application implements ApplicationInterface
@@ -41,8 +43,11 @@ class Application implements ApplicationInterface
                 Tag::class
             ]),
             'menu.admin' => add([
-                Link::class
+                new BootstrapMenu('Links', 'link.index')
             ]),
+                        'menu' => add([
+                                new Menu('Les liens', 'link.index')
+                        ]),
             LinksTable::class => factory(function () {
                 return TableRegistry::get('Links', ['className' => LinksTable::class]);
             }),
