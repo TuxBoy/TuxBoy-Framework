@@ -17,6 +17,11 @@ Installer les dépendances
 $ composer install
 ```
 
+Installer les assets et VueJS :
+```bash
+* npm i && npm run watch
+```
+
 Démarrer le serveur de dev
 
 ```php
