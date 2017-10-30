@@ -7,3 +7,4 @@ public/assets
 .php_cs.cache
 cache
 src/Core
+node_modules/
