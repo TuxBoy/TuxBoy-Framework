@@ -1,7 +1,10 @@
 window.Vue = require('vue');
 
-Vue.component('example-componant', require('./componants/ExampleComponant.vue'))
+import Example from './componants/ExampleComponant.vue'
 
 const app = new Vue({
-	el: '#app'
+	el: '#app',
+	components: {
+		Example
+	}
 });
