@@ -4,6 +4,7 @@ namespace App\Contact;
 
 use App\Contact\Controller\ContactController;
 use TuxBoy\ApplicationInterface;
+use TuxBoy\Html\BootstrapMenu;
 use TuxBoy\Html\Menu;
 use TuxBoy\Router\Router;
 use function DI\add;
@@ -29,9 +30,9 @@ class Application implements ApplicationInterface
     public function addConfig(): array
     {
         return [
-                'menu' => add([
-                                new Menu('Contact', 'contact.index', 2)
-                        ]),
+            'menu' => add([
+                new BootstrapMenu('Contact', 'contact.index', 2)
+            ]),
             'twig.path' => add([
                 'contact' => __DIR__ . '/views'
             ]),
