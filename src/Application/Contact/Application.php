@@ -5,7 +5,6 @@ namespace App\Contact;
 use App\Contact\Controller\ContactController;
 use TuxBoy\ApplicationInterface;
 use TuxBoy\Html\BootstrapMenu;
-use TuxBoy\Html\Menu;
 use TuxBoy\Router\Router;
 use function DI\add;
 
