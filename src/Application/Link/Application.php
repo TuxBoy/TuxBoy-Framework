@@ -3,15 +3,7 @@ namespace App\Link;
 
 use App\Link\Controller\LinkController;
 use App\Link\Entity\Link;
-use App\Link\Entity\Tag;
-use App\Link\Table\LinksTable;
-use App\Link\Table\TagsTable;
-use Cake\ORM\TableRegistry;
-use function DI\add;
-use function DI\factory;
 use TuxBoy\ApplicationInterface;
-use TuxBoy\Html\BootstrapMenu;
-use TuxBoy\Html\Menu;
 use TuxBoy\Router\Router;
 
 class Application implements ApplicationInterface
@@ -25,6 +17,8 @@ class Application implements ApplicationInterface
     public function getRoutes(Router $router): void
     {
         $router->get('/links', [LinkController::class, 'index'], 'link.index');
+        $router->get('/link/add', [LinkController::class, 'create'], 'link.add');
+        $router->post('/link/add', [LinkController::class, 'create']);
     }
 
     /**
@@ -34,27 +28,7 @@ class Application implements ApplicationInterface
      */
     public function addConfig(): array
     {
-        return [
-            'twig.path' => add([
-                'link' => __DIR__ . '/views/'
-            ]),
-            'entities' => add([
-                Link::class,
-                Tag::class
-            ]),
-            'menu.admin' => add([
-                new BootstrapMenu('Links', 'link.index')
-            ]),
-                        'menu' => add([
-                                new Menu('Les liens', 'link.index')
-                        ]),
-            LinksTable::class => factory(function () {
-                return TableRegistry::get('Links', ['className' => LinksTable::class]);
-            }),
-            TagsTable::class => factory(function () {
-                return TableRegistry::get('Links', ['className' => TagsTable::class]);
-            })
-        ];
+        return require __DIR__ . '/config.php';
     }
 
     /**

@@ -4,7 +4,6 @@ namespace App\Link\Entity;
 use TuxBoy\Annotation\Length;
 use TuxBoy\Annotation\Option;
 use TuxBoy\Annotation\Set;
-use TuxBoy\Annotation;
 use TuxBoy\Entity;
 use TuxBoy\Tools\HasName;
 
@@ -34,9 +33,8 @@ class Link extends Entity
     public $email;
 
     /**
-     * @Annotation\Link("belongsToMany")
-     *
-     * @var \App\Link\Entity\Tag[]
+     * @var Category
      */
-    public $tags;
+    public $category;
+
 }
